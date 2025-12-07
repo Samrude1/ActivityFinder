@@ -1,0 +1,98 @@
+.favorites-page {
+    min-height: 100vh;
+    background-color: var(--bg-primary);
+}
+
+.favorites-header {
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+    padding: var(--space-xl) 0;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: var(--space-2xl);
+}
+
+.favorites-header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.favorites-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+}
+
+.favorites-title {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    margin: var(--space-lg) 0 var(--space-sm) 0;
+    color: var(--text-primary);
+}
+
+.favorites-subtitle {
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.favorites-content {
+    padding-bottom: var(--space-2xl);
+}
+
+.favorites-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-md);
+    padding: var(--space-2xl);
+}
+
+.favorites-empty {
+    text-align: center;
+    padding: var(--space-2xl);
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    max-width: 500px;
+    margin: var(--space-2xl) auto;
+}
+
+.favorites-empty .empty-icon {
+    font-size: 5rem;
+    margin-bottom: var(--space-lg);
+    opacity: 0.5;
+}
+
+.favorites-empty h2 {
+    font-size: var(--font-size-2xl);
+    font-weight: 600;
+    margin-bottom: var(--space-sm);
+    color: var(--text-primary);
+}
+
+.favorites-empty p {
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xl);
+}
+
+.favorites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: var(--space-lg);
+}
+
+@media (max-width: 640px) {
+    .favorites-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .favorites-title {
+        font-size: var(--font-size-2xl);
+    }
+}

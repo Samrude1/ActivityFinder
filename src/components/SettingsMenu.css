@@ -1,0 +1,211 @@
+.settings-menu-container {
+    position: relative;
+    z-index: 10001;
+}
+
+.settings-trigger {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.settings-trigger:hover {
+    background-color: var(--border-color);
+    transform: rotate(90deg);
+}
+
+.settings-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 10000;
+    backdrop-filter: blur(2px);
+}
+
+.settings-dropdown {
+    position: absolute;
+    top: calc(100% + var(--space-sm));
+    right: 0;
+    width: 320px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-2xl);
+    z-index: 10001;
+    animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.settings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-lg);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.settings-header h3 {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    margin: 0;
+}
+
+.close-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--bg-secondary);
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+}
+
+.close-btn:hover {
+    background-color: var(--border-color);
+    color: var(--text-primary);
+}
+
+.settings-section {
+    padding: var(--space-lg);
+}
+
+.settings-section h4 {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-md);
+}
+
+.settings-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.settings-option {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background-color: transparent;
+    border: none;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: left;
+    color: var(--text-primary);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+}
+
+.settings-option:hover {
+    background-color: var(--bg-secondary);
+}
+
+.settings-option.active {
+    background-color: var(--bg-secondary);
+}
+
+.settings-option.danger {
+    color: var(--danger);
+}
+
+.settings-option.danger:hover {
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+.option-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.settings-option span:nth-child(2) {
+    flex: 1;
+}
+
+.check {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+.badge {
+    background-color: var(--accent);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+}
+
+.toggle {
+    width: 44px;
+    height: 24px;
+    background-color: var(--border-color);
+    border-radius: var(--radius-full);
+    position: relative;
+    transition: var(--transition);
+}
+
+.toggle.active {
+    background-color: var(--accent);
+}
+
+.toggle-thumb {
+    width: 20px;
+    height: 20px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+
+.toggle.active .toggle-thumb {
+    left: 22px;
+}
+
+.settings-divider {
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 0 var(--space-lg);
+}
+
+@media (max-width: 640px) {
+    .settings-dropdown {
+        width: calc(100vw - 2rem);
+        right: -1rem;
+    }
+}

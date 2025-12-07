@@ -1,0 +1,98 @@
+.header {
+    background-color: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+    padding: var(--space-lg) 0;
+    min-width: 200px;
+}
+
+.header-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    margin-bottom: var(--space-xs);
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.header-icon {
+    font-size: var(--font-size-2xl);
+}
+
+.header-subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+.view-toggle {
+    display: flex;
+    gap: var(--space-xs);
+    background-color: var(--bg-secondary);
+    padding: var(--space-xs);
+    border-radius: var(--radius-md);
+}
+
+.view-toggle-btn {
+    padding: var(--space-sm) var(--space-md);
+    background-color: transparent;
+    color: var(--text-secondary);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.view-toggle-btn:hover {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+}
+
+.view-toggle-btn.active {
+    background-color: var(--accent);
+    color: white;
+}
+
+.favorites-badge {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    padding: var(--space-sm) var(--space-md);
+    background-color: #fee2e2;
+    border: 2px solid #ef4444;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: #dc2626;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.favorites-badge:hover {
+    background-color: #fecaca;
+    transform: scale(1.05);
+    box-shadow: var(--shadow-md);
+}
+
+@media (max-width: 640px) {
+    .header-title {
+        font-size: var(--font-size-xl);
+    }
+
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .header-right {
+        width: 100%;
+        justify-content: space-between;
+    }
+}

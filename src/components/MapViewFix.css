@@ -1,0 +1,7 @@
+.map-popup-card .popup-favorite-btn {
+    color: var(--text-primary) !important;
+}
+
+.map-popup-card .popup-favorite-btn.active {
+    color: #dc2626 !important;
+}
