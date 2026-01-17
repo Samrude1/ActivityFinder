@@ -1,0 +1,65 @@
+{
+    "app": {
+        "title": "活动发现者",
+        "subtitle": "发现本地珍宝"
+    },
+    "nav": {
+        "home": "首页",
+        "map": "地图",
+        "favorites": "收藏",
+        "profile": "个人资料",
+        "login": "登录",
+        "logout": "登出",
+        "custom_lists": "我的列表"
+    },
+    "home": {
+        "hero": {
+            "title": "发现本地活动",
+            "subtitle": "寻找您所在城市最好的活动"
+        },
+        "search": {
+            "placeholder": "搜索活动...",
+            "location_placeholder": "当前位置",
+            "button": "搜索"
+        },
+        "sections": {
+            "featured": "精选活动",
+            "nearby": "附近活动",
+            "custom_lists": "您的收藏"
+        },
+        "categories": {
+            "all": "全部",
+            "outdoor": "户外",
+            "cultural": "文化",
+            "sports": "运动",
+            "music": "音乐",
+            "food": "美食",
+            "family": "家庭"
+        }
+    },
+    "filters": {
+        "title": "筛选",
+        "price": "价格范围",
+        "radius": "距离 (公里)",
+        "rating": "最低评分",
+        "accessibility": "无障碍"
+    },
+    "card": {
+        "free": "免费",
+        "paid": "付费",
+        "from": "起",
+        "reviews": "条评论",
+        "add_to_list": "添加到列表"
+    },
+    "tiers": {
+        "free": "免费版",
+        "explorer": "探索者版",
+        "upgrade": "升级到探索者"
+    },
+    "common": {
+        "loading": "加载中...",
+        "error": "发生错误",
+        "no_results": "未找到活动",
+        "create_new": "新建"
+    }
+}

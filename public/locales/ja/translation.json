@@ -1,0 +1,65 @@
+{
+    "app": {
+        "title": "アクティビティファインダー",
+        "subtitle": "地元の魅力を発見"
+    },
+    "nav": {
+        "home": "ホーム",
+        "map": "地図",
+        "favorites": "お気に入り",
+        "profile": "プロフィール",
+        "login": "ログイン",
+        "logout": "ログアウト",
+        "custom_lists": "マイリスト"
+    },
+    "home": {
+        "hero": {
+            "title": "地元のアクティビティを発見",
+            "subtitle": "あなたの街で最高のアクティビティを見つけましょう"
+        },
+        "search": {
+            "placeholder": "アクティビティを検索...",
+            "location_placeholder": "現在地",
+            "button": "検索"
+        },
+        "sections": {
+            "featured": "注目アクティビティ",
+            "nearby": "近くのアクティビティ",
+            "custom_lists": "あなたのコレクション"
+        },
+        "categories": {
+            "all": "すべて",
+            "outdoor": "アウトドア",
+            "cultural": "文化",
+            "sports": "スポーツ",
+            "music": "音楽",
+            "food": "食事",
+            "family": "家族"
+        }
+    },
+    "filters": {
+        "title": "フィルター",
+        "price": "価格帯",
+        "radius": "距離 (km)",
+        "rating": "最低評価",
+        "accessibility": "アクセシビリティ"
+    },
+    "card": {
+        "free": "無料",
+        "paid": "有料",
+        "from": "から",
+        "reviews": "レビュー",
+        "add_to_list": "リストに追加"
+    },
+    "tiers": {
+        "free": "無料",
+        "explorer": "エクスプローラー",
+        "upgrade": "エクスプローラーにアップグレード"
+    },
+    "common": {
+        "loading": "読み込み中...",
+        "error": "エラーが発生しました",
+        "no_results": "アクティビティが見つかりません",
+        "create_new": "新規作成"
+    }
+}

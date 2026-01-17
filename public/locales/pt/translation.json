@@ -1,0 +1,65 @@
+{
+    "app": {
+        "title": "Localizador de Atividades",
+        "subtitle": "Descubra joias locais"
+    },
+    "nav": {
+        "home": "Início",
+        "map": "Mapa",
+        "favorites": "Favoritos",
+        "profile": "Perfil",
+        "login": "Entrar",
+        "logout": "Sair",
+        "custom_lists": "Minhas Listas"
+    },
+    "home": {
+        "hero": {
+            "title": "Descubra Atividades Locais",
+            "subtitle": "Encontre as melhores coisas para fazer na sua cidade"
+        },
+        "search": {
+            "placeholder": "Buscar atividades...",
+            "location_placeholder": "Localização Atual",
+            "button": "Buscar"
+        },
+        "sections": {
+            "featured": "Atividades em Destaque",
+            "nearby": "Atividades Próximas",
+            "custom_lists": "Suas Coleções"
+        },
+        "categories": {
+            "all": "Todas",
+            "outdoor": "Ao Ar Livre",
+            "cultural": "Cultural",
+            "sports": "Esportes",
+            "music": "Música",
+            "food": "Comida",
+            "family": "Família"
+        }
+    },
+    "filters": {
+        "title": "Filtros",
+        "price": "Faixa de Preço",
+        "radius": "Distância (km)",
+        "rating": "Avaliação Mínima",
+        "accessibility": "Acessibilidade"
+    },
+    "card": {
+        "free": "GRÁTIS",
+        "paid": "Pago",
+        "from": "A partir de",
+        "reviews": "avaliações",
+        "add_to_list": "Adicionar à Lista"
+    },
+    "tiers": {
+        "free": "Grátis",
+        "explorer": "Explorador",
+        "upgrade": "Atualizar para Explorador"
+    },
+    "common": {
+        "loading": "Carregando...",
+        "error": "Ocorreu um erro",
+        "no_results": "Nenhuma atividade encontrada",
+        "create_new": "Criar Nova"
+    }
+}

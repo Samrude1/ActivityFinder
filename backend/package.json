@@ -20,16 +20,17 @@
     "author": "",
     "license": "MIT",
     "dependencies": {
-        "express": "^4.18.2",
-        "cors": "^2.8.5",
         "bcrypt": "^5.1.1",
-        "jsonwebtoken": "^9.0.2",
-        "sql.js": "^1.10.3",
-        "pg": "^8.11.3",
-        "express-validator": "^7.0.1",
+        "cors": "^2.8.5",
         "dotenv": "^16.3.1",
-        "uuid": "^9.0.1",
+        "express": "^4.18.2",
+        "express-rate-limit": "^7.1.5",
+        "express-validator": "^7.0.1",
         "helmet": "^7.1.0",
-        "express-rate-limit": "^7.1.5"
+        "ical-generator": "^10.0.0",
+        "jsonwebtoken": "^9.0.2",
+        "pg": "^8.11.3",
+        "sql.js": "^1.10.3",
+        "uuid": "^9.0.1"
     }
 }

@@ -8,6 +8,8 @@ const HomePage = lazy(() => import('./components/HomePage'));
 const FavoritesPage = lazy(() => import('./components/FavoritesPage'));
 const ActivityDetail = lazy(() => import('./components/ActivityDetail'));
 const ProfilePage = lazy(() => import('./components/ProfilePage'));
+const CustomLists = lazy(() => import('./tiers/Explorer/features/CustomLists'));
+const CustomListDetail = lazy(() => import('./tiers/Explorer/features/CustomListDetail'));
 
 // Loading fallback for routes
 const PageLoader = () => (
@@ -31,6 +33,8 @@ function App() {
                     <Route path="/favorites" element={<FavoritesPage />} />
                     <Route path="/activity/:id" element={<ActivityDetail />} />
                     <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="/lists" element={<CustomLists />} />
+                    <Route path="/lists/:id" element={<CustomListDetail />} />
                 </Routes>
             </Suspense>
         </AuthProvider>

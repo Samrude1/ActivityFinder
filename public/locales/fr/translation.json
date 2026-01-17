@@ -1,0 +1,65 @@
+{
+    "app": {
+        "title": "Découvreur d'Activités",
+        "subtitle": "Découvrez des pépites locales"
+    },
+    "nav": {
+        "home": "Accueil",
+        "map": "Carte",
+        "favorites": "Favoris",
+        "profile": "Profil",
+        "login": "Connexion",
+        "logout": "Déconnexion",
+        "custom_lists": "Mes Listes"
+    },
+    "home": {
+        "hero": {
+            "title": "Découvrez des Activités Locales",
+            "subtitle": "Trouvez les meilleures choses à faire dans votre ville"
+        },
+        "search": {
+            "placeholder": "Rechercher des activités...",
+            "location_placeholder": "Position Actuelle",
+            "button": "Rechercher"
+        },
+        "sections": {
+            "featured": "Activités en Vedette",
+            "nearby": "Activités à Proximité",
+            "custom_lists": "Vos Collections"
+        },
+        "categories": {
+            "all": "Tout",
+            "outdoor": "Plein Air",
+            "cultural": "Culturel",
+            "sports": "Sports",
+            "music": "Musique",
+            "food": "Nourriture",
+            "family": "Famille"
+        }
+    },
+    "filters": {
+        "title": "Filtres",
+        "price": "Fourchette de Prix",
+        "radius": "Distance (km)",
+        "rating": "Note Minimale",
+        "accessibility": "Accessibilité"
+    },
+    "card": {
+        "free": "GRATUIT",
+        "paid": "Payant",
+        "from": "À partir de",
+        "reviews": "avis",
+        "add_to_list": "Ajouter à la liste"
+    },
+    "tiers": {
+        "free": "Gratuit",
+        "explorer": "Explorateur",
+        "upgrade": "Passer à Explorateur"
+    },
+    "common": {
+        "loading": "Chargement...",
+        "error": "Une erreur est survenue",
+        "no_results": "Aucune activité trouvée",
+        "create_new": "Créer Nouveau"
+    }
+}

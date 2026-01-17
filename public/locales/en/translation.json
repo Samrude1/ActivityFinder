@@ -1,0 +1,171 @@
+{
+    "app": {
+        "title": "Activity Finder",
+        "subtitle": "Discover local gems"
+    },
+    "nav": {
+        "home": "Home",
+        "map": "Map",
+        "favorites": "Favorites",
+        "profile": "Profile",
+        "login": "Login",
+        "logout": "Logout",
+        "custom_lists": "My Lists"
+    },
+    "home": {
+        "hero": {
+            "title": "Discover Local Activities",
+            "subtitle": "Find the best things to do in your city"
+        },
+        "search": {
+            "placeholder": "Search for activities...",
+            "location_placeholder": "Current Location",
+            "button": "Search"
+        },
+        "sections": {
+            "featured": "Featured Activities",
+            "nearby": "Nearby Activities",
+            "custom_lists": "Your Collections"
+        },
+        "categories": {
+            "all": "All",
+            "outdoor": "Outdoor",
+            "cultural": "Cultural",
+            "sports": "Sports",
+            "music": "Music",
+            "food": "Food",
+            "family": "Family"
+        }
+    },
+    "filters": {
+        "title": "Filters",
+        "price": "Price Range",
+        "radius": "Distance (km)",
+        "rating": "Min Rating",
+        "accessibility": "Accessibility"
+    },
+    "card": {
+        "free": "FREE",
+        "paid": "Paid",
+        "from": "From",
+        "reviews": "reviews",
+        "add_to_list": "Add to List"
+    },
+    "tiers": {
+        "free": "Free",
+        "explorer": "Explorer",
+        "upgrade": "Upgrade to Explorer",
+        "plan": "Plan",
+        "active": "Active",
+        "view_all": "View All Plans",
+        "hide_other": "Hide Other Plans",
+        "available_plans": "Available Plans",
+        "current_plan": "Current Plan",
+        "features": {
+            "browse_all": "Search and browse all activities",
+            "map_list": "View on map and list",
+            "basic_filter": "Basic category filtering",
+            "favorites_limit": "Save up to 20 favorites",
+            "user_account": "User account",
+            "ads": "Ads displayed",
+            "search_limit": "Limited to 50 searches per day",
+            "ad_free": "Ad-free experience",
+            "unlimited_favs": "Unlimited favorites",
+            "unlimited_search": "Unlimited searches",
+            "advanced_filter": "Advanced filters (price, rating, accessibility)",
+            "offline_maps": "Offline maps (download up to 5 cities)",
+            "custom_lists": "Custom lists (organize collections)",
+            "calendar_export": "Export to calendar",
+            "priority_support": "Priority customer support",
+            "early_access": "Early access to new features"
+        }
+    },
+    "auth": {
+        "login_signup": "Login / Sign Up",
+        "register": "Register",
+        "username": "Username",
+        "email": "Email",
+        "password": "Password"
+    },
+    "profile": {
+        "not_logged_in": "Not Logged In",
+        "login_required": "Please log in to view your profile",
+        "saved_activities": "Saved Activities",
+        "saved_desc": "View your favorite places",
+        "settings_desc": "Preferences and privacy",
+        "logout_desc": "Sign out of your account",
+        "subscription": "Your Subscription"
+    },
+    "settings": {
+        "view": "View",
+        "list_view": "List View",
+        "map_view": "Map View",
+        "quick_access": "Quick Access",
+        "offline_maps": "Offline Maps",
+        "appearance": "Appearance",
+        "dark_mode": "Dark Mode",
+        "light_mode": "Light Mode"
+    },
+    "favorites": {
+        "empty_title": "No Favorites Yet",
+        "empty_desc": "Start exploring and save your favorite activities!",
+        "discover": "Discover Activities"
+    },
+    "common": {
+        "loading": "Loading...",
+        "error": "An error occurred",
+        "no_results": "No activities found",
+        "create_new": "Create New",
+        "go_home": "Go Home",
+        "settings": "Settings",
+        "cancel": "Cancel"
+    },
+    "list": {
+        "add_title": "Add to Custom List",
+        "loading": "Loading your lists...",
+        "retry": "Retry",
+        "empty": "You haven't created any lists yet.",
+        "create_first": "Create First List"
+    },
+    "offline_maps": {
+        "title": "Offline Maps",
+        "usage": "{{count}} / {{limit}} maps used",
+        "more_feature": "More Offline Maps"
+    },
+    "detail": {
+        "title_default": "Activity Detail",
+        "back": "Back to Activities",
+        "loading": "Loading activity...",
+        "not_found": "Activity Not Found",
+        "not_found_desc": "Sorry, we couldn't load this activity.",
+        "browse": "Browse Activities",
+        "date_time": "Date & Time",
+        "location": "Location",
+        "distance": "Distance",
+        "from_you": "from you",
+        "category": "Category",
+        "about": "About This Activity",
+        "tags": "Tags",
+        "more_info": "More Information",
+        "view_osm": "View on OpenStreetMap",
+        "getting_there": "Getting There",
+        "address": "Address",
+        "coordinates": "Coordinates",
+        "get_directions": "Get directions on Google Maps",
+        "share": "Share Activity",
+        "saved": "Saved",
+        "save_to_fav": "Save to Favorites"
+    },
+    "upgrade": {
+        "unlock_feature": "Unlock {{feature}}",
+        "free_limit": "Free Tier Limit",
+        "desc": "Upgrade to <strong>{{tier}}</strong> to remove this limit and access exclusive premium features.",
+        "cta": "Upgrade Now",
+        "later": "Maybe Later"
+    },
+    "ad": {
+        "sponsored": "Sponsored",
+        "content": "<strong>Upgrade to Explorer</strong> to remove ads and unlock offline maps!",
+        "learn_more": "Learn More"
+    }
+}

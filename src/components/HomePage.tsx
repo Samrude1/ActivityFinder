@@ -11,14 +11,23 @@ import BottomNavigation from './BottomNavigation';
 import SettingsMenu from './SettingsMenu';
 import UserMenu from './UserMenu';
 import SkeletonCard from './SkeletonCard';
+import AdBanner from './AdBanner';
+import AdvancedFilters, { FilterState } from '../tiers/Explorer/features/AdvancedFilters';
+import ActivitySearch from '../tiers/Free/features/ActivitySearch';
+import UpgradePrompt from '../tiers/Free/features/UpgradePrompt';
+import HomeCustomLists from '../tiers/Explorer/features/HomeCustomLists';
+import { freeAPI } from '../services/api';
 import './HomePage.css';
 
 type ViewMode = 'list' | 'map';
 
 import { usePageTitle } from '../hooks/usePageTitle';
+import LanguageSwitcher from './LanguageSwitcher';
+import { useTranslation } from 'react-i18next';
 
 export default function HomePage() {
     usePageTitle('Home');
+    const { t } = useTranslation();
     const { user } = useAuth();
     const [viewMode, setViewMode] = useState<ViewMode>('list');
     const [activities, setActivities] = useState<Activity[]>([]);
@@ -26,10 +35,17 @@ export default function HomePage() {
     const [userLocation, setUserLocation] = useState<Location | null>(null);
     const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
     const [favorites, setFavorites] = useState<string[]>([]);
-    const [showPaid, setShowPaid] = useState(false);
+    const [priceFilter, setPriceFilter] = useState<'all' | 'free' | 'paid'>('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [searching, setSearching] = useState(false);
     const [radius, setRadius] = useState(25);
+    const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
+    const [advancedFilters, setAdvancedFilters] = useState<FilterState>({
+        priceRange: [0, 200],
+        minRating: 0,
+        accessibility: []
+    });
+    const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
 
     const categories: Category[] = ['Outdoor', 'Cultural', 'Sports', 'Music', 'Food', 'Family'];
 
@@ -52,15 +68,41 @@ export default function HomePage() {
         if (!userLocation) return;
 
         setLoading(true);
-        searchActivities({
-            location: userLocation,
-            radius,
-            categories: selectedCategories,
-            priceRange: showPaid ? { min: 0, max: 1000 } : { min: 0, max: 0 },
-        })
-            .then(setActivities)
-            .finally(() => setLoading(false));
-    }, [userLocation, selectedCategories, showPaid, radius]);
+
+        if (user?.tier === 'free') {
+            freeAPI.searchActivities(
+                userLocation,
+                radius,
+                selectedCategories
+            )
+                .then(setActivities)
+                .catch(error => {
+                    if (error.upgradeRequired) {
+                        setShowUpgradePrompt(true);
+                    }
+                    console.error('Search error:', error);
+                    setActivities([]);
+                })
+                .finally(() => setLoading(false));
+
+        } else {
+            searchActivities({
+                location: userLocation,
+                radius,
+                categories: selectedCategories,
+                priceRange: priceFilter === 'all'
+                    ? { min: 0, max: 1000 }
+                    : priceFilter === 'free'
+                        ? { min: 0, max: 0 }
+                        : { min: 1, max: 1000 },
+                minRating: advancedFilters.minRating,
+                accessibility: advancedFilters.accessibility,
+            }, user?.tier)
+                .then(setActivities)
+                .finally(() => setLoading(false));
+        }
+
+    }, [userLocation, selectedCategories, priceFilter, radius, advancedFilters, user?.tier]);
 
     const handleToggleFavorite = async (activityId: string) => {
         const isFav = await isFavorite(activityId);
@@ -75,11 +117,12 @@ export default function HomePage() {
         updateFavorites();
     };
 
-    const handleSearchLocation = async () => {
-        if (!searchQuery.trim()) return;
+    const handleSearchLocation = async (queryOverride?: string) => {
+        const queryToUse = typeof queryOverride === 'string' ? queryOverride : searchQuery;
+        if (!queryToUse.trim()) return;
 
         setSearching(true);
-        const location = await geocodeAddress(searchQuery.trim());
+        const location = await geocodeAddress(queryToUse.trim());
 
         if (location) {
             setUserLocation(location);
@@ -98,7 +141,12 @@ export default function HomePage() {
     };
 
     const featuredActivity = activities[0];
-    const displayActivities = activities.slice(1);
+    const displayActivities = activities.slice(1)
+        .filter(act => {
+            if (priceFilter === 'free') return act.price === 0;
+            if (priceFilter === 'paid') return (act.price || 0) > 0;
+            return true;
+        });
 
     return (
         <div className="home-page">
@@ -110,9 +158,10 @@ export default function HomePage() {
                             <h1 className="greeting-text">
                                 Hello, {user?.username || 'Explorer'} 👋
                             </h1>
-                            <p className="greeting-subtitle">Discover amazing activities near you</p>
+                            <p className="greeting-subtitle">{t('home.hero.subtitle')}</p>
                         </div>
                         <div className="header-actions">
+                            <LanguageSwitcher />
                             <UserMenu />
                             <SettingsMenu
                                 onViewModeChange={setViewMode}
@@ -123,51 +172,51 @@ export default function HomePage() {
                     </div>
 
                     {/* Search Bar */}
-                    <div className="search-bar-container">
-                        <div className="search-input-wrapper">
-                            <span className="search-icon">🔍</span>
-                            <input
-                                type="text"
-                                placeholder="Search location (e.g., Helsinki, Porvoo)..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                onClick={() => setSearchQuery('')}
-                                onKeyPress={handleSearchKeyPress}
-                                className="search-input"
-                            />
-                        </div>
+                    {user?.tier === 'free' ? (
+                        <ActivitySearch
+                            onSearch={(query) => {
+                                setSearchQuery(query);
+                                handleSearchLocation(query);
+                            }}
+                            searching={searching}
+                            val={searchQuery}
+                        />
+                    ) : (
+                        /* Standard Search Bar */
+                        <div className="search-bar-container">
+                            <div className="search-input-wrapper">
+                                <span className="search-icon">🔍</span>
+                                <input
+                                    type="text"
+                                    placeholder={t('home.search.placeholder')}
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    onClick={() => setSearchQuery('')}
+                                    onKeyPress={handleSearchKeyPress}
+                                    className="search-input"
+                                />
+                            </div>
 
-                        <div className="radius-selector" style={{ position: 'relative' }}>
-                            <select
-                                value={radius}
-                                onChange={(e) => setRadius(Number(e.target.value))}
-                                className="radius-select"
-                                style={{
-                                    padding: '1rem',
-                                    borderRadius: 'var(--radius-full)',
-                                    border: '1px solid var(--border-color)',
-                                    backgroundColor: 'var(--bg-secondary)',
-                                    appearance: 'none',
-                                    paddingRight: '2.5rem',
-                                    cursor: 'pointer'
-                                }}
+                            <button
+                                className="search-btn secondary"
+                                onClick={() => setShowAdvancedFilters(true)}
+                                title="Advanced Filters"
                             >
-                                <option value={10}>10 km</option>
-                                <option value={25}>25 km</option>
-                                <option value={50}>50 km</option>
-                                <option value={100}>100 km</option>
-                            </select>
-                            <span style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--text-tertiary)' }}>▼</span>
-                        </div>
+                                ⚡
+                            </button>
 
-                        <button
-                            className="search-btn"
-                            onClick={handleSearchLocation}
-                            disabled={searching}
-                        >
-                            {searching ? '...' : 'Go'}
-                        </button>
-                    </div>
+
+
+                            <button
+                                className="search-btn"
+                                onClick={() => handleSearchLocation()}
+                                disabled={searching}
+                            >
+                                {searching ? '...' : t('home.search.button')}
+                            </button>
+                        </div>
+                    )}
+
                 </div>
             </header>
 
@@ -188,11 +237,16 @@ export default function HomePage() {
                                     }}
                                     className={`category-pill ${selectedCategories.includes(category) ? 'active' : ''}`}
                                 >
-                                    {category}
+                                    {t(`home.categories.${category.toLowerCase()}`)}
                                 </button>
                             ))}
                         </div>
                     </section>
+
+                    {/* Custom Lists (Explorer Feature) */}
+                    {user?.tier === 'explorer' && !loading && viewMode === 'list' && (
+                        <HomeCustomLists />
+                    )}
 
                     {/* Loading State */}
                     {loading ? (
@@ -206,12 +260,36 @@ export default function HomePage() {
                     ) : viewMode === 'map' ? (
                         /* Map View */
                         <section className="map-section">
-                            <button
-                                className="main-button"
-                                onClick={() => setViewMode('list')}
-                            >
-                                ← Main
-                            </button>
+                            <div className="map-controls" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                                <button
+                                    className="main-button"
+                                    onClick={() => setViewMode('list')}
+                                >
+                                    ← Main
+                                </button>
+                                <div className="radius-selector" style={{ position: 'relative' }}>
+                                    <select
+                                        value={radius}
+                                        onChange={(e) => setRadius(Number(e.target.value))}
+                                        className="radius-select"
+                                        style={{
+                                            padding: '0.5rem 1rem',
+                                            borderRadius: 'var(--radius-full)',
+                                            border: '1px solid var(--border-color)',
+                                            backgroundColor: 'var(--bg-secondary)',
+                                            appearance: 'none',
+                                            paddingRight: '2rem',
+                                            cursor: 'pointer'
+                                        }}
+                                    >
+                                        <option value={10}>10 km</option>
+                                        <option value={25}>25 km</option>
+                                        <option value={50}>50 km</option>
+                                        <option value={100}>100 km</option>
+                                    </select>
+                                    <span style={{ position: 'absolute', right: '0.8rem', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--text-tertiary)', fontSize: '0.8rem' }}>▼</span>
+                                </div>
+                            </div>
                             <MapView
                                 activities={activities}
                                 userLocation={userLocation}
@@ -225,7 +303,7 @@ export default function HomePage() {
                         <>
                             {featuredActivity && (
                                 <section className="featured-section">
-                                    <h2 className="section-title">Featured Activity</h2>
+                                    <h2 className="section-title">{t('home.sections.featured')}</h2>
                                     <ActivityCard
                                         activity={featuredActivity}
                                         isFavorite={favorites.includes(featuredActivity.id)}
@@ -241,11 +319,12 @@ export default function HomePage() {
                                     <div className="section-header">
                                         <h2 className="section-title">
                                             {selectedCategories.length > 0
-                                                ? `${selectedCategories.join(', ')} Activities`
-                                                : 'All Activities'}
+                                                ? selectedCategories.map(c => t(`home.categories.${c.toLowerCase()}`)).join(', ')
+                                                : t('home.categories.all')}
                                         </h2>
                                         <span className="activity-count">{displayActivities.length} found</span>
                                     </div>
+                                    <AdBanner />
                                     <div className="activities-grid">
                                         {displayActivities.map((activity) => (
                                             <ActivityCard
@@ -260,18 +339,30 @@ export default function HomePage() {
                             ) : (
                                 <div className="empty-state">
                                     <div className="empty-icon">🔍</div>
-                                    <h3>No activities found</h3>
+                                    <h3>{t('common.no_results')}</h3>
                                     <p>Try adjusting your filters or location</p>
                                 </div>
                             )}
 
-                            {/* Toggle for paid activities */}
-                            <div className="paid-toggle-container">
+                            {/* Price selection toggle */}
+                            <div className="price-filter-container">
                                 <button
-                                    onClick={() => setShowPaid(!showPaid)}
-                                    className={`paid-toggle ${showPaid ? 'active' : ''}`}
+                                    onClick={() => setPriceFilter('free')}
+                                    className={`price-filter-btn ${priceFilter === 'free' ? 'active' : ''}`}
                                 >
-                                    {showPaid ? '✓ ' : ''}Show Paid Activities
+                                    {t('tiers.free')}
+                                </button>
+                                <button
+                                    onClick={() => setPriceFilter('paid')}
+                                    className={`price-filter-btn ${priceFilter === 'paid' ? 'active' : ''}`}
+                                >
+                                    {t('card.paid')}
+                                </button>
+                                <button
+                                    onClick={() => setPriceFilter('all')}
+                                    className={`price-filter-btn ${priceFilter === 'all' ? 'active' : ''}`}
+                                >
+                                    {t('home.categories.all')}
                                 </button>
                             </div>
                         </>
@@ -280,6 +371,23 @@ export default function HomePage() {
             </main>
 
             <BottomNavigation />
+
+            {showAdvancedFilters && (
+                <AdvancedFilters
+                    initialFilters={advancedFilters}
+                    onFilterChange={(filters) => setAdvancedFilters(filters)}
+                    onClose={() => setShowAdvancedFilters(false)}
+                />
+            )}
+
+            {showUpgradePrompt && (
+                <UpgradePrompt
+                    feature="Unlimited Searches"
+                    currentLimit="50/day"
+                    tier="Explorer"
+                    onClose={() => setShowUpgradePrompt(false)}
+                />
+            )}
         </div>
     );
 }

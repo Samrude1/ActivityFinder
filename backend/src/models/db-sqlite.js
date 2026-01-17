@@ -29,6 +29,7 @@ async function initDatabase() {
       username TEXT UNIQUE NOT NULL,
       email TEXT UNIQUE NOT NULL,
       password_hash TEXT NOT NULL,
+      tier TEXT DEFAULT 'free' CHECK(tier IN ('free', 'explorer')),
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   `);
@@ -42,6 +43,49 @@ async function initDatabase() {
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     )
   `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS custom_lists (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL,
+      name TEXT NOT NULL,
+      description TEXT,
+      icon TEXT DEFAULT '📋',
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )
+  `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS list_items (
+      id TEXT PRIMARY KEY,
+      list_id TEXT NOT NULL,
+      activity_data TEXT NOT NULL,
+      added_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (list_id) REFERENCES custom_lists(id) ON DELETE CASCADE
+    )
+  `);
+
+  db.run(`
+    CREATE TABLE IF NOT EXISTS user_search_limits (
+      user_id TEXT PRIMARY KEY,
+      search_count INTEGER DEFAULT 0,
+      last_reset_date DATE DEFAULT CURRENT_DATE,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )
+  `);
+
+  // Migration: Add tier column if it doesn't exist
+  try {
+    db.run(`ALTER TABLE users ADD COLUMN tier TEXT DEFAULT 'free' CHECK(tier IN ('free', 'explorer'))`);
+    console.log('✅ Added tier column to users table');
+  } catch (error) {
+    // Column already exists, ignore error
+    if (!error.message.includes('duplicate column')) {
+      console.error('Migration error:', error);
+    }
+  }
 
   saveDatabase();
   console.log('✅ SQLite database initialized successfully');

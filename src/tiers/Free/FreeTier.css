@@ -1,0 +1,148 @@
+/* Free Tier Module Styles */
+
+.upgrade-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    animation: fadeIn 0.2s ease-out;
+    backdrop-filter: blur(4px);
+}
+
+.upgrade-modal-content {
+    background: var(--bg-card, #ffffff);
+    padding: 2rem;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border-color, #e0e0e0);
+    animation: slideUp 0.3s ease-out;
+}
+
+.upgrade-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    background: var(--primary-light, #e3f2fd);
+    width: 80px;
+    height: 80px;
+    line-height: 80px;
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+}
+
+.limit-info {
+    background: var(--bg-secondary, #f5f5f5);
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.limit-label {
+    color: var(--text-secondary, #666);
+    font-size: 0.9rem;
+}
+
+.limit-value {
+    color: var(--error-color, #d32f2f);
+    font-weight: bold;
+}
+
+.price-tag {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: var(--primary-color, #1976d2);
+    margin: 1.5rem 0;
+}
+
+.upgrade-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.btn-upgrade-primary {
+    background: var(--primary-gradient, linear-gradient(135deg, #1976d2 0%, #1565c0 100%));
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-upgrade-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
+}
+
+.btn-maybe-later {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary, #666);
+    padding: 0.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.btn-maybe-later:hover {
+    color: var(--text-primary, #333);
+}
+
+/* Limit Banners */
+.search-limit-banner {
+    background: #fff3e0;
+    border: 1px solid #ffe0b2;
+    color: #ef6c00;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
+
+.limit-badge-pill {
+    background: var(--bg-secondary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

@@ -3,6 +3,9 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 import favoritesRoutes from './routes/favorites.js';
+import explorerRoutes from './tiers/explorer/routes.js';
+import freeRoutes from './tiers/free/routes.js';
+import { authMiddleware } from './middleware/auth.js';
 import './models/db.js'; // Initialize database
 import { helmetConfig, apiLimiter, getCorsOptions } from './middleware/security.js';
 import { closePool } from './models/db.js';
@@ -28,6 +31,12 @@ app.use('/api', apiLimiter);
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/favorites', favoritesRoutes);
+
+// Tier Routes
+// Note: We mount explorer routes at /api because the module's router handles the specific subpaths (e.g. /lists, /export)
+// This pattern allows the Explorer module to define its own API structure.
+app.use('/api', authMiddleware, explorerRoutes);
+app.use('/api/free', freeRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

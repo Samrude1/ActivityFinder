@@ -4,16 +4,16 @@ This document serves as the unified guide for deploying, polishing, and evolving
 
 ---
 
-## 🏗️ Phase 1: MVP Deployment (Current Focus)
+## 🏗️ Phase 1: MVP Deployment ✅ Completed
 
 **Goal:** Get the application live on the web with persistent storage.
 
-### 1.1 Architecture Overview
-- **Frontend**: React/Vite (Host: Vercel)
-- **Backend**: Node.js/Express (Host: Render)
-- **Database**: PostgreSQL (Host: Neon.tech)
+### 1.1 Architecture Overview ✅ Completed
+- **Frontend**: React/Vite (Target: Vercel)
+- **Backend**: Node.js/Express (Target: Render)
+- **Database**: PostgreSQL (Target: Neon.tech)
 
-### 1.2 Database Setup (Neon.tech)
+### 1.2 Database Setup (Neon.tech) ✅ Completed
 1.  **Create Account**: Sign up at [neon.tech](https://neon.tech).
 2.  **Create Project**: Name it `activity-finder-db`.
 3.  **Get Connection String**: Copy the `postgres://...` URL.
@@ -25,7 +25,7 @@ This document serves as the unified guide for deploying, polishing, and evolving
     ```
     Run `npm run migrate` and `npm start` to verify.
 
-### 1.3 Backend Deployment (Render.com)
+### 1.3 Backend Deployment (Render.com) ✅ Completed
 1.  **New Web Service**: Connect your GitHub repo.
 2.  **Settings**:
     - Root Directory: `backend`
@@ -38,7 +38,7 @@ This document serves as the unified guide for deploying, polishing, and evolving
     - `CLIENT_URL`: `https://<your-app>.vercel.app` (Add this after deploying frontend)
     - `NODE_ENV`: `production`
 
-### 1.4 Frontend Deployment (Vercel)
+### 1.4 Frontend Deployment (Vercel) ✅ Completed
 1.  **New Project**: Import your GitHub repo.
 2.  **Settings**:
     - Framework: Vite
@@ -47,24 +47,58 @@ This document serves as the unified guide for deploying, polishing, and evolving
     - `VITE_API_URL`: `https://<your-render-app>.onrender.com/api`
 4.  **Deploy**: Click deploy and copy the resulting URL.
 
-### 1.5 Final Connection
+### 1.5 Final Connection ✅ Completed
 - Go back to **Render** environment variables.
 - Update `CLIENT_URL` to your accurate Vercel URL (no trailing slash).
 - Render will auto-redeploy.
 
 ---
 
-## 💎 Phase 2: Professional Polish
+## 💎 Phase 1.5: Subscription Tier System ✅ Completed (Local)
 
-**Goal:** Elevate quality to "Pro Level" before marketing.
+**Goal:** Implement freemium model with Free and Explorer tiers.
 
-### 2.1 Testing Infrastructure (Critical)
+### Backend Tier Infrastructure ✅
+- [x] Database schema with `tier` column
+- [x] Free tier middleware (50 searches/day, 20 favorites max)
+- [x] Explorer tier features (custom lists, calendar export)
+- [x] Tier-based route handlers
+- [x] Usage limit enforcement
+
+### Frontend Tier Components ✅
+- [x] **Free**: Essential features (Search, Map View, Basic Details)
+- [x] **Explorer**: Adds Custom Lists, Advanced Filters, Calendar Export
+- [x] Conditional rendering based on user tier
+- [x] Real-time usage tracking display
+- [x] Upgrade prompts and messaging
+
+### Resilience & Fallbacks ✅
+- [x] Offline fallback data for API failures
+- [x] Graceful error handling
+- [x] Test accounts for all tiers
+
+### Resolved Issues ✅
+- [x] Location search race condition (Fixed)
+- [x] Map location centering (Fixed)
+
+---
+
+## 💎 Phase 2: Professional Polish (Current Focus)
+
+**Goal:** Fix bugs and elevate quality before marketing.
+
+### 2.1 Bug Fixes (Completed)
+- [x] Fix Free tier search integration
+- [x] Fix map location updates
+- [x] Test all tier search flows
+
+### 2.2 Testing Infrastructure (Critical)
 - [ ] **Unit Tests**: Install `vitest`. Target 70% coverage for services.
 - [ ] **E2E Tests**: Install `playwright` for critical flows (Login -> Search -> Favorite).
 
-### 2.2 Security Hardening
-- [ ] **Headers**: Ensure `helmet` is fully configured on backend.
-- [ ] **Rate Limiting**: Apply to all endpoints, not just auth.
+### 2.2 Security Hardening ✅ Completed
+- [x] **Headers**: Ensure `helmet` is fully configured on backend.
+- [x] **Rate Limiting**: Apply to all endpoints, not just auth.
 - [ ] **Secrets**: Rotate JWT secret periodically.
 
 ### 2.3 SEO & Analytics

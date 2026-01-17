@@ -1,0 +1,65 @@
+{
+    "app": {
+        "title": "액티비티 파인더",
+        "subtitle": "현지 활동 발견"
+    },
+    "nav": {
+        "home": "홈",
+        "map": "지도",
+        "favorites": "즐겨찾기",
+        "profile": "프로필",
+        "login": "로그인",
+        "logout": "로그아웃",
+        "custom_lists": "내 목록"
+    },
+    "home": {
+        "hero": {
+            "title": "지역 액티비티 발견",
+            "subtitle": "당신의 도시에서 할 수 있는 최고의 활동을 찾으세요"
+        },
+        "search": {
+            "placeholder": "액티비티 검색...",
+            "location_placeholder": "현재 위치",
+            "button": "검색"
+        },
+        "sections": {
+            "featured": "추천 액티비티",
+            "nearby": "근처 액티비티",
+            "custom_lists": "나의 컬렉션"
+        },
+        "categories": {
+            "all": "전체",
+            "outdoor": "야외",
+            "cultural": "문화",
+            "sports": "스포츠",
+            "music": "음악",
+            "food": "음식",
+            "family": "가족"
+        }
+    },
+    "filters": {
+        "title": "필터",
+        "price": "가격 범위",
+        "radius": "거리 (km)",
+        "rating": "최소 평점",
+        "accessibility": "접근성"
+    },
+    "card": {
+        "free": "무료",
+        "paid": "유료",
+        "from": "부터",
+        "reviews": "리뷰",
+        "add_to_list": "목록에 추가"
+    },
+    "tiers": {
+        "free": "무료",
+        "explorer": "익스플로러",
+        "upgrade": "익스플로러로 업그레이드"
+    },
+    "common": {
+        "loading": "로딩 중...",
+        "error": "오류가 발생했습니다",
+        "no_results": "활동을 찾을 수 없습니다",
+        "create_new": "새로 만들기"
+    }
+}

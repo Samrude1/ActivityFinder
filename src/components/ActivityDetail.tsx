@@ -5,17 +5,24 @@ import { getFavorites, addFavorite, removeFavorite, isFavorite as checkIsFavorit
 import { getAllActivities } from '../services/activityService';
 import type { Activity } from '../types';
 import './ActivityDetail.css';
+import AdBanner from './AdBanner';
+import { useAuth } from '../contexts/AuthContext';
 import { usePageTitle } from '../hooks/usePageTitle';
+import BackButton from './BackButton';
+import { useTranslation } from 'react-i18next';
 
 export default function ActivityDetail() {
+    const { user } = useAuth();
+    const showAds = !user || user.tier === 'free';
     const navigate = useNavigate();
     const location = useLocation();
     const { id } = useParams<{ id: string }>();
     const [isFavorite, setIsFavorite] = useState(false);
     const [activity, setActivity] = useState<Activity | undefined>(location.state?.activity);
     const [loading, setLoading] = useState(!activity);
+    const { t } = useTranslation();
 
-    usePageTitle(activity?.title || 'Activity Detail');
+    usePageTitle(activity?.title || t('detail.title_default', 'Activity Detail'));
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -95,14 +102,12 @@ export default function ActivityDetail() {
         return (
             <div className="activity-detail-page">
                 <div className="detail-header">
-                    <button onClick={() => navigate(-1)} className="back-btn">
-                        ← Back
-                    </button>
+                    <BackButton />
                 </div>
                 <div className="detail-container">
                     <div style={{ textAlign: 'center', padding: '4rem' }}>
                         <div className="loading" style={{ width: '40px', height: '40px', borderWidth: '4px', margin: '0 auto' }}></div>
-                        <p>Loading activity...</p>
+                        <p>{t('detail.loading', 'Loading activity...')}</p>
                     </div>
                 </div>
             </div>
@@ -114,16 +119,14 @@ export default function ActivityDetail() {
         return (
             <div className="activity-detail-page">
                 <div className="detail-header">
-                    <button onClick={() => navigate('/')} className="back-btn">
-                        ← Home
-                    </button>
+                    <BackButton to="/" label={t('nav.home', 'Home')} />
                 </div>
                 <div className="detail-container">
                     <div style={{ textAlign: 'center', padding: '4rem' }}>
-                        <h2>Activity Not Found</h2>
-                        <p>Sorry, we couldn't load this activity.</p>
+                        <h2>{t('detail.not_found', 'Activity Not Found')}</h2>
+                        <p>{t('detail.not_found_desc', "Sorry, we couldn't load this activity.")}</p>
                         <button onClick={() => navigate('/')} className="btn-primary" style={{ marginTop: '1rem' }}>
-                            Browse Activities
+                            {t('detail.browse', 'Browse Activities')}
                         </button>
                     </div>
                 </div>
@@ -143,9 +146,7 @@ export default function ActivityDetail() {
     return (
         <article className="activity-detail-page">
             <div className="detail-header">
-                <button onClick={() => navigate(-1)} className="back-btn">
-                    ← Back to Activities
-                </button>
+                <BackButton label={t('detail.back', 'Back to Activities')} />
             </div>
 
             <div className="detail-container">
@@ -165,9 +166,9 @@ export default function ActivityDetail() {
                     {activity.price !== undefined && (
                         <div className="detail-price">
                             {activity.price === 0 ? (
-                                <span className="price-free">🎉 FREE</span>
+                                <span className="price-free">🎉 {t('card.free', 'FREE')}</span>
                             ) : (
-                                <span className="price-paid">Paid</span>
+                                <span className="price-paid">{t('card.paid', 'Paid')}</span>
                             )}
                         </div>
                     )}
@@ -176,14 +177,14 @@ export default function ActivityDetail() {
                         <div className="meta-item">
                             <span className="meta-icon">📅</span>
                             <div>
-                                <strong>Date & Time</strong>
+                                <strong>{t('detail.date_time', 'Date & Time')}</strong>
                                 <p>{formatDate(activity.date)}</p>
                             </div>
                         </div>
                         <div className="meta-item">
                             <span className="meta-icon">📍</span>
                             <div>
-                                <strong>Location</strong>
+                                <strong>{t('detail.location', 'Location')}</strong>
                                 <p>{activity.location.address}</p>
                             </div>
                         </div>
@@ -191,28 +192,28 @@ export default function ActivityDetail() {
                             <div className="meta-item">
                                 <span className="meta-icon">🚶</span>
                                 <div>
-                                    <strong>Distance</strong>
-                                    <p>{formatDistance(activity.distance)} from you</p>
+                                    <strong>{t('detail.distance', 'Distance')}</strong>
+                                    <p>{formatDistance(activity.distance)} {t('detail.from_you', 'from you')}</p>
                                 </div>
                             </div>
                         )}
                         <div className="meta-item">
                             <span className="meta-icon">🎯</span>
                             <div>
-                                <strong>Category</strong>
+                                <strong>{t('detail.category', 'Category')}</strong>
                                 <p>{activity.category}</p>
                             </div>
                         </div>
                     </div>
 
                     <div className="detail-section">
-                        <h2>About This Activity</h2>
+                        <h2>{t('detail.about', 'About This Activity')}</h2>
                         <p>{activity.description}</p>
                     </div>
 
                     {activity.keywords && activity.keywords.length > 0 && (
                         <div className="detail-section">
-                            <h2>Tags</h2>
+                            <h2>{t('detail.tags', 'Tags')}</h2>
                             <div className="tags-container">
                                 {activity.keywords.map((keyword: string, index: number) => (
                                     <span key={index} className="tag">
@@ -225,22 +226,22 @@ export default function ActivityDetail() {
 
                     {activity.url && activity.url !== '#' && (
                         <div className="detail-section">
-                            <h2>More Information</h2>
+                            <h2>{t('detail.more_info', 'More Information')}</h2>
                             <p>
                                 <a href={activity.url} target="_blank" rel="noopener noreferrer">
-                                    View on OpenStreetMap →
+                                    {t('detail.view_osm', 'View on OpenStreetMap')} →
                                 </a>
                             </p>
                         </div>
                     )}
 
                     <div className="detail-section">
-                        <h2>Getting There</h2>
+                        <h2>{t('detail.getting_there', 'Getting There')}</h2>
                         <p>
-                            <strong>Address:</strong> {activity.location.address}
+                            <strong>{t('detail.address', 'Address')}:</strong> {activity.location.address}
                         </p>
                         <p>
-                            <strong>Coordinates:</strong> {activity.location.lat.toFixed(4)}, {activity.location.lng.toFixed(4)}
+                            <strong>{t('detail.coordinates', 'Coordinates')}:</strong> {activity.location.lat.toFixed(4)}, {activity.location.lng.toFixed(4)}
                         </p>
                         <p>
                             <a
@@ -248,7 +249,7 @@ export default function ActivityDetail() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                             >
-                                Get directions on Google Maps →
+                                {t('detail.get_directions', 'Get directions on Google Maps')} →
                             </a>
                         </p>
                     </div>
@@ -258,15 +259,17 @@ export default function ActivityDetail() {
                             className={`btn-primary ${isFavorite ? 'active' : ''}`}
                             onClick={handleToggleFavorite}
                         >
-                            {isFavorite ? '❤️ Saved' : '🤍 Save to Favorites'}
+                            {isFavorite ? `❤️ ${t('detail.saved', 'Saved')}` : `🤍 ${t('detail.save_to_fav', 'Save to Favorites')}`}
                         </button>
                         <button
                             className="btn-secondary"
                             onClick={handleShare}
                         >
-                            📤 Share Activity
+                            📤 {t('detail.share', 'Share Activity')}
                         </button>
                     </div>
+
+                    {showAds && <AdBanner />}
                 </div>
             </div>
         </article>

@@ -1,14 +1,16 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 import './BottomNavigation.css';
+import { useTranslation } from 'react-i18next';
 
 export default function BottomNavigation() {
     const navigate = useNavigate();
     const location = useLocation();
+    const { t } = useTranslation();
 
     const navItems = [
-        { path: '/', icon: '🏠', label: 'Home' },
-        { path: '/favorites', icon: '❤️', label: 'Saved' },
-        { path: '/profile', icon: '👤', label: 'Profile' },
+        { path: '/', icon: '🏠', label: t('nav.home') },
+        { path: '/favorites', icon: '❤️', label: t('nav.favorites') },
+        { path: '/profile', icon: '👤', label: t('nav.profile') },
     ];
 
     return (

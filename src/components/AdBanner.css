@@ -1,0 +1,54 @@
+.ad-banner {
+    background-color: #f5f5f5;
+    border: 1px dashed #ccc;
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 8px;
+    text-align: center;
+    color: #666;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: repeating-linear-gradient(
+        45deg,
+        #f5f5f5,
+        #f5f5f5 10px,
+        #f0f0f0 10px,
+        #f0f0f0 20px
+    );
+}
+
+body.dark-mode .ad-banner {
+    background-color: #333;
+    border-color: #555;
+    color: #aaa;
+    background-image: repeating-linear-gradient(
+        45deg,
+        #333,
+        #333 10px,
+        #2a2a2a 10px,
+        #2a2a2a 20px
+    );
+}
+
+.ad-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    background: #e0e0e0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #555;
+}
+
+body.dark-mode .ad-label {
+    background: #444;
+    color: #888;
+}
+
+.ad-content {
+    font-weight: 500;
+}

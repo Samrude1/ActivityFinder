@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../hooks/useTheme';
 import UserMenu from './UserMenu';
+import LanguageSwitcher from './LanguageSwitcher';
 import './Header.css';
 
 interface HeaderProps {
@@ -59,6 +60,7 @@ export default function Header({
                         {theme === 'light' ? '🌙' : '☀️'}
                     </button>
 
+                    <LanguageSwitcher />
                     <UserMenu />
                 </div>
             </div>

@@ -209,3 +209,67 @@
         right: -1rem;
     }
 }
+
+/* Tier Display Styles */
+.tier-display {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.tier-card {
+    padding: var(--space-md);
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    transition: var(--transition);
+}
+
+.tier-card.active {
+    border-color: var(--accent);
+    background-color: rgba(99, 102, 241, 0.05);
+}
+
+.tier-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-sm);
+}
+
+.tier-icon {
+    font-size: 1.5rem;
+}
+
+.tier-name {
+    font-size: var(--font-size-base);
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.tier-badge {
+    display: inline-block;
+    background-color: var(--accent);
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    margin-bottom: var(--space-sm);
+}
+
+.tier-features {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin-bottom: var(--space-sm);
+}
+
+.tier-price {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--accent);
+    text-align: right;
+}

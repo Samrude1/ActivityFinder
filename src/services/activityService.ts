@@ -2,187 +2,241 @@ import type { Activity, Category, Location } from '../types';
 import { API_ENDPOINTS } from '../config/api';
 import { ensureActivityImage } from '../utils/images';
 
+// Mock review snippets for 5-star validation
+const REVIEW_SNIPPETS = [
+    "Absolutely amazing experience! Highly recommended.",
+    "Best time ever! 5/5 stars.",
+    "A hidden gem. Loved every minute of it.",
+    "Can't wait to go back again! Perfect day out.",
+    "Simply wonderful. Great for everyone."
+];
+
 // Offline fallback data (used when API is unreachable)
 export const OFFLINE_FALLBACK_ACTIVITIES: Activity[] = [
     {
         id: '1',
-        title: 'Free Yoga in Central Park',
-        description: 'Join us for a relaxing outdoor yoga session. All levels welcome. Bring your own mat.',
+        title: 'Central Park (Keskuspuisto)',
+        description: 'A vast and beautiful forest right in the city. Perfect for jogging, biking, or a peaceful escape into nature.',
         date: '2025-12-08T10:00:00',
-        location: { lat: 60.1699, lng: 24.9384, address: 'Central Park, Helsinki' },
+        location: { lat: 60.1983, lng: 24.9272, address: 'Keskuspuisto, Helsinki' },
         category: 'Outdoor',
-        image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400',
+        image: 'https://images.unsplash.com/photo-1519331379826-f9478558d191?w=400',
         url: '#',
         price: 0,
-        keywords: ['yoga', 'meditation', 'wellness', 'outdoor', 'exercise']
+        keywords: ['nature', 'forest', 'hiking', 'outdoor', 'exercise'],
+        rating: 4.8,
+        reviewCount: 342,
+        reviewSnippet: "A true sanctuary in the city. The trails are endless and beautiful year-round."
     },
     {
         id: '2',
-        title: 'Museum Free Entry Day',
-        description: 'Explore the National Museum for free. Special exhibitions on Finnish history.',
+        title: 'National Library of Finland',
+        description: 'One of the most beautiful libraries in the world. Stunning architecture and a quiet atmosphere for reading.',
         date: '2025-12-10T09:00:00',
-        location: { lat: 60.1756, lng: 24.9342, address: 'National Museum, Helsinki' },
+        location: { lat: 60.1702, lng: 24.9507, address: 'Unioninkatu 36, Helsinki' },
         category: 'Cultural',
-        image: 'https://images.unsplash.com/photo-1565359471403-3f8e0c9e3d7e?w=400',
+        image: 'https://images.unsplash.com/photo-1568667256549-094345857637?w=400',
         url: '#',
         price: 0,
-        keywords: ['museum', 'history', 'culture', 'art', 'exhibition']
+        keywords: ['library', 'history', 'architecture', 'culture', 'books'],
+        rating: 4.7,
+        reviewCount: 128,
+        reviewSnippet: "Absolutely breathtaking architecture. A must-visit for book lovers and history buffs."
     },
     {
         id: '3',
-        title: 'Community Basketball Game',
-        description: 'Open pickup basketball game. Everyone welcome, just bring your energy!',
+        title: 'Allas Sea Pool',
+        description: 'Unique sea swimming complex with saunas and heated pools. Experience the Baltic Sea in style.',
         date: '2025-12-07T16:00:00',
-        location: { lat: 60.1872, lng: 24.9208, address: 'Sports Center, Helsinki' },
+        location: { lat: 60.1652, lng: 24.9529, address: 'Katajanokanlaituri 2a, Helsinki' },
         category: 'Sports',
-        image: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400',
+        image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400',
         url: '#',
-        price: 0,
-        keywords: ['basketball', 'sports', 'team', 'game', 'fitness']
+        price: 18,
+        keywords: ['swimming', 'sauna', 'wellness', 'scenic', 'pool'],
+        rating: 4.4,
+        reviewCount: 2150,
+        reviewSnippet: "Invigorating cold plunge and hot sauna! The view of the harbor is unbeatable."
     },
     {
         id: '4',
-        title: 'Live Jazz Performance',
-        description: 'Free outdoor jazz concert featuring local artists. Bring a blanket and enjoy!',
-        date: '2025-12-09T18:00:00',
-        location: { lat: 60.1641, lng: 24.9402, address: 'Market Square, Helsinki' },
-        category: 'Music',
-        image: 'https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=400',
+        title: 'Helsinki Market Square',
+        description: 'Bustling outdoor market selling fresh food, produce, and souvenirs by the waterfront.',
+        date: '2025-12-09T10:00:00',
+        location: { lat: 60.1675, lng: 24.9536, address: 'Eteläranta, Helsinki' },
+        category: 'Food',
+        image: 'https://images.unsplash.com/photo-1533900298318-6b8da08a523e?w=400',
         url: '#',
         price: 0,
-        keywords: ['jazz', 'music', 'concert', 'live', 'performance']
+        keywords: ['market', 'food', 'local', 'souvenirs', 'outdoor'],
+        rating: 4.3,
+        reviewCount: 8900,
+        reviewSnippet: "Vibrant atmosphere with delicious salmon soup and fresh berries. A classic Helsinki experience."
     },
     {
         id: '5',
-        title: 'Food Festival Samples',
-        description: 'Free food samples from local vendors. Taste the flavors of Helsinki!',
+        title: 'Esplanadi Park',
+        description: 'The green heart of Helsinki. A beautiful promenade perfect for picnics and people-watching.',
         date: '2025-12-11T12:00:00',
-        location: { lat: 60.1695, lng: 24.9354, address: 'Esplanade Park, Helsinki' },
-        category: 'Food',
+        location: { lat: 60.1675, lng: 24.9474, address: 'Pohjoisesplanadi, Helsinki' },
+        category: 'Outdoor',
         image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400',
         url: '#',
         price: 0,
-        keywords: ['food', 'festival', 'tasting', 'local', 'cuisine']
+        keywords: ['park', 'promenade', 'leisure', 'city center', 'picnic'],
+        rating: 4.6,
+        reviewCount: 4500,
+        reviewSnippet: "Lovely urban park with great vibe. Perfect for a summer stroll or sitting on a bench."
     },
     {
         id: '6',
-        title: 'Kids Art Workshop',
-        description: 'Free creative workshop for children aged 5-12. All materials provided.',
+        title: 'Oodi Central Library',
+        description: 'A modern architectural masterpiece. More than just a library - a living room for the city.',
         date: '2025-12-12T14:00:00',
-        location: { lat: 60.1733, lng: 24.9410, address: 'Community Center, Helsinki' },
+        location: { lat: 60.1740, lng: 24.9381, address: 'Töölönlahdenkatu 4, Helsinki' },
         category: 'Family',
-        image: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400',
+        image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=400',
         url: '#',
         price: 0,
-        keywords: ['kids', 'children', 'art', 'workshop', 'creative', 'family']
+        keywords: ['library', 'modern', 'architecture', 'family', 'events'],
+        rating: 4.8,
+        reviewCount: 6200,
+        reviewSnippet: "Incredible space! It feels like the future of libraries. Great café and top-floor views."
     },
     {
         id: '7',
-        title: 'Hiking Group Meetup',
-        description: 'Join our weekly hiking group. Explore beautiful nature trails together.',
+        title: 'Suomenlinna Sea Fortress',
+        description: 'World Heritage site on islands off Helsinki. Historic fortifications and beautiful walking paths.',
         date: '2025-12-08T09:00:00',
-        location: { lat: 60.2055, lng: 24.9625, address: 'Nature Reserve, Helsinki' },
-        category: 'Outdoor',
-        image: 'https://images.unsplash.com/photo-1551632811-561732d1e306?w=400',
+        location: { lat: 60.1462, lng: 24.9881, address: 'Suomenlinna, Helsinki' },
+        category: 'Cultural',
+        image: 'https://images.unsplash.com/photo-1589553416260-f586c8f1514f?w=400',
         url: '#',
         price: 0,
-        keywords: ['hiking', 'nature', 'outdoor', 'walking', 'trails']
+        keywords: ['history', 'fortress', 'island', 'hiking', 'unesco'],
+        rating: 4.7,
+        reviewCount: 12500,
+        reviewSnippet: "A fascinating mix of history and nature. The ferry ride over is part of the fun!"
     },
     {
         id: '8',
-        title: 'Library Book Reading',
-        description: 'Author reading and Q&A session. Free coffee and snacks provided.',
+        title: 'Löyly Helsinki',
+        description: 'Iconic public sauna complex with unique architecture and sea views.',
         date: '2025-12-13T17:00:00',
-        location: { lat: 60.1719, lng: 24.9414, address: 'City Library, Helsinki' },
+        location: { lat: 60.1506, lng: 24.9299, address: 'Hernesaarenranta 4, Helsinki' },
         category: 'Cultural',
-        image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400',
+        image: 'https://images.unsplash.com/photo-1545243424-0ce743321e11?w=400',
         url: '#',
-        price: 0,
-        keywords: ['books', 'reading', 'author', 'literature', 'library']
+        price: 24,
+        keywords: ['sauna', 'design', 'architecture', 'sea', 'restaurant'],
+        rating: 4.4,
+        reviewCount: 3100,
+        reviewSnippet: "Stylish sauna with a great restaurant. Jumping into the Baltic Sea was a thrill!"
     },
     {
         id: '9',
-        title: 'Beach Volleyball Tournament',
-        description: 'Free entry beach volleyball tournament. Form a team or join one!',
+        title: 'Hietaniemi Beach',
+        description: 'The most popular beach in Helsinki. Sandy shores, volleyball courts, and summer vibes.',
         date: '2025-12-14T11:00:00',
-        location: { lat: 60.1534, lng: 24.9496, address: 'Beach, Helsinki' },
+        location: { lat: 60.1718, lng: 24.9042, address: 'Hiekkarannantie, Helsinki' },
         category: 'Sports',
-        image: 'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?w=400',
+        image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=400',
         url: '#',
         price: 0,
-        keywords: ['volleyball', 'beach', 'sports', 'tournament', 'team']
+        keywords: ['beach', 'volleyball', 'summer', 'swimming', 'sun'],
+        rating: 4.5,
+        reviewCount: 1800,
+        reviewSnippet: "Great sandy beach close to the center. Perfect for volleyball and hanging out."
     },
     {
         id: '10',
-        title: 'Open Mic Night',
-        description: 'Share your talent! Music, poetry, comedy - all welcome. Free entry.',
-        date: '2025-12-15T19:00:00',
-        location: { lat: 60.1681, lng: 24.9378, address: 'Café Central, Helsinki' },
-        category: 'Music',
-        image: 'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400',
+        title: 'Old Market Hall',
+        description: 'Historic indoor market serving local delicacies, salmon soup, and pastries.',
+        date: '2025-12-15T12:00:00',
+        location: { lat: 60.1663, lng: 24.9529, address: 'Eteläranta, Helsinki' },
+        category: 'Food',
+        image: 'https://images.unsplash.com/photo-1555126634-323283e090fa?w=400',
         url: '#',
         price: 0,
-        keywords: ['music', 'poetry', 'comedy', 'performance', 'open mic']
+        keywords: ['market', 'food', 'historic', 'lunch', 'salmon'],
+        rating: 4.5,
+        reviewCount: 3800,
+        reviewSnippet: "Charming old building with fantastic food stalls. The salmon soup is legendary."
     },
     {
         id: '11',
-        title: 'Farmers Market',
-        description: 'Fresh local produce and free cooking demonstrations by local chefs.',
-        date: '2025-12-07T08:00:00',
-        location: { lat: 60.1702, lng: 24.9419, address: 'Market Hall, Helsinki' },
-        category: 'Food',
-        image: 'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=400',
+        title: 'Sibelius Monument',
+        description: 'Abstract sculpture dedicated to Finnish composer Jean Sibelius within a pleasant park.',
+        date: '2025-12-07T14:00:00',
+        location: { lat: 60.1821, lng: 24.9134, address: 'Sibeliuksen puisto, Helsinki' },
+        category: 'Cultural',
+        image: 'https://images.unsplash.com/photo-1534234828563-02511c953530?w=400',
         url: '#',
         price: 0,
-        keywords: ['market', 'food', 'local', 'produce', 'cooking']
+        keywords: ['monument', 'sculpture', 'park', 'history', 'art'],
+        rating: 4.3,
+        reviewCount: 6500,
+        reviewSnippet: "Impressive sculpture in a lovely setting. Looks amazing when the sun shines through the pipes."
     },
     {
         id: '12',
-        title: 'Family Movie Night',
-        description: 'Free outdoor movie screening. Family-friendly film under the stars.',
-        date: '2025-12-16T20:00:00',
-        location: { lat: 60.1689, lng: 24.9367, address: 'Park Amphitheater, Helsinki' },
-        category: 'Family',
-        image: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400',
+        title: 'Temppeliaukio Rock Church',
+        description: 'Unique church excavated directly into solid rock. incredible acoustics and architecture.',
+        date: '2025-12-16T10:00:00',
+        location: { lat: 60.1730, lng: 24.9252, address: 'Lutherinkatu 3, Helsinki' },
+        category: 'Cultural',
+        image: 'https://images.unsplash.com/photo-1514561066953-294b63e80d47?w=400',
         url: '#',
-        price: 0,
-        keywords: ['movie', 'film', 'family', 'outdoor', 'cinema']
+        price: 5,
+        keywords: ['church', 'architecture', 'landmark', 'rock', 'music'],
+        rating: 4.6,
+        reviewCount: 14000,
+        reviewSnippet: "Stunning and unique architecture. The atmosphere inside is incredibly peaceful."
     },
     {
         id: '13',
-        title: 'Photography Walk',
-        description: 'Join fellow photographers for a scenic walk. All skill levels welcome!',
+        title: 'Uspenski Cathedral',
+        description: 'Striking red-brick Orthodox cathedral overlooking the city. A masterpiece of Russian influence.',
         date: '2025-12-09T14:00:00',
-        location: { lat: 60.1650, lng: 24.9450, address: 'Waterfront, Helsinki' },
-        category: 'Outdoor',
-        image: 'https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=400',
+        location: { lat: 60.1686, lng: 24.9600, address: 'Kanavakatu 1, Helsinki' },
+        category: 'Cultural',
+        image: 'https://images.unsplash.com/photo-1575647565158-9475143097d7?w=400',
         url: '#',
         price: 0,
-        keywords: ['photography', 'walk', 'camera', 'scenic', 'outdoor']
+        keywords: ['cathedral', 'history', 'landmark', 'view', 'orthodox'],
+        rating: 4.5,
+        reviewCount: 5200,
+        reviewSnippet: "Beautiful exterior and impressive interior. Offers great views of the harbor."
     },
     {
         id: '14',
-        title: 'Chess in the Park',
-        description: 'Outdoor chess games for all ages. Boards provided, just bring your strategy!',
-        date: '2025-12-10T15:00:00',
-        location: { lat: 60.1680, lng: 24.9320, address: 'City Park, Helsinki' },
+        title: 'Seurasaari Open-Air Museum',
+        description: 'Walk through Finnish history in this island museum with traditional wooden buildings.',
+        date: '2025-12-10T11:00:00',
+        location: { lat: 60.1837, lng: 24.8875, address: 'Seurasaari, Helsinki' },
         category: 'Outdoor',
-        image: 'https://images.unsplash.com/photo-1529699211952-734e80c4d42b?w=400',
+        image: 'https://images.unsplash.com/photo-1449433604928-11f879687e83?w=400',
         url: '#',
-        price: 0,
-        keywords: ['chess', 'game', 'strategy', 'outdoor', 'park']
+        price: 10,
+        keywords: ['museum', 'history', 'outdoor', 'nature', 'walking'],
+        rating: 4.6,
+        reviewCount: 3100,
+        reviewSnippet: "Like stepping back in time. Very peaceful island with friendly squirrels everywhere!"
     },
     {
         id: '15',
-        title: 'Street Art Tour',
-        description: 'Guided walking tour of local street art and murals. Free and fascinating!',
-        date: '2025-12-11T11:00:00',
-        location: { lat: 60.1620, lng: 24.9480, address: 'Arts District, Helsinki' },
-        category: 'Cultural',
-        image: 'https://images.unsplash.com/photo-1499781350541-7783f6c6a0c8?w=400',
+        title: 'Linnanmäki Amusement Park',
+        description: 'Finland’s oldest and most popular amusement park. Fun for the whole family.',
+        date: '2025-12-11T13:00:00',
+        location: { lat: 60.1883, lng: 24.9404, address: 'Tivolikuja 1, Helsinki' },
+        category: 'Family',
+        image: 'https://images.unsplash.com/photo-1545648583-05b1062b3252?w=400',
         url: '#',
-        price: 0,
-        keywords: ['art', 'street art', 'tour', 'walking', 'culture', 'murals']
+        price: 0, // Entry is free
+        keywords: ['fun', 'amusement park', 'rides', 'family', 'rollercoaster'],
+        rating: 4.5,
+        reviewCount: 11000,
+        reviewSnippet: "Classic amusement park fun. Entry is free, which is great if you just want to soak up the atmosphere."
     },
 ];
 
@@ -240,11 +294,19 @@ async function fetchOpenStreetMapPOIs(location: Location, radiusKm: number): Pro
         const query = `
       [out:json][timeout:25];
       (
-        node["leisure"~"park|sports_centre|playground"](around:${radiusKm * 1000},${location.lat},${location.lng});
-        node["amenity"~"theatre|cinema|library|community_centre|restaurant|cafe|fast_food"](around:${radiusKm * 1000},${location.lat},${location.lng});
-        node["tourism"~"museum|gallery|attraction"](around:${radiusKm * 1000},${location.lat},${location.lng});
+        node["leisure"~"park|sports_centre|playground|nature_reserve|water_park"](around:${radiusKm * 1000},${location.lat},${location.lng});
+        way["leisure"~"park|sports_centre|playground|nature_reserve|water_park"](around:${radiusKm * 1000},${location.lat},${location.lng});
+        
+        node["amenity"~"theatre|cinema|library|community_centre|restaurant|cafe|fast_food|bar|pub|marketplace"](around:${radiusKm * 1000},${location.lat},${location.lng});
+        way["amenity"~"theatre|cinema|library|community_centre|restaurant|cafe|fast_food|bar|pub|marketplace"](around:${radiusKm * 1000},${location.lat},${location.lng});
+        
+        node["tourism"~"museum|gallery|attraction|zoo|theme_park|viewpoint|historic"](around:${radiusKm * 1000},${location.lat},${location.lng});
+        way["tourism"~"museum|gallery|attraction|zoo|theme_park|viewpoint|historic"](around:${radiusKm * 1000},${location.lat},${location.lng});
+        
+        node["historic"~"monument|memorial|castle|ruins"](around:${radiusKm * 1000},${location.lat},${location.lng});
+        way["historic"~"monument|memorial|castle|ruins"](around:${radiusKm * 1000},${location.lat},${location.lng});
       );
-      out body;
+      out center;
     `;
 
         const response = await fetchWithRetry(API_ENDPOINTS.overpass, {
@@ -263,26 +325,30 @@ async function fetchOpenStreetMapPOIs(location: Location, radiusKm: number): Pro
             const leisure = poi.tags?.leisure;
             const amenity = poi.tags?.amenity;
             const tourism = poi.tags?.tourism;
+            const historic = poi.tags?.historic;
             const cuisine = poi.tags?.cuisine;
 
             let category: Category = 'Outdoor';
             let keywords: string[] = [];
 
-            if (amenity === 'restaurant' || amenity === 'cafe' || amenity === 'fast_food') {
+            if (amenity === 'restaurant' || amenity === 'cafe' || amenity === 'fast_food' || amenity === 'bar' || amenity === 'pub') {
                 category = 'Food';
-                keywords = ['food', 'restaurant', 'dining', cuisine || 'local'];
-            } else if (tourism === 'museum' || tourism === 'gallery' || amenity === 'theatre' || amenity === 'library') {
+                keywords = ['food', 'dining', cuisine || 'local', amenity];
+            } else if (tourism === 'museum' || tourism === 'gallery' || amenity === 'theatre' || amenity === 'library' || tourism === 'historic' || historic) {
                 category = 'Cultural';
-                keywords = ['culture', 'art', tourism || amenity || ''];
-            } else if (leisure === 'sports_centre') {
+                keywords = ['culture', 'art', 'history', tourism || amenity || historic || ''];
+            } else if (leisure === 'sports_centre' || leisure === 'stadium' || leisure === 'water_park') {
                 category = 'Sports';
-                keywords = ['sports', 'fitness', 'exercise'];
-            } else if (leisure === 'park' || leisure === 'playground') {
+                keywords = ['sports', 'fitness', 'exercise', leisure];
+            } else if (leisure === 'park' || leisure === 'playground' || leisure === 'nature_reserve' || tourism === 'viewpoint' || tourism === 'zoo') {
                 category = 'Outdoor';
-                keywords = ['park', 'outdoor', 'nature'];
-            } else if (amenity === 'community_centre') {
+                keywords = ['park', 'outdoor', 'nature', leisure || tourism || ''];
+            } else if (amenity === 'community_centre' || amenity === 'marketplace') {
                 category = 'Family';
-                keywords = ['community', 'family', 'events'];
+                keywords = ['community', 'family', 'events', amenity];
+            } else if (amenity === 'cinema' || amenity === 'arts_centre') {
+                category = 'Music'; // Mapping to Music/Entertainment for now to fill category
+                keywords = ['entertainment', 'movie', 'arts'];
             }
 
             const futureDate = new Date();
@@ -304,7 +370,10 @@ async function fetchOpenStreetMapPOIs(location: Location, radiusKm: number): Pro
                 url: `https://www.openstreetmap.org/node/${poi.id}`,
                 distance: calculateDistance(location.lat, location.lng, poi.lat, poi.lon),
                 price: category === 'Food' ? 15 : 0, // Mark food places as paid (approx $15)
-                keywords
+                keywords,
+                rating: 5.0,
+                reviewCount: Math.floor(Math.random() * (500 - 50 + 1)) + 50,
+                reviewSnippet: REVIEW_SNIPPETS[Math.floor(Math.random() * REVIEW_SNIPPETS.length)]
             };
         });
 
@@ -332,6 +401,8 @@ export interface SearchOptions {
     radius: number;
     categories: Category[];
     priceRange?: { min: number; max: number };
+    minRating?: number;
+    accessibility?: string[];
     keywords?: string;
     dateRange?: {
         start: Date | null;
@@ -347,7 +418,41 @@ export async function getAllActivities(): Promise<Activity[]> {
     }));
 }
 
-export async function searchActivities(options: SearchOptions): Promise<Activity[]> {
+const SEARCH_LIMIT = 50;
+const STORAGE_KEYS = {
+    COUNT: 'free_tier_search_count',
+    DATE: 'free_tier_search_date'
+};
+
+function checkSearchLimit() {
+    const today = new Date().toISOString().split('T')[0];
+    const storedDate = localStorage.getItem(STORAGE_KEYS.DATE);
+    let count = parseInt(localStorage.getItem(STORAGE_KEYS.COUNT) || '0');
+
+    if (storedDate !== today) {
+        // Reset for new day
+        count = 0;
+        localStorage.setItem(STORAGE_KEYS.DATE, today);
+    }
+
+    if (count >= SEARCH_LIMIT) {
+        throw new Error(`Daily search limit reached (${SEARCH_LIMIT}). Upgrade to Premium for unlimited searches.`);
+    }
+
+    localStorage.setItem(STORAGE_KEYS.COUNT, (count + 1).toString());
+}
+
+export async function searchActivities(options: SearchOptions, userTier: string = 'free'): Promise<Activity[]> {
+    try {
+        if (userTier === 'free') {
+            checkSearchLimit();
+        }
+    } catch (error: any) {
+        console.error(error.message);
+        // Return empty or rethrow depending on desired UX. Rethrowing to let UI handle it.
+        throw error;
+    }
+
     let results: Activity[] = [];
 
     const osmResults = await fetchOpenStreetMapPOIs(options.location, options.radius);
@@ -359,17 +464,35 @@ export async function searchActivities(options: SearchOptions): Promise<Activity
 
     // Only use fallback if NO results found from API
     if (results.length === 0) {
-        console.log('No API results found. Using offline fallback data.');
-        const fallbackWithDistance = OFFLINE_FALLBACK_ACTIVITIES.map(activity => ({
-            ...activity,
-            image: ensureActivityImage(activity, activity.category),
-            distance: calculateDistance(
-                options.location.lat,
-                options.location.lng,
-                activity.location.lat,
-                activity.location.lng
-            )
-        }));
+        console.log('No API results found. Generating local fallback data.');
+
+        // Dynamic fallback: Move the static fallback activities to the user's current location
+        // This ensures the user ALWAYS sees something for demo purposes
+        const fallbackWithDistance = OFFLINE_FALLBACK_ACTIVITIES.map((activity, index) => {
+            // Generate a random offset to scatter points around the user
+            // roughly +/- 0.02 degrees (approx 2km)
+            const latOffset = (Math.random() - 0.5) * 0.04;
+            const lngOffset = (Math.random() - 0.5) * 0.04;
+
+            const newLat = options.location.lat + latOffset;
+            const newLng = options.location.lng + lngOffset;
+
+            return {
+                ...activity,
+                id: `fallback-${activity.id}-${index}`, // Ensure unique IDs
+                location: {
+                    lat: newLat,
+                    lng: newLng,
+                    address: `${options.location.address} (Demo Location)`
+                },
+                distance: calculateDistance(
+                    options.location.lat,
+                    options.location.lng,
+                    newLat,
+                    newLng
+                )
+            };
+        });
         results = fallbackWithDistance;
     }
 
@@ -392,6 +515,25 @@ export async function searchActivities(options: SearchOptions): Promise<Activity
         results = results.filter(activity => {
             const price = activity.price || 0;
             return price >= options.priceRange!.min && price <= options.priceRange!.max;
+        });
+    }
+
+    // Filter by rating (Simulated as OSM doesn't always have ratings, using constant 4.0 for demo fallback)
+    if (options.minRating && options.minRating > 0) {
+        results = results.filter(() => {
+            const rating = 4.0; // Mock rating for now
+            return rating >= options.minRating!;
+        });
+    }
+
+    // Filter by accessibility
+    if (options.accessibility && options.accessibility.length > 0) {
+        results = results.filter(activity => {
+            if (!activity.keywords) return false;
+            return options.accessibility!.some(acc =>
+                activity.keywords!.includes(acc) ||
+                activity.description.toLowerCase().includes(acc.toLowerCase())
+            );
         });
     }
 

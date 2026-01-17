@@ -1,0 +1,65 @@
+{
+    "app": {
+        "title": "Activity Finder",
+        "subtitle": "Löydä paikalliset helmet"
+    },
+    "nav": {
+        "home": "Etusivu",
+        "map": "Kartta",
+        "favorites": "Suosikit",
+        "profile": "Profiili",
+        "login": "Kirjaudu",
+        "logout": "Kirjaudu ulos",
+        "custom_lists": "Omat listat"
+    },
+    "home": {
+        "hero": {
+            "title": "Löydä paikallisia aktiviteetteja",
+            "subtitle": "Löydä parasta tekemistä kaupungissasi"
+        },
+        "search": {
+            "placeholder": "Etsi aktiviteetteja...",
+            "location_placeholder": "Nykyinen sijainti",
+            "button": "Hae"
+        },
+        "sections": {
+            "featured": "Suositellut aktiviteetit",
+            "nearby": "Lähellä sinua",
+            "custom_lists": "Omat kokoelmat"
+        },
+        "categories": {
+            "all": "Kaikki",
+            "outdoor": "Ulkoilu",
+            "cultural": "Kulttuuri",
+            "sports": "Urheilu",
+            "music": "Musiikki",
+            "food": "Ruoka",
+            "family": "Perhe"
+        }
+    },
+    "filters": {
+        "title": "Suodattimet",
+        "price": "Hintahaitari",
+        "radius": "Etäisyys (km)",
+        "rating": "Vähimmäisarvosana",
+        "accessibility": "Esteettömyys"
+    },
+    "card": {
+        "free": "ILMAINEN",
+        "paid": "Maksullinen",
+        "from": "Alkaen",
+        "reviews": "arvostelua",
+        "add_to_list": "Lisää listalle"
+    },
+    "tiers": {
+        "free": "Ilmainen",
+        "explorer": "Explorer",
+        "upgrade": "Päivitä Explorer-tasoon"
+    },
+    "common": {
+        "loading": "Ladataan...",
+        "error": "Tapahtui virhe",
+        "no_results": "Ei aktiviteetteja löytynyt",
+        "create_new": "Luo uusi"
+    }
+}

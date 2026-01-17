@@ -18,6 +18,9 @@ export interface Activity {
     distance?: number;
     price?: number; // Price in local currency (0 = free)
     keywords?: string[]; // Keywords for search
+    rating?: number;
+    reviewCount?: number;
+    reviewSnippet?: string;
 }
 
 export interface FilterState {

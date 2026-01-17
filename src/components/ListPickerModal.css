@@ -1,0 +1,65 @@
+.list-picker-modal {
+    max-width: 400px;
+}
+
+.picker-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    max-height: 300px;
+    overflow-y: auto;
+    padding: var(--space-sm);
+}
+
+.list-picker-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    width: 100%;
+    text-align: left;
+    transition: var(--transition);
+}
+
+.list-picker-item:hover:not(:disabled) {
+    border-color: var(--accent);
+    background-color: var(--bg-card);
+    transform: translateX(4px);
+}
+
+.list-picker-item:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.list-icon {
+    font-size: 1.5rem;
+}
+
+.list-name {
+    flex: 1;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.empty-lists {
+    text-align: center;
+    padding: var(--space-xl);
+}
+
+.spinner {
+    animation: rotate 2s linear infinite;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}

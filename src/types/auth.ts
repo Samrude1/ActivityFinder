@@ -2,6 +2,7 @@ export interface User {
     id: string;
     username: string;
     email: string;
+    tier: 'free' | 'explorer';
     avatar?: string;
     preferences: {
         theme: 'light' | 'dark';

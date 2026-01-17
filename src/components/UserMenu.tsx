@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../hooks/useTheme';
 import './UserMenu.css';
+import VIPBadge from './VIPBadge';
+import { useTranslation } from 'react-i18next';
 
 export default function UserMenu() {
     const [isOpen, setIsOpen] = useState(false);
@@ -18,6 +20,7 @@ export default function UserMenu() {
     const { user, login, register, logout } = useAuth();
     const { theme, toggleTheme } = useTheme();
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const handleAuth = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -59,6 +62,7 @@ export default function UserMenu() {
                     <>
                         <button className="user-avatar" onClick={() => setIsOpen(!isOpen)}>
                             {user.username.charAt(0).toUpperCase()}
+                            <VIPBadge showLabel={false} className="avatar-vip-badge" />
                         </button>
                         {isOpen && (
                             <>
@@ -68,21 +72,22 @@ export default function UserMenu() {
                                         <div className="user-info">
                                             <strong>{user.username}</strong>
                                             <span>{user.email}</span>
+                                            <VIPBadge className="mini-vip" />
                                         </div>
                                     </div>
                                     <div className="dropdown-divider" />
                                     <button className="dropdown-item" onClick={() => { navigate('/profile'); setIsOpen(false); }}>
-                                        <span>👤</span> Profile
+                                        <span>👤</span> {t('nav.profile')}
                                     </button>
                                     <button className="dropdown-item" onClick={() => { navigate('/favorites'); setIsOpen(false); }}>
-                                        <span>❤️</span> Favorites
+                                        <span>❤️</span> {t('nav.favorites')}
                                     </button>
                                     <button className="dropdown-item" onClick={toggleTheme}>
-                                        <span>{theme === 'light' ? '🌙' : '☀️'}</span> {theme === 'light' ? 'Dark' : 'Light'} Mode
+                                        <span>{theme === 'light' ? '🌙' : '☀️'}</span> {theme === 'light' ? t('settings.dark_mode') : t('settings.light_mode', 'Light Mode')}
                                     </button>
                                     <div className="dropdown-divider" />
                                     <button className="dropdown-item danger" onClick={handleLogout}>
-                                        <span>🚪</span> Logout
+                                        <span>🚪</span> {t('nav.logout')}
                                     </button>
                                 </div>
                             </>
@@ -90,7 +95,7 @@ export default function UserMenu() {
                     </>
                 ) : (
                     <button className="login-btn" onClick={() => setShowAuthModal(true)}>
-                        Login / Sign Up
+                        {t('auth.login_signup', 'Login / Sign Up')}
                     </button>
                 )}
             </div>
@@ -106,20 +111,20 @@ export default function UserMenu() {
                                 className={`auth-tab ${authMode === 'login' ? 'active' : ''}`}
                                 onClick={() => { setAuthMode('login'); setError(''); }}
                             >
-                                Login
+                                {t('nav.login')}
                             </button>
                             <button
                                 className={`auth-tab ${authMode === 'register' ? 'active' : ''}`}
                                 onClick={() => { setAuthMode('register'); setError(''); }}
                             >
-                                Register
+                                {t('auth.register', 'Register')}
                             </button>
                         </div>
 
                         <form onSubmit={handleAuth} className="auth-form">
                             {authMode === 'register' && (
                                 <div className="form-group">
-                                    <label>Username</label>
+                                    <label>{t('auth.username', 'Username')}</label>
                                     <input
                                         type="text"
                                         value={username}
@@ -131,7 +136,7 @@ export default function UserMenu() {
                             )}
 
                             <div className="form-group">
-                                <label>Email</label>
+                                <label>{t('auth.email', 'Email')}</label>
                                 <input
                                     type="email"
                                     value={email}
@@ -142,7 +147,7 @@ export default function UserMenu() {
                             </div>
 
                             <div className="form-group">
-                                <label>Password</label>
+                                <label>{t('auth.password', 'Password')}</label>
                                 <input
                                     type="password"
                                     value={password}

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { MapContainer, TileLayer, Marker, Popup, Circle } from 'react-leaflet';
+import { useEffect } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from 'react-leaflet';
 import type { Activity, Location } from '../types';
 import { formatDate, formatDistance } from '../utils/format';
 import 'leaflet/dist/leaflet.css';
@@ -19,6 +20,14 @@ const DefaultIcon = L.icon({
 });
 
 L.Marker.prototype.options.icon = DefaultIcon;
+
+function RecenterMap({ center }: { center: [number, number] }) {
+    const map = useMap();
+    useEffect(() => {
+        map.flyTo(center, 12);
+    }, [center, map]);
+    return null;
+}
 
 interface MapViewProps {
     activities: Activity[];
@@ -57,6 +66,7 @@ export default function MapView({ activities, userLocation, favorites, onToggleF
                 zoom={12}
                 style={{ height: '600px', width: '100%', borderRadius: 'var(--radius-lg)' }}
             >
+                <RecenterMap center={center} />
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

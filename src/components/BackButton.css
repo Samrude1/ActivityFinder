@@ -1,0 +1,30 @@
+.global-back-btn {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    font-size: var(--font-size-base);
+    font-weight: 500;
+    cursor: pointer;
+    padding: var(--space-sm) 0;
+    transition: var(--transition);
+    margin-bottom: var(--space-md);
+}
+
+.global-back-btn:hover {
+    color: var(--accent);
+    transform: translateX(-4px);
+}
+
+.back-icon {
+    font-size: 1.25rem;
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+    .global-back-btn {
+        padding: var(--space-md) 0;
+    }
+}

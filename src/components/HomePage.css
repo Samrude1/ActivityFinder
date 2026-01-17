@@ -12,7 +12,8 @@
     padding: var(--space-lg) 0 var(--space-xl);
     position: sticky;
     top: 0;
-    z-index: 50;
+    z-index: 2000;
+    /* Increased from 50 to stay above map */
     backdrop-filter: blur(10px);
     background-color: rgba(255, 255, 255, 0.95);
 }
@@ -222,32 +223,47 @@
     max-width: 280px;
 }
 
-/* Paid Toggle */
-.paid-toggle-container {
+/* Price Filter Toggle Group */
+.price-filter-container {
     display: flex;
     justify-content: center;
-    margin-top: var(--space-2xl);
+    margin-top: var(--space-3xl);
+    padding: var(--space-md);
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-full);
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
 }
 
-.paid-toggle {
-    padding: 0.875rem 2rem;
-    border-radius: var(--radius-full);
-    background-color: var(--bg-secondary);
-    color: var(--text-primary);
-    border: 1px solid var(--border-color);
+.price-filter-btn {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    background: none;
+    color: var(--text-secondary);
     font-weight: 600;
+    font-size: var(--font-size-sm);
     cursor: pointer;
     transition: var(--transition);
+    border-radius: var(--radius-full);
+    min-width: 120px;
 }
 
-.paid-toggle:hover {
-    background-color: var(--border-color);
+.price-filter-btn:hover {
+    color: var(--text-primary);
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
-.paid-toggle.active {
+.price-filter-btn.active {
     background-color: var(--accent);
     color: white;
-    border-color: var(--accent);
+    box-shadow: var(--shadow-md);
+}
+
+[data-theme='dark'] .price-filter-btn:hover {
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 /* Loading */

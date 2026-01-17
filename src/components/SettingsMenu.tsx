@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTheme } from '../hooks/useTheme';
 import './SettingsMenu.css';
+import OfflineMapsModal from '../tiers/Explorer/features/OfflineMapsModal';
+import { useTranslation } from 'react-i18next';
 
 interface SettingsMenuProps {
     onViewModeChange: (mode: 'list' | 'map') => void;
@@ -12,9 +14,11 @@ interface SettingsMenuProps {
 
 export default function SettingsMenu({ onViewModeChange, currentViewMode, favoritesCount }: SettingsMenuProps) {
     const [isOpen, setIsOpen] = useState(false);
+    const [showOfflineMaps, setShowOfflineMaps] = useState(false);
     const { user, logout } = useAuth();
     const { theme, toggleTheme } = useTheme();
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     return (
         <div className="settings-menu-container">
@@ -31,12 +35,12 @@ export default function SettingsMenu({ onViewModeChange, currentViewMode, favori
                     <div className="settings-overlay" onClick={() => setIsOpen(false)} />
                     <div className="settings-dropdown">
                         <div className="settings-header">
-                            <h3>Settings</h3>
+                            <h3>{t('common.settings', 'Settings')}</h3>
                             <button className="close-btn" onClick={() => setIsOpen(false)}>✕</button>
                         </div>
 
                         <div className="settings-section">
-                            <h4>View</h4>
+                            <h4>{t('settings.view', 'View')}</h4>
                             <div className="settings-options">
                                 <button
                                     className={`settings-option ${currentViewMode === 'list' ? 'active' : ''}`}
@@ -46,7 +50,7 @@ export default function SettingsMenu({ onViewModeChange, currentViewMode, favori
                                     }}
                                 >
                                     <span className="option-icon">📋</span>
-                                    <span>List View</span>
+                                    <span>{t('settings.list_view', 'List View')}</span>
                                     {currentViewMode === 'list' && <span className="check">✓</span>}
                                 </button>
                                 <button
@@ -57,7 +61,7 @@ export default function SettingsMenu({ onViewModeChange, currentViewMode, favori
                                     }}
                                 >
                                     <span className="option-icon">🗺️</span>
-                                    <span>Map View</span>
+                                    <span>{t('settings.map_view', 'Map View')}</span>
                                     {currentViewMode === 'map' && <span className="check">✓</span>}
                                 </button>
                             </div>
@@ -66,7 +70,7 @@ export default function SettingsMenu({ onViewModeChange, currentViewMode, favori
                         <div className="settings-divider" />
 
                         <div className="settings-section">
-                            <h4>Quick Access</h4>
+                            <h4>{t('settings.quick_access', 'Quick Access')}</h4>
                             <div className="settings-options">
                                 <button
                                     className="settings-option"
@@ -76,8 +80,19 @@ export default function SettingsMenu({ onViewModeChange, currentViewMode, favori
                                     }}
                                 >
                                     <span className="option-icon">❤️</span>
-                                    <span>Favorites</span>
+                                    <span>{t('nav.favorites')}</span>
                                     {favoritesCount > 0 && <span className="badge">{favoritesCount}</span>}
+                                </button>
+                                <button
+                                    className="settings-option"
+                                    onClick={() => {
+                                        setIsOpen(false);
+                                        setShowOfflineMaps(true);
+                                    }}
+                                >
+                                    <span className="option-icon">🗺️</span>
+                                    <span>{t('settings.offline_maps', 'Offline Maps')}</span>
+                                    {showOfflineMaps && <span className="badge">New</span>}
                                 </button>
                                 <button
                                     className="settings-option"
@@ -87,7 +102,7 @@ export default function SettingsMenu({ onViewModeChange, currentViewMode, favori
                                     }}
                                 >
                                     <span className="option-icon">👤</span>
-                                    <span>Account</span>
+                                    <span>{t('nav.profile', 'Account')}</span>
                                 </button>
                             </div>
                         </div>
@@ -95,14 +110,14 @@ export default function SettingsMenu({ onViewModeChange, currentViewMode, favori
                         <div className="settings-divider" />
 
                         <div className="settings-section">
-                            <h4>Appearance</h4>
+                            <h4>{t('settings.appearance', 'Appearance')}</h4>
                             <div className="settings-options">
                                 <button
                                     className="settings-option"
                                     onClick={toggleTheme}
                                 >
                                     <span className="option-icon">{theme === 'light' ? '🌙' : '☀️'}</span>
-                                    <span>Dark Mode</span>
+                                    <span>{t('settings.dark_mode', 'Dark Mode')}</span>
                                     <div className={`toggle ${theme === 'dark' ? 'active' : ''}`}>
                                         <div className="toggle-thumb" />
                                     </div>
@@ -123,7 +138,7 @@ export default function SettingsMenu({ onViewModeChange, currentViewMode, favori
                                         }}
                                     >
                                         <span className="option-icon">🚪</span>
-                                        <span>Logout</span>
+                                        <span>{t('nav.logout', 'Logout')}</span>
                                     </button>
                                 </div>
                             </>
@@ -131,6 +146,7 @@ export default function SettingsMenu({ onViewModeChange, currentViewMode, favori
                     </div>
                 </>
             )}
+            {showOfflineMaps && <OfflineMapsModal onClose={() => setShowOfflineMaps(false)} />}
         </div>
     );
 }

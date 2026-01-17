@@ -1,0 +1,65 @@
+{
+    "app": {
+        "title": "Aktivitäten-Finder",
+        "subtitle": "Entdecke lokale Perlen"
+    },
+    "nav": {
+        "home": "Startseite",
+        "map": "Karte",
+        "favorites": "Favoriten",
+        "profile": "Profil",
+        "login": "Anmelden",
+        "logout": "Abmelden",
+        "custom_lists": "Meine Listen"
+    },
+    "home": {
+        "hero": {
+            "title": "Entdecke Lokale Aktivitäten",
+            "subtitle": "Finde die besten Unternehmungen in deiner Stadt"
+        },
+        "search": {
+            "placeholder": "Suche nach Aktivitäten...",
+            "location_placeholder": "Aktueller Standort",
+            "button": "Suchen"
+        },
+        "sections": {
+            "featured": "Ausgewählte Aktivitäten",
+            "nearby": "Aktivitäten in der Nähe",
+            "custom_lists": "Deine Sammlungen"
+        },
+        "categories": {
+            "all": "Alle",
+            "outdoor": "Draußen",
+            "cultural": "Kultur",
+            "sports": "Sport",
+            "music": "Musik",
+            "food": "Essen",
+            "family": "Familie"
+        }
+    },
+    "filters": {
+        "title": "Filter",
+        "price": "Preisspanne",
+        "radius": "Entfernung (km)",
+        "rating": "Mindestbewertung",
+        "accessibility": "Barrierefreiheit"
+    },
+    "card": {
+        "free": "KOSTENLOS",
+        "paid": "Bezahlt",
+        "from": "Ab",
+        "reviews": "Bewertungen",
+        "add_to_list": "Zur Liste hinzufügen"
+    },
+    "tiers": {
+        "free": "Kostenlos",
+        "explorer": "Explorer",
+        "upgrade": "Auf Explorer upgraden"
+    },
+    "common": {
+        "loading": "Laden...",
+        "error": "Ein Fehler ist aufgetreten",
+        "no_results": "Keine Aktivitäten gefunden",
+        "create_new": "Neu erstellen"
+    }
+}
