@@ -1,35 +1,55 @@
-/* Premium Travel App Design System */
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+/* ActivityFinder V3 - Professional Travel Design System */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
 
 
 :root {
-  /* Colors - Light Mode */
+  /* Colors - Light Mode - Professional Travel Palette */
   --bg-primary: #FFFFFF;
-  --bg-secondary: #F8F9FA;
+  --bg-secondary: #F7F8FA;
   --bg-card: #FFFFFF;
-  --text-primary: #1A1A1A;
-  --text-secondary: #6B7280;
-  --text-tertiary: #9CA3AF;
-  --border-color: #E5E7EB;
-  --accent: #00BCD4;
-  --accent-hover: #00ACC1;
-  --success: #10B981;
-  --warning: #F59E0B;
-  --danger: #EF4444;
+  --bg-hover: #F0F2F5;
+  --text-primary: #1D2939;
+  --text-secondary: #475467;
+  --text-tertiary: #98A2B3;
+  --border-color: #E4E7EC;
+
+  /* Primary Accent - Refined Forest Green (Trust & Adventure) */
+  --accent: #1A7F64;
+  --accent-hover: #156B54;
+  --accent-light: #E8F5F0;
+  --accent-dark: #0D5A47;
+
+  /* Secondary Accent - Warm Orange (Energy & Excitement) */
+  --secondary: #E86A33;
+  --secondary-hover: #D55A24;
+  --secondary-light: #FFF4ED;
+
+  /* Status Colors */
+  --success: #12B76A;
+  --warning: #F79009;
+  --danger: #F04438;
+  --info: #0BA5EC;
+
+  /* Rating Colors */
+  --rating-excellent: #00AA6C;
+  --rating-good: #73CF42;
+  --rating-average: #FFCC00;
+  --rating-poor: #FF6F00;
 
   /* Gradients */
-  --gradient-overlay: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%);
-  --gradient-card: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-overlay: linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.75) 100%);
+  --gradient-hero: linear-gradient(135deg, #1A7F64 0%, #0D5A47 100%);
+  --gradient-card: linear-gradient(135deg, #1A7F64 0%, #2A9D8F 100%);
 
-  /* Category Colors */
-  --cat-outdoor: #10b981;
-  --cat-cultural: #8b5cf6;
-  --cat-sports: #ef4444;
-  --cat-music: #ec4899;
-  --cat-food: #f59e0b;
-  --cat-family: #06b6d4;
+  /* Category Colors - Refined */
+  --cat-outdoor: #1A7F64;
+  --cat-cultural: #7C3AED;
+  --cat-sports: #DC2626;
+  --cat-music: #DB2777;
+  --cat-food: #EA580C;
+  --cat-family: #0891B2;
 
-  /* Spacing - More generous */
+  /* Spacing - Professional spacing scale */
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
   --space-md: 1rem;
@@ -38,11 +58,10 @@
   --space-2xl: 3rem;
   --space-3xl: 4rem;
 
-  /* Typography */
-  --font-heading: 'Oswald', sans-serif;
-  --font-body: 'Outfit', sans-serif;
+  /* Typography - Professional fonts */
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Inter', sans-serif;
   --font-family: var(--font-body);
-  /* Default to body font */
 
   --font-size-xs: 0.75rem;
   --font-size-sm: 0.875rem;
@@ -51,46 +70,57 @@
   --font-size-xl: 1.25rem;
   --font-size-2xl: 1.5rem;
   --font-size-3xl: 2rem;
-  --font-size-4xl: 3rem;
-  /* Increased for impact */
+  --font-size-4xl: 2.5rem;
 
-  /* Borders */
-  --radius-sm: 0.5rem;
-  --radius-md: 0.75rem;
-  --radius-lg: 1rem;
-  --radius-xl: 1.5rem;
-  --radius-2xl: 2rem;
+  /* Borders - Refined, modern look */
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
   --radius-full: 9999px;
 
-  /* Shadows - Layered and soft */
-  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  /* Shadows - Subtle and professional */
+  --shadow-xs: 0 1px 2px rgba(16, 24, 40, 0.05);
+  --shadow-sm: 0 1px 3px rgba(16, 24, 40, 0.1), 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow-md: 0 4px 8px -2px rgba(16, 24, 40, 0.1), 0 2px 4px -2px rgba(16, 24, 40, 0.06);
+  --shadow-lg: 0 12px 16px -4px rgba(16, 24, 40, 0.08), 0 4px 6px -2px rgba(16, 24, 40, 0.03);
+  --shadow-xl: 0 20px 24px -4px rgba(16, 24, 40, 0.08), 0 8px 8px -4px rgba(16, 24, 40, 0.03);
+  --shadow-2xl: 0 24px 48px -12px rgba(16, 24, 40, 0.18);
 
-  /* Transitions */
-  --transition-fast: all 0.15s ease;
-  --transition: all 0.2s ease;
-  --transition-slow: all 0.3s ease;
+  /* Transitions - Smooth and professional */
+  --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 [data-theme='dark'] {
-  --bg-primary: #0A0A0A;
-  --bg-secondary: #1A1A1A;
-  --bg-card: #1F1F1F;
-  --text-primary: #F9FAFB;
-  --text-secondary: #D1D5DB;
-  --text-tertiary: #9CA3AF;
-  --border-color: #374151;
-  --accent: #22D3EE;
-  --accent-hover: #06B6D4;
-  --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.6), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
-  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+  --bg-primary: #0C0F14;
+  --bg-secondary: #161B22;
+  --bg-card: #1C2128;
+  --bg-hover: #262D38;
+  --text-primary: #F0F6FC;
+  --text-secondary: #8B949E;
+  --text-tertiary: #6E7681;
+  --border-color: #30363D;
+
+  /* Accent colors - brighter for dark mode */
+  --accent: #2DD4A7;
+  --accent-hover: #26B892;
+  --accent-light: rgba(45, 212, 167, 0.1);
+  --accent-dark: #1A7F64;
+
+  /* Secondary accent */
+  --secondary: #FF8B5A;
+  --secondary-hover: #FF7A42;
+
+  /* Adjusted shadows for dark mode */
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 8px -2px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 12px 16px -4px rgba(0, 0, 0, 0.5), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 20px 24px -4px rgba(0, 0, 0, 0.6), 0 8px 8px -4px rgba(0, 0, 0, 0.4);
+  --shadow-2xl: 0 24px 48px -12px rgba(0, 0, 0, 0.7);
 }
 
 /* Reset */
@@ -123,11 +153,11 @@ h4,
 h5,
 h6 {
   font-family: var(--font-heading);
-  font-weight: 700;
-  line-height: 1.1;
+  font-weight: 600;
+  line-height: 1.25;
   margin-bottom: var(--space-md);
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
 }
 
 h1 {
@@ -151,18 +181,15 @@ p {
   line-height: 1.7;
 }
 
-/* Buttons - Premium style */
+/* Buttons - Professional style */
 button {
-  font-family: var(--font-heading);
-  /* Use heading font for UI controls */
-  font-size: var(--font-size-base);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  padding: 0.875rem 1.5rem;
+  font-family: var(--font-body);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  letter-spacing: 0;
+  padding: 0.625rem 1.25rem;
   border: none;
-  border-radius: var(--radius-sm);
-  /* Sharper corners for modern look */
+  border-radius: var(--radius-lg);
   background-color: var(--accent);
   color: white;
   cursor: pointer;
@@ -171,18 +198,18 @@ button {
   align-items: center;
   justify-content: center;
   gap: var(--space-sm);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-xs);
 }
 
 button:hover {
   background-color: var(--accent-hover);
   transform: translateY(-1px);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
 }
 
 button:active {
   transform: translateY(0);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-xs);
 }
 
 button:disabled {
@@ -198,7 +225,8 @@ button.btn-secondary {
 }
 
 button.btn-secondary:hover {
-  background-color: var(--border-color);
+  background-color: var(--bg-hover);
+  border-color: var(--text-tertiary);
 }
 
 button.btn-ghost {
@@ -213,10 +241,10 @@ button.btn-ghost:hover {
 }
 
 button.btn-icon {
-  padding: 0.75rem;
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
+  padding: 0.5rem;
+  border-radius: var(--radius-md);
+  width: 40px;
+  height: 40px;
 }
 
 /* Inputs */
