@@ -8,6 +8,7 @@ import freeRoutes from './tiers/free/routes.js';
 import { authMiddleware } from './middleware/auth.js';
 import './models/db.js'; // Initialize database
 import { helmetConfig, apiLimiter, getCorsOptions } from './middleware/security.js';
+import compression from 'compression';
 import { closePool } from './models/db.js';
 
 dotenv.config();
@@ -24,6 +25,7 @@ app.use(cors(getCorsOptions(CLIENT_URL)));
 
 // Body parsing
 app.use(express.json());
+app.use(compression());
 
 // Apply rate limiting to all API routes
 app.use('/api', apiLimiter);

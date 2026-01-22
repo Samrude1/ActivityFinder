@@ -11,9 +11,9 @@ const pool = new Pool({
     ssl: process.env.DATABASE_URL?.includes('sslmode=require') || process.env.NODE_ENV === 'production'
         ? { rejectUnauthorized: false }
         : false,
-    max: 20,
+    max: 5, // Reduced for free tier limits
     idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 10000, // Increased from 2000 to 10000
+    connectionTimeoutMillis: 45000, // Increased to 45s to handle cold starts
 });
 
 // Handle pool errors
