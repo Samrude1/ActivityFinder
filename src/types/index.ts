@@ -21,6 +21,10 @@ export interface Activity {
     rating?: number;
     reviewCount?: number;
     reviewSnippet?: string;
+    features?: string[];
+    gallery?: string[];
+    duration?: string;
+    cancellationPolicy?: string;
 }
 
 export interface FilterState {

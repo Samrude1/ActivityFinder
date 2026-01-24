@@ -26,7 +26,15 @@ export const OFFLINE_FALLBACK_ACTIVITIES: Activity[] = [
         keywords: ['nature', 'forest', 'hiking', 'outdoor', 'exercise'],
         rating: 4.8,
         reviewCount: 342,
-        reviewSnippet: "A true sanctuary in the city. The trails are endless and beautiful year-round."
+        reviewSnippet: "A true sanctuary in the city. The trails are endless and beautiful year-round.",
+        features: ["Free cancellation", "Good for kids", "Pet friendly", "Public restrooms"],
+        duration: "2-3 hours",
+        cancellationPolicy: "Free cancellation up to 24 hours before the start of the activity.",
+        gallery: [
+            'https://images.unsplash.com/photo-1519331379826-f9478558d191?w=800',
+            'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=800',
+            'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800'
+        ]
     },
     {
         id: '2',
@@ -373,7 +381,15 @@ async function fetchOpenStreetMapPOIs(location: Location, radiusKm: number): Pro
                 keywords,
                 rating: 5.0,
                 reviewCount: Math.floor(Math.random() * (500 - 50 + 1)) + 50,
-                reviewSnippet: REVIEW_SNIPPETS[Math.floor(Math.random() * REVIEW_SNIPPETS.length)]
+                reviewSnippet: REVIEW_SNIPPETS[Math.floor(Math.random() * REVIEW_SNIPPETS.length)],
+                features: ["Free cancellation", "Instant confirmation", "Mobile ticket"],
+                duration: "2 hours",
+                cancellationPolicy: "For a full refund, cancel at least 24 hours in advance of the start date of the experience.",
+                gallery: [
+                    ensureActivityImage(poi, category),
+                    ensureActivityImage(poi, category), // Duplicate for demo
+                    ensureActivityImage(poi, category)
+                ]
             };
         });
 
@@ -414,7 +430,12 @@ export interface SearchOptions {
 export async function getAllActivities(): Promise<Activity[]> {
     return OFFLINE_FALLBACK_ACTIVITIES.map(activity => ({
         ...activity,
-        image: ensureActivityImage(activity, activity.category)
+        ...activity,
+        image: ensureActivityImage(activity, activity.category),
+        features: activity.features || ["Free cancellation", "Good for groups"],
+        duration: activity.duration || "Variable",
+        cancellationPolicy: activity.cancellationPolicy || "Free cancellation available.",
+        gallery: activity.gallery || [ensureActivityImage(activity, activity.category)]
     }));
 }
 
