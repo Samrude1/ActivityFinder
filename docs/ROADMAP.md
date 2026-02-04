@@ -110,6 +110,11 @@ This document serves as the unified guide for deploying, polishing, and evolving
 - [ ] Create **Privacy Policy** page.
 - [ ] Create **Terms of Service** page.
 
+### 2.5 Data Strategy (Hybrid Model)
+- [ ] **Open Data Layer**: Optimize OpenTripMap/OSM queries for free global coverage.
+- [ ] **Affiliate Layer**: Integrate Viator/GetYourGuide APIs for rich content (verified reviews, photos).
+- [ ] **AI Orchestration**: Implement agentic workflow to match open POIs with affiliate products.
+
 ---
 
 ## 🚀 Phase 3: Launch Protocol

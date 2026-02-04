@@ -104,6 +104,7 @@ This document provides a comprehensive analysis of the Activity Finder app's cur
 - [x] **Unlimited Searches** - Free users limited to 50 searches/day
 
 #### Booking & Monetization
+- [ ] **Data Strategy**: Hybrid model using Open Data for discovery + Affiliate APIs for rich content.
 - [ ] **Affiliate Integration** - Partner with booking platforms (GetYourGuide, Viator)
 - [ ] **Commission-Based Bookings** - Direct booking with 10-15% commission
 - [ ] **Sponsored Listings** - Paid placement for activity providers
