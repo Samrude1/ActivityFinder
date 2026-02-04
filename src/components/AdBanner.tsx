@@ -2,7 +2,11 @@ import { useAuth } from '../contexts/AuthContext';
 import { hasFeature } from '../config/tierConfig';
 import { useTranslation, Trans } from 'react-i18next';
 
-export default function AdBanner() {
+interface AdBannerProps {
+    placement?: 'list' | 'detail' | 'sidebar';
+}
+
+export default function AdBanner({ placement = 'detail' }: AdBannerProps) {
     const { user } = useAuth();
     const showAds = hasFeature(user?.tier, 'hasAds');
     const { t } = useTranslation();
@@ -14,7 +18,7 @@ export default function AdBanner() {
             background: '#f8f9fa',
             border: '1px solid #e9ecef',
             padding: '1rem',
-            margin: '2rem 0',
+            margin: placement === 'list' ? '1rem 0' : '2rem 0',
             textAlign: 'center',
             borderRadius: '8px',
             color: '#6c757d'

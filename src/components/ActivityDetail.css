@@ -452,8 +452,11 @@
     border-top: 1px solid #e0e0e0;
 }
 
-.accordion-item {
+.accordion-item-wrapper {
     border-bottom: 1px solid #e0e0e0;
+}
+
+.accordion-item {
     padding: 24px 0;
     display: flex;
     justify-content: space-between;
@@ -478,6 +481,31 @@
     font-size: 20px;
     font-weight: bold;
     color: #333;
+    transition: transform 0.3s ease;
+}
+
+.accordion-icon.open {
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    padding-bottom: 24px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
+    animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Booking Sidebar */
@@ -942,6 +970,61 @@
 
 .filter-chip:hover {
     border-color: #000;
+}
+
+.dropdown-filter {
+    position: relative;
+    display: flex;
+}
+
+.filter-chip-select {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    appearance: none;
+    padding-right: 32px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8.5L2 4.5h8L6 8.5z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+}
+
+.filter-chip-select:hover {
+    border-color: #000;
+}
+
+.header-action-btns {
+    display: flex;
+    gap: 12px;
+    margin-left: auto;
+}
+
+.header-action-btns .action-btn {
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.header-action-btns .action-btn:hover {
+    border-color: #000;
+    background: #f8f8f8;
+}
+
+.header-action-btns .action-btn.active {
+    background: #fff0f0;
+    border-color: #ff4040;
+    color: #ff4040;
 }
 
 .popular-mentions h4 {

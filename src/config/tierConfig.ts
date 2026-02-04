@@ -10,6 +10,7 @@ export interface TierFeatures {
     hasTripPlanner: boolean;
     hasPrioritySupport: boolean;
     hasCustomLists: boolean;
+    hasVipBadge: boolean;
 }
 
 export const TIER_CONFIG: Record<Tier, TierFeatures> = {
@@ -23,6 +24,7 @@ export const TIER_CONFIG: Record<Tier, TierFeatures> = {
         hasTripPlanner: false,
         hasPrioritySupport: false,
         hasCustomLists: false,
+        hasVipBadge: false,
     },
     explorer: {
         maxSearchesPerDay: Infinity,
@@ -34,6 +36,7 @@ export const TIER_CONFIG: Record<Tier, TierFeatures> = {
         hasTripPlanner: false,
         hasPrioritySupport: true,
         hasCustomLists: true,
+        hasVipBadge: true,
     }
 };
 

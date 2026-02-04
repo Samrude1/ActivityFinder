@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { formatDate } from '../utils/format';
 import { getFavorites, addFavorite, removeFavorite, isFavorite as checkIsFavorite } from '../services/storage';
 import { getAllActivities } from '../services/activityService';
@@ -21,6 +21,11 @@ export default function ActivityDetail() {
     const [activity, setActivity] = useState<Activity | undefined>(location.state?.activity);
     const [loading, setLoading] = useState(!activity);
     const { t } = useTranslation();
+    const [expandedAccordions, setExpandedAccordions] = useState<Set<number>>(new Set());
+    const [activeTab, setActiveTab] = useState('Overview');
+    const [recFavorites, setRecFavorites] = useState<Set<number>>(new Set());
+    const [reviewSearch, setReviewSearch] = useState('');
+    const [reviewFilter, setReviewFilter] = useState('Most Recent');
 
     usePageTitle(activity?.title || t('detail.title_default', 'Activity Detail'));
 
@@ -89,6 +94,36 @@ export default function ActivityDetail() {
     const cancellationPolicy = activity.cancellationPolicy || "For a full refund, cancel at least 24 hours in advance of the start date of the experience.";
     const duration = activity.duration || "Variable";
 
+    const toggleAccordion = (index: number) => {
+        const newExpanded = new Set(expandedAccordions);
+        if (newExpanded.has(index)) {
+            newExpanded.delete(index);
+        } else {
+            newExpanded.add(index);
+        }
+        setExpandedAccordions(newExpanded);
+    };
+
+    const toggleRecFavorite = (id: number) => {
+        const newFavs = new Set(recFavorites);
+        if (newFavs.has(id)) {
+            newFavs.delete(id);
+        } else {
+            newFavs.add(id);
+        }
+        setRecFavorites(newFavs);
+    };
+
+    const accordionData = [
+        { title: "What's included", content: "• Private surfing lesson\n• Surfboard and leash\n• Rash guard/wetsuit\n• Professional instructor\n• Basic refreshments" },
+        { title: "What to expect", content: "You'll start with a 20-minute land lesson covering safety and basic techniques. Then, you'll head into the water for hands-on practice with your instructor. Expect to catch your first waves and get a great workout!" },
+        { title: "Meeting and pickup", content: "Meeting point: Playa Hermosa Surf Shop, 100m West of the Main Entrance. Please arrive 15 minutes before your scheduled start time." },
+        { title: "Accessibility", content: "• Not wheelchair accessible\n• Near public transportation\n• Surfaces are not wheelchair accessible\n• Not recommended for travelers with back problems" },
+        { title: "Additional information", content: "• Confirmation will be received at time of booking\n• Most travelers can participate\n• This is a private tour/activity. Only your group will participate" },
+        { title: "Cancellation policy", content: cancellationPolicy },
+        { title: "Help", content: "Visit our Help Center or contact support at support@activityfinder.com for assistance with your booking." }
+    ];
+
     return (
         <article className="activity-detail-page">
             {/* Global Header matching screenshot */}
@@ -136,6 +171,15 @@ export default function ActivityDetail() {
                         <span className="category-link">{activity.category}</span>
                         <span className="separator">•</span>
                         <span className="location-link">{activity.location.address}</span>
+
+                        <div className="header-action-btns">
+                            <button className={`action-btn ${isFavorite ? 'active' : ''}`} onClick={handleToggleFavorite}>
+                                {isFavorite ? '❤️ Favored' : '🤍 Save'}
+                            </button>
+                            <button className="action-btn" onClick={handleShare}>
+                                🔗 Share
+                            </button>
+                        </div>
                     </div>
                 </header>
 
@@ -153,10 +197,15 @@ export default function ActivityDetail() {
                 <div className="content-layout-grid">
                     <div className="main-content-column">
                         <div className="content-tabs">
-                            <button className="tab-btn active">Overview</button>
-                            <button className="tab-btn">Details</button>
-                            <button className="tab-btn">Operator</button>
-                            <button className="tab-btn">Reviews</button>
+                            {['Overview', 'Details', 'Operator', 'Reviews'].map(tab => (
+                                <button
+                                    key={tab}
+                                    className={`tab-btn ${activeTab === tab ? 'active' : ''}`}
+                                    onClick={() => setActiveTab(tab)}
+                                >
+                                    {tab}
+                                </button>
+                            ))}
                         </div>
                         <div className="tab-border"></div>
 
@@ -225,10 +274,12 @@ export default function ActivityDetail() {
                         <div className="divider-line"></div>
 
                         <section className="detail-section bottom-features">
-                            <div className="feature-row">
-                                <span className="feature-icon-black">👥</span>
-                                <span>Ages 6-70, max of 10 per group</span>
-                            </div>
+                            {features.map((feature: string, idx: number) => (
+                                <div key={idx} className="feature-row">
+                                    <span className="feature-icon-black">✓</span>
+                                    <span>{feature}</span>
+                                </div>
+                            ))}
                             <div className="feature-row">
                                 <span className="feature-icon-black">⏱️</span>
                                 <span>Duration: {duration}</span>
@@ -238,20 +289,27 @@ export default function ActivityDetail() {
                                 <span>Start time: Check availability</span>
                             </div>
                             <div className="feature-row">
-                                <span className="feature-icon-black">📱</span>
-                                <span>Mobile ticket</span>
-                            </div>
-                            <div className="feature-row">
                                 <span className="feature-icon-black">🗣️</span>
                                 <span>Live guide: English, Spanish</span>
                             </div>
                         </section>
 
                         <div className="accordion-list">
-                            {["What's included", "What to expect", "Meeting and pickup", "Accessibility", "Additional information", "Cancellation policy", "Help"].map((item, index) => (
-                                <div key={index} className="accordion-item">
-                                    <h3 className="accordion-header">{item}</h3>
-                                    <span className="accordion-icon">⌄</span>
+                            {accordionData.map((item, index) => (
+                                <div key={index} className="accordion-item-wrapper">
+                                    <div className="accordion-item" onClick={() => toggleAccordion(index)}>
+                                        <h3 className="accordion-header">{item.title}</h3>
+                                        <span className={`accordion-icon ${expandedAccordions.has(index) ? 'open' : ''}`}>
+                                            {expandedAccordions.has(index) ? '⌄' : '⌄'}
+                                        </span>
+                                    </div>
+                                    {expandedAccordions.has(index) && (
+                                        <div className="accordion-content">
+                                            {item.content.split('\n').map((line: string, i: number) => (
+                                                <p key={i}>{line}</p>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
                             ))}
                         </div>
@@ -310,14 +368,29 @@ export default function ActivityDetail() {
                                     <div className="reviews-search-row">
                                         <div className="search-input-wrapper">
                                             <span className="search-icon">🔍</span>
-                                            <input type="text" placeholder="Search reviews..." />
+                                            <input
+                                                type="text"
+                                                placeholder="Search reviews..."
+                                                value={reviewSearch}
+                                                onChange={(e) => setReviewSearch(e.target.value)}
+                                            />
                                         </div>
                                     </div>
 
                                     <div className="reviews-filters-row">
                                         <button className="filter-chip">Filters</button>
                                         <button className="filter-chip">English ⌄</button>
-                                        <button className="filter-chip">Most Recent ⌄</button>
+                                        <div className="dropdown-filter">
+                                            <select
+                                                className="filter-chip-select"
+                                                value={reviewFilter}
+                                                onChange={(e) => setReviewFilter(e.target.value)}
+                                            >
+                                                <option>Most Recent</option>
+                                                <option>Highest Rated</option>
+                                                <option>Lowest Rated</option>
+                                            </select>
+                                        </div>
                                     </div>
 
                                     <div className="popular-mentions">
@@ -445,7 +518,12 @@ export default function ActivityDetail() {
                         {[1, 2, 3, 4].map((i) => (
                             <div key={i} className="rec-card">
                                 <div className="rec-card-image" style={{ backgroundImage: `url(${activity.image})` }}>
-                                    <button className="rec-fav-btn">🤍</button>
+                                    <button
+                                        className={`rec-fav-btn ${recFavorites.has(i) ? 'active' : ''}`}
+                                        onClick={(e) => { e.stopPropagation(); toggleRecFavorite(i); }}
+                                    >
+                                        {recFavorites.has(i) ? '❤️' : '🤍'}
+                                    </button>
                                 </div>
                                 <div className="rec-card-content">
                                     <h3 className="rec-card-title">{activity.title} {i}</h3>
@@ -464,10 +542,15 @@ export default function ActivityDetail() {
                 <section className="recommendations-section">
                     <h2 className="recommendations-title">Get more from your trip</h2>
                     <div className="cards-scroll-container">
-                        {[1, 2, 3, 4].map((i) => (
+                        {[5, 6, 7, 8].map((i) => (
                             <div key={i} className="rec-card">
                                 <div className="rec-card-image" style={{ backgroundImage: `url(${activity.gallery && activity.gallery[1] ? activity.gallery[1] : activity.image})` }}>
-                                    <button className="rec-fav-btn">🤍</button>
+                                    <button
+                                        className={`rec-fav-btn ${recFavorites.has(i) ? 'active' : ''}`}
+                                        onClick={(e) => { e.stopPropagation(); toggleRecFavorite(i); }}
+                                    >
+                                        {recFavorites.has(i) ? '❤️' : '🤍'}
+                                    </button>
                                 </div>
                                 <div className="rec-card-content">
                                     <h3 className="rec-card-title">Tour of sloths, exotic birds, frogs. {i}</h3>
