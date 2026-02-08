@@ -27,3 +27,9 @@ dist-ssr
 .env
 .env.local
 .env.*.local
+
+# Private business documentation (revenue, strategy, monetization)
+docs/MARKET_ANALYSIS.md
+docs/MONETIZATION_QUICK_WINS.md
+docs/PUBLISHING_STRATEGY.md
+docs/decisions/ADR-002-affiliate-network.md
