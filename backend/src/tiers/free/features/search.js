@@ -101,7 +101,19 @@ const getPlaceholderImage = (category, seed) => {
         'Essentials': 'landmark'
     };
     const keyword = keywords[category] || 'city';
-    return `https://loremflickr.com/800/600/${keyword}?lock=${seed}`;
+    
+    // Convert string seed to integer for loremflickr lock parameter
+    let intSeed = 1;
+    if (typeof seed === 'string') {
+        intSeed = 0;
+        for (let i = 0; i < seed.length; i++) {
+            intSeed = (intSeed * 31 + seed.charCodeAt(i)) % 10000;
+        }
+    } else if (typeof seed === 'number') {
+        intSeed = Math.floor(Math.abs(seed)) % 10000;
+    }
+    
+    return `https://loremflickr.com/800/600/${keyword}?lock=${intSeed}`;
 };
 
 const getWikimediaImage = async (wikipediaTag) => {
@@ -298,6 +310,101 @@ const fetchTicketmasterActivities = async (location, radius, categories) => {
     }
 };
 
+const fetchGooglePlacesActivities = async (location, radius, categories) => {
+    const apiKey = process.env.GOOGLE_PLACES_API_DEMO;
+    if (!apiKey) return [];
+
+    let query = 'Top tourist attractions and restaurants';
+    if (categories && categories.length > 0) {
+        query = categories.join(' and ');
+    }
+
+    const radiusMeters = Math.min(radius * 1000, 50000);
+
+    const requestBody = {
+        textQuery: query,
+        locationBias: {
+            circle: {
+                center: {
+                    latitude: location.lat,
+                    longitude: location.lng
+                },
+                radius: radiusMeters
+            }
+        }
+    };
+
+    try {
+        const response = await fetch('https://places.googleapis.com/v1/places:searchText', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Goog-Api-Key': apiKey,
+                'X-Goog-FieldMask': 'places.id,places.displayName,places.formattedAddress,places.location,places.photos,places.rating,places.userRatingCount,places.websiteUri,places.editorialSummary,places.primaryTypeDisplayName'
+            },
+            body: JSON.stringify(requestBody)
+        });
+
+        if (!response.ok) {
+            console.error(`Google Places API error: ${response.status}`, await response.text());
+            return [];
+        }
+
+        const data = await response.json();
+        const places = data.places || [];
+
+        return places.map(place => {
+            let mainImage = null;
+            const gallery = [];
+            
+            if (place.photos && place.photos.length > 0) {
+                const photosToFetch = place.photos.slice(0, 3);
+                photosToFetch.forEach(photo => {
+                    const url = `https://places.googleapis.com/v1/${photo.name}/media?maxHeightPx=600&maxWidthPx=800&key=${apiKey}`;
+                    if (!mainImage) mainImage = url;
+                    gallery.push(url);
+                });
+            }
+
+            // Simple category mapping fallback
+            let mappedCategory = categories[0] || 'Essentials';
+            const placeType = place.primaryTypeDisplayName?.text?.toLowerCase() || '';
+            if (placeType.includes('restaurant') || placeType.includes('cafe')) mappedCategory = 'Food';
+            else if (placeType.includes('museum')) mappedCategory = 'Museums';
+            else if (placeType.includes('park')) mappedCategory = 'Outdoors';
+
+            const placeLat = place.location?.latitude || location.lat;
+            const placeLng = place.location?.longitude || location.lng;
+            
+            if (!mainImage) {
+                // We don't have getPlaceholderImage imported directly here, it's defined above
+                mainImage = getPlaceholderImage(mappedCategory, place.id || Math.random().toString());
+                gallery.push(mainImage);
+            }
+
+            return {
+                id: `google-${place.id}`,
+                title: place.displayName?.text || 'Unknown Place',
+                description: place.editorialSummary?.text || `${place.primaryTypeDisplayName?.text || mappedCategory} at ${place.formattedAddress}`,
+                date: new Date(new Date().getTime() + 86400000).toISOString(),
+                location: { lat: placeLat, lng: placeLng, address: place.formattedAddress || 'Location in area' },
+                category: mappedCategory,
+                image: mainImage,
+                gallery,
+                url: place.websiteUri || `https://www.google.com/maps/search/?api=1&query=${placeLat},${placeLng}`,
+                distance: calculateDistance(location.lat, location.lng, placeLat, placeLng),
+                keywords: [mappedCategory, placeType].filter(Boolean),
+                rating: place.rating || (4.0 + Math.random()),
+                reviewCount: place.userRatingCount || Math.floor(Math.random() * 100),
+                awardYear: place.rating >= 4.5 && place.userRatingCount > 100 ? 2026 : null
+            };
+        });
+    } catch (e) {
+        console.error('Google Places fetch error:', e.message);
+        return [];
+    }
+};
+
 export const searchActivities = async (req, res) => {
     const { location, radius = 25, categories = [] } = req.body;
     const user = req.user; // from optionalAuthMiddleware
@@ -317,14 +424,15 @@ export const searchActivities = async (req, res) => {
     }
 
     try {       // Run both fetches concurrently
-        const [overpassResults, tmResults] = await Promise.all([
+        const [overpassResults, tmResults, googleResults] = await Promise.all([
             fetchOverpassActivities(location, radius, categories),
-            fetchTicketmasterActivities(location, radius, categories)
+            fetchTicketmasterActivities(location, radius, categories),
+            fetchGooglePlacesActivities(location, radius, categories)
         ]);
 
         // Combine and sort by distance
-        console.log(`[search] Overpass returned ${overpassResults.length} results, TM returned ${tmResults.length} results`);
-        const activities = [...overpassResults, ...tmResults];
+        console.log(`[search] Overpass: ${overpassResults.length}, TM: ${tmResults.length}, Google: ${googleResults.length}`);
+        const activities = [...googleResults, ...overpassResults, ...tmResults];
         activities.sort((a, b) => a.distance - b.distance);
 
         const finalResults = activities.slice(0, 30);

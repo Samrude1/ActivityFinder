@@ -7,7 +7,7 @@ export default defineConfig({
     plugins: [react()],
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, './src'),
+            '@': path.resolve(import.meta.dirname, './src'),
         },
     },
     build: {
@@ -16,21 +16,19 @@ export default defineConfig({
         // Optimize chunk splitting for better caching
         rollupOptions: {
             output: {
-                manualChunks: {
-                    // Vendor chunks for better caching
-                    'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-                    'leaflet-vendor': ['leaflet', 'react-leaflet'],
+                manualChunks(id) {
+                    if (id.includes('node_modules')) {
+                        if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
+                            return 'react-vendor';
+                        }
+                        if (id.includes('leaflet') || id.includes('react-leaflet')) {
+                            return 'leaflet-vendor';
+                        }
+                        return 'vendor';
+                    }
                 },
             },
         },
-        // Increase chunk size warning limit (default is 500kb)
-        chunkSizeWarningLimit: 600,
-        // Use esbuild for minification (faster and more reliable than terser)
-        minify: 'esbuild',
-    },
-    // Esbuild options for production
-    esbuild: {
-        drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
     },
     // Preview server configuration
     preview: {

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { getFavorites, addFavorite, removeFavorite, isFavorite as checkIsFavorite } from '../services/storage';
+import { getFavorites } from '../services/storage';
+import { useFavorites } from '../hooks/useFavorites';
 import { getAllActivities } from '../services/activityService';
 import type { Activity } from '../types';
 import './ActivityDetail.css';
@@ -16,8 +17,9 @@ export default function ActivityDetail() {
     // const navigate = useNavigate(); // Removed unused
     const location = useLocation();
     const { id } = useParams<{ id: string }>();
-    const [isFavorite, setIsFavorite] = useState(false);
+    const { favorites, toggleFavorite } = useFavorites();
     const [activity, setActivity] = useState<Activity | undefined>(location.state?.activity);
+    const isFavorite = activity ? favorites.includes(activity.id) : false;
     const [loading, setLoading] = useState(!activity);
     const { t } = useTranslation();
     const [expandedAccordions, setExpandedAccordions] = useState<Set<number>>(new Set());
@@ -30,8 +32,6 @@ export default function ActivityDetail() {
 
         if (!activity && id) {
             loadActivity(id);
-        } else if (activity) {
-            checkIsFavorite(activity.id).then(setIsFavorite);
         }
     }, [activity, id]);
 
@@ -42,7 +42,6 @@ export default function ActivityDetail() {
 
         if (favActivity) {
             setActivity(favActivity);
-            setIsFavorite(true);
             setLoading(false);
             return;
         }
@@ -52,22 +51,13 @@ export default function ActivityDetail() {
 
         if (found) {
             setActivity(found);
-            const isFav = await checkIsFavorite(found.id);
-            setIsFavorite(isFav);
         }
         setLoading(false);
     };
 
-    const handleToggleFavorite = async () => {
+    const handleToggleFavorite = () => {
         if (!activity) return;
-
-        if (isFavorite) {
-            await removeFavorite(activity.id);
-            setIsFavorite(false);
-        } else {
-            await addFavorite(activity);
-            setIsFavorite(true);
-        }
+        toggleFavorite(activity.id, activity);
     };
 
     const handleShare = async () => {
@@ -188,55 +178,75 @@ export default function ActivityDetail() {
                         </div>
                         <div className="tab-border"></div>
 
-                        <section className="detail-section about-section">
-                            <h2>About</h2>
-                            <p className="description-text">
-                                {activity.description || "No description available."}
-                            </p>
-                        </section>
+                        {activeTab === 'Overview' && (
+                            <>
+                                <section className="detail-section about-section">
+                                    <h2>About</h2>
+                                    <p className="description-text">
+                                        {activity.description || "No description available."}
+                                    </p>
+                                </section>
 
-                        <section className="detail-section reviews-section">
-                            <div className="section-header-row">
-                                <h2>Reviews & Ratings</h2>
-                                <div className="rating-summary">
-                                    <span className="rating-score">{activity.rating}</span>
-                                    <span className="stars">●●●●●</span>
-                                    <span className="review-count">({activity.reviewCount || 0} reviews)</span>
-                                </div>
-                            </div>
-                            <p style={{ color: 'var(--text-secondary)' }}>More reviews are available on the provider's website.</p>
-                        </section>
+                                <div className="divider-line"></div>
 
-                        <div className="divider-line"></div>
-
-                        <section className="detail-section bottom-features">
-                            {features.map((feature: string, idx: number) => (
-                                <div key={idx} className="feature-row">
-                                    <span className="feature-icon-black">✓</span>
-                                    <span>{feature}</span>
-                                </div>
-                            ))}
-                        </section>
-
-                        <div className="accordion-list">
-                            {accordionData.map((item, index) => (
-                                <div key={index} className="accordion-item-wrapper">
-                                    <div className="accordion-item" onClick={() => toggleAccordion(index)}>
-                                        <h3 className="accordion-header">{item.title}</h3>
-                                        <span className={`accordion-icon ${expandedAccordions.has(index) ? 'open' : ''}`}>
-                                            {expandedAccordions.has(index) ? '⌄' : '⌄'}
-                                        </span>
-                                    </div>
-                                    {expandedAccordions.has(index) && (
-                                        <div className="accordion-content">
-                                            {item.content.split('\n').map((line: string, i: number) => (
-                                                <p key={i}>{line}</p>
-                                            ))}
+                                <section className="detail-section bottom-features">
+                                    {features.map((feature: string, idx: number) => (
+                                        <div key={idx} className="feature-row">
+                                            <span className="feature-icon-black">✓</span>
+                                            <span>{feature}</span>
                                         </div>
-                                    )}
+                                    ))}
+                                </section>
+                            </>
+                        )}
+
+                        {activeTab === 'Reviews' && (
+                            <section className="detail-section reviews-section">
+                                <div className="section-header-row">
+                                    <h2>Reviews & Ratings</h2>
+                                    <div className="rating-summary">
+                                        <span className="rating-score">{activity.rating || "New"}</span>
+                                        <span className="stars">●●●●●</span>
+                                        <span className="review-count">({activity.reviewCount || 0} reviews)</span>
+                                    </div>
                                 </div>
-                            ))}
-                        </div>
+                                <p style={{ color: 'var(--text-secondary)', marginTop: '1rem' }}>
+                                    Google Places API Demo-avain ei valitettavasti palauta tekstimuotoisia arvosteluja. Vain kokonaisarvosana on saatavilla ilmaiseksi.
+                                </p>
+                            </section>
+                        )}
+
+                        {activeTab === 'Details' && (
+                            <div className="accordion-list" style={{ marginTop: '2rem' }}>
+                                {accordionData.map((item, index) => (
+                                    <div key={index} className="accordion-item-wrapper">
+                                        <div className="accordion-item" onClick={() => toggleAccordion(index)}>
+                                            <h3 className="accordion-header">{item.title}</h3>
+                                            <span className={`accordion-icon ${expandedAccordions.has(index) ? 'open' : ''}`}>
+                                                {expandedAccordions.has(index) ? '⌄' : '⌄'}
+                                            </span>
+                                        </div>
+                                        {expandedAccordions.has(index) && (
+                                            <div className="accordion-content">
+                                                {item.content.split('\n').map((line: string, i: number) => (
+                                                    <p key={i}>{line}</p>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {activeTab === 'Operator' && (
+                            <section className="detail-section operator-section">
+                                <h2>Operator Details</h2>
+                                <p className="description-text">
+                                    Information about the provider is managed through our third-party APIs (Google, Ticketmaster, OpenStreetMap).
+                                    Click the external link on the right to view full details from the source.
+                                </p>
+                            </section>
+                        )}
                     </div>
 
                     <aside className="booking-sidebar">

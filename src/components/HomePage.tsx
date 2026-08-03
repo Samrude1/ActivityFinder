@@ -1,9 +1,9 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import type { Activity, Location, Category } from '../types';
 
 import { searchActivities } from '../services/activityService';
 import { getCurrentLocation } from '../services/geolocation';
-import { getFavoriteIds, addFavorite, removeFavorite, isFavorite } from '../services/storage';
+import { useFavorites } from '../hooks/useFavorites';
 import { useAuth } from '../contexts/AuthContext';
 import Header from './Header';
 import ActivityCard from './ActivityCard';
@@ -13,6 +13,7 @@ import AdvancedFilters, { FilterState } from '../tiers/Explorer/features/Advance
 import UpgradePrompt from '../tiers/Free/features/UpgradePrompt';
 import HomeCustomLists from '../tiers/Explorer/features/HomeCustomLists';
 import { freeAPI } from '../services/api';
+import { SearchAllIcon, HotelsIcon, ThingsToDoIcon, RestaurantsIcon, CruisesIcon, SearchIcon } from './icons';
 import './HomePage.css';
 
 type ViewMode = 'list' | 'map';
@@ -29,7 +30,7 @@ export default function HomePage() {
     const [loading, setLoading] = useState(false);
     const [userLocation, setUserLocation] = useState<Location | null>(null);
     const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
-    const [favorites, setFavorites] = useState<string[]>([]);
+    const { favorites, toggleFavorite: handleToggleFavorite } = useFavorites();
     const [priceFilter] = useState<'all' | 'free' | 'paid'>('all');
     const [searchQuery, setSearchQuery] = useState('');
     const [searching] = useState(false);
@@ -41,29 +42,16 @@ export default function HomePage() {
         accessibility: []
     });
     const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
-    const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-    const handleHorizontalScroll = (direction: 'left' | 'right') => {
-        if (scrollContainerRef.current) {
-            const amount = scrollContainerRef.current.clientWidth + 24; // Scroll by full width + gap
-            scrollContainerRef.current.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' });
-        }
-    };
+
+
 
     useEffect(() => {
         getCurrentLocation().then(loc => {
             setUserLocation(loc);
             setSearchQuery(loc.address);
         });
-        updateFavorites();
-        window.addEventListener('favorites-updated', updateFavorites);
-        return () => window.removeEventListener('favorites-updated', updateFavorites);
     }, []);
-
-    const updateFavorites = async () => {
-        const favIds = await getFavoriteIds();
-        setFavorites(favIds);
-    };
 
     useEffect(() => {
         if (!userLocation) return;
@@ -105,18 +93,7 @@ export default function HomePage() {
 
     }, [userLocation, selectedCategories, priceFilter, radius, advancedFilters, user?.tier]);
 
-    const handleToggleFavorite = async (activityId: string) => {
-        const isFav = await isFavorite(activityId);
-        if (isFav) {
-            await removeFavorite(activityId);
-        } else {
-            const activityToSave = activities.find(a => a.id === activityId);
-            if (activityToSave) {
-                await addFavorite(activityToSave);
-            }
-        }
-        updateFavorites();
-    };
+
 
     const handleSearchLocation = async (queryOverride?: string) => {
         const queryToUse = typeof queryOverride === 'string' ? queryOverride : searchQuery;
@@ -140,11 +117,7 @@ export default function HomePage() {
 
             {/* Main Content */}
             <main>
-                <div className="IdADx mvTrV cyIij fluiI SMjpI Iwmxp"></div>
-                <div className="IgMIB j c"></div>
-                <div className="IdADx mvTrV cyIij fluiI SMjpI Iwmxp">
-                    <div className="oTFBM _T"></div>
-                </div>
+
                 <div className="mKXaY f e dTtOG TFSSL" data-test-target="feed">
                     <div className="home-content">
                         <div className="container">
@@ -156,31 +129,31 @@ export default function HomePage() {
                                 <div className="search-tabs">
                                     <button className="search-tab active">
                                         <span className="tab-icon">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                            <SearchAllIcon />
                                         </span>
                                         <span className="tab-text">Search All</span>
                                     </button>
                                     <button className="search-tab" onClick={() => navigate('/hotels')}>
                                         <span className="tab-icon">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 17H2a3 3 0 0 0 3-3V9a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v5a3 3 0 0 0 3 3zm-8-5.5v2m-4-2v2"></path></svg>
+                                            <HotelsIcon />
                                         </span>
                                         <span className="tab-text">Hotels</span>
                                     </button>
                                     <button className="search-tab" onClick={() => navigate('/things-to-do')}>
                                         <span className="tab-icon">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+                                            <ThingsToDoIcon />
                                         </span>
                                         <span className="tab-text">Things to Do</span>
                                     </button>
                                     <button className="search-tab" onClick={() => navigate('/restaurants')}>
                                         <span className="tab-icon">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                                            <RestaurantsIcon />
                                         </span>
                                         <span className="tab-text">Restaurants</span>
                                     </button>
                                     <button className="search-tab" onClick={() => navigate('/cruises')}>
                                         <span className="tab-icon">
-                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+                                            <CruisesIcon />
                                         </span>
                                         <span className="tab-text">Cruises</span>
                                     </button>
@@ -188,7 +161,7 @@ export default function HomePage() {
 
                                 <div className="tripadvisor-search-pill">
                                     <span className="search-icon-large">
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                        <SearchIcon />
                                     </span>
                                     <input
                                         type="text"
@@ -240,7 +213,10 @@ export default function HomePage() {
                                                     key={activity.id}
                                                     activity={activity}
                                                     isFavorite={favorites.includes(activity.id)}
-                                                    onToggleFavorite={handleToggleFavorite}
+                                                    onToggleFavorite={(id) => {
+                                                        const activityToSave = activities.find(a => a.id === id);
+                                                        handleToggleFavorite(id, activityToSave);
+                                                    }}
                                                 />
                                             ))}
                                         </div>
@@ -293,7 +269,10 @@ export default function HomePage() {
                                         activities={activities}
                                         userLocation={userLocation}
                                         favorites={favorites}
-                                        onToggleFavorite={handleToggleFavorite}
+                                        onToggleFavorite={(id) => {
+                                            const activityToSave = activities.find(a => a.id === id);
+                                            handleToggleFavorite(id, activityToSave);
+                                        }}
                                         radius={radius}
                                     />
                                 </section>

@@ -87,10 +87,11 @@ A premium travel-inspired web application to discover free and paid local activi
 > [!NOTE]
 > For detailed documentation on API usage, costs, and data fetching limits, please see [APIS.md](./APIS.md).
 
-We use 100% free, open-source APIs:
-- **Nominatim** (Geocoding)
-- **Overpass API** (POI Data)
-- **OpenStreetMap** (Map Tiles)
+We use a powerful hybrid data approach:
+- **Google Places API (New)**: High-quality location data, ratings, and authentic reviews.
+- **Ticketmaster API**: Live events, concerts, and sports.
+- **Overpass API (OSM)**: Open-source fallback for local points of interest.
+- **Nominatim & OpenStreetMap**: Geocoding and map tiles.
 
 ## 🏗️ Architecture
 
@@ -140,7 +141,14 @@ npm install
 # Install backend dependencies
 cd backend
 npm install
-cd ..
+```
+
+**Environment Variables**
+Create a `.env` file in the `backend/` directory:
+```env
+TICKETMASTER_API_KEY=your_key_here
+GOOGLE_PLACES_API_DEMO=your_key_here
+JWT_SECRET=your_jwt_secret
 ```
 
 ### Running the Application
@@ -215,11 +223,11 @@ This project is for educational purposes.
 
 ## 🙏 Acknowledgments
 
-- **OpenStreetMap** - POI data, map tiles, and geocoding
+- **Google Maps Platform** - Places data and reviews
+- **Ticketmaster** - Live event discovery
+- **OpenStreetMap** - Map tiles and geocoding fallback
 - **Leaflet.js** - Map library
-- **Unsplash** - Activity images
-- **React** - UI framework
-- **Vite** - Build tool
+- **React & Vite** - Frontend architecture
 
 ## ✅ Completed Features
 
@@ -296,19 +304,13 @@ For testing different tier functionalities:
 - **Password**: `Explorer2025!`
 - **Features**: Unlimited searches, unlimited favorites, custom lists, calendar export
 
-## 💡 Why No API Keys?
+## 💡 API Keys Required
 
-This app is designed to be **completely free and accessible**:
-- ✅ No registration barriers
-- ✅ No API key management
-- ✅ Works immediately after `npm install`
-- ✅ No rate limit concerns for personal use
-- ✅ Privacy-friendly (no tracking)
-
-All data comes from open, community-driven sources like OpenStreetMap!
+While the frontend is completely free to use, running the backend locally requires setting up developer API keys:
+- ✅ **Google Places API** (Free $200 monthly tier covers all local development)
+- ✅ **Ticketmaster Discovery API** (Free tier available)
+- ✅ Free OpenStreetMap fallbacks
 
 ---
 
-**Built with ❤️ using React, TypeScript, Leaflet, and OpenStreetMap**
-
-**100% Free • No API Keys • No Registration Required • Premium UI**
+**Built with ❤️ using React, TypeScript, Node.js, and Google Places API**
