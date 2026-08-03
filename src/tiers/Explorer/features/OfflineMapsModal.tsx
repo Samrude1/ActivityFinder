@@ -135,15 +135,15 @@ export default function OfflineMapsModal({ onClose }: OfflineMapsModalProps) {
                     justify-content: center;
                 }
                 .usage-stats {
-                    margin-bottom: 20px;
-                    background: #f8f9fa;
+                    margin-bottom: var(--space-lg);
+                    background-color: var(--bg-secondary);
                     padding: 10px;
-                    border-radius: 8px;
+                    border-radius: var(--radius-md);
                 }
                 .usage-bar {
                     height: 8px;
-                    background: #e9ecef;
-                    border-radius: 4px;
+                    background-color: var(--border-color);
+                    border-radius: var(--radius-xs);
                     overflow: hidden;
                     margin-bottom: 5px;
                 }
@@ -160,7 +160,7 @@ export default function OfflineMapsModal({ onClose }: OfflineMapsModalProps) {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    padding: 12px;
+                    padding: var(--space-md);
                     border-bottom: 1px solid #eee;
                 }
                 .city-info {
@@ -169,27 +169,27 @@ export default function OfflineMapsModal({ onClose }: OfflineMapsModalProps) {
                 }
                 .city-size {
                     font-size: 0.8rem;
-                    color: #888;
+                    color: var(--text-secondary);
                 }
                 .btn-download {
-                    background: #ebf4ff;
+                    background-color: var(--bg-hover);
                     color: #5a67d8;
                     border: none;
                     width: 40px;
                     height: 40px;
-                    border-radius: 50%;
+                    border-radius: var(--radius-full);
                     cursor: pointer;
                     display: flex;
                     align-items: center;
                     justify-content: center;
                 }
                 .btn-remove {
-                    background: #fff5f5;
-                    color: #c53030;
+                    background-color: var(--bg-card)5f5;
+                    color: var(--danger);
                     border: none;
                     width: 40px;
                     height: 40px;
-                    border-radius: 50%;
+                    border-radius: var(--radius-full);
                     cursor: pointer;
                 }
             `}</style>

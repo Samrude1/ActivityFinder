@@ -1,11 +1,11 @@
 .ad-banner {
     background-color: #f5f5f5;
     border: 1px dashed #ccc;
-    padding: 1rem;
-    margin: 1rem 0;
-    border-radius: 8px;
+    padding: var(--space-md);
+    margin: var(--space-md) 0;
+    border-radius: var(--radius-md);
     text-align: center;
-    color: #666;
+    color: var(--text-secondary);
     font-size: 0.9rem;
     display: flex;
     flex-direction: column;
@@ -40,13 +40,13 @@ body.dark-mode .ad-banner {
     margin-bottom: 0.5rem;
     background: #e0e0e0;
     padding: 2px 6px;
-    border-radius: 4px;
+    border-radius: var(--radius-xs);
     color: #555;
 }
 
 body.dark-mode .ad-label {
     background: #444;
-    color: #888;
+    color: var(--text-secondary);
 }
 
 .ad-content {

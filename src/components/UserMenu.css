@@ -27,7 +27,7 @@
     height: 40px;
     background: linear-gradient(135deg, var(--accent), var(--accent-dark));
     color: white;
-    border-radius: 50%;
+    border-radius: var(--radius-full);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -88,7 +88,7 @@
 .user-info {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: var(--space-xs);
 }
 
 .user-info strong {

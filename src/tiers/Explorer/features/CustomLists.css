@@ -1,5 +1,5 @@
 .custom-lists-container {
-    padding: 24px;
+    padding: var(--space-lg);
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -8,9 +8,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 32px;
+    margin-bottom: var(--space-xl);
     flex-wrap: wrap;
-    gap: 16px;
+    gap: var(--space-md);
 }
 
 .lists-header h2 {
@@ -21,11 +21,11 @@
 }
 
 .create-list-btn {
-    padding: 12px 24px;
+    padding: var(--space-md) 24px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     font-weight: 600;
     font-size: 1rem;
     cursor: pointer;
@@ -41,20 +41,20 @@
 .lists-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 24px;
+    gap: var(--space-lg);
 }
 
 .list-card {
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
     backdrop-filter: blur(10px);
-    border-radius: 16px;
-    padding: 24px;
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg);
     border: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     transition: all 0.3s;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: var(--space-md);
 }
 
 .list-card:hover {
@@ -75,26 +75,26 @@
 }
 
 .list-info p {
-    margin: 8px 0 0 0;
+    margin: var(--space-sm) 0 0 0;
     color: var(--text-secondary);
     font-size: 0.9rem;
 }
 
 .list-meta {
-    margin-top: 12px;
+    margin-top: var(--space-md);
     padding-top: 12px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .item-count {
-    color: #667eea;
+    color: var(--accent);
     font-weight: 600;
     font-size: 0.9rem;
 }
 
 .list-actions {
     display: flex;
-    gap: 8px;
+    gap: var(--space-sm);
     margin-top: auto;
 }
 
@@ -102,7 +102,7 @@
 .delete-btn {
     flex: 1;
     padding: 10px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
@@ -121,7 +121,7 @@
 
 .delete-btn {
     background: rgba(239, 68, 68, 0.1);
-    color: #ef4444;
+    color: var(--danger);
     border: 1px solid rgba(239, 68, 68, 0.3);
     max-width: 50px;
 }
@@ -134,13 +134,13 @@
 .empty-state {
     grid-column: 1 / -1;
     text-align: center;
-    padding: 60px 20px;
+    padding: var(--space-3xl) 20px;
 }
 
 .empty-icon {
     font-size: 5rem;
     opacity: 0.5;
-    margin-bottom: 20px;
+    margin-bottom: var(--space-lg);
 }
 
 .empty-state h3 {
@@ -159,7 +159,7 @@
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     font-weight: 600;
     font-size: 1.1rem;
     cursor: pointer;
@@ -185,12 +185,12 @@
     align-items: center;
     justify-content: center;
     z-index: 1000;
-    padding: 20px;
+    padding: var(--space-lg);
 }
 
 .modal-content {
     background: var(--bg-primary);
-    border-radius: 16px;
+    border-radius: var(--radius-xl);
     max-width: 500px;
     width: 100%;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
@@ -201,7 +201,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 24px;
+    padding: var(--space-lg);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
@@ -217,7 +217,7 @@
     font-size: 1.5rem;
     color: var(--text-secondary);
     cursor: pointer;
-    padding: 4px 8px;
+    padding: var(--space-xs) 8px;
     transition: color 0.2s;
 }
 
@@ -226,16 +226,16 @@
 }
 
 .modal-body {
-    padding: 24px;
+    padding: var(--space-lg);
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: var(--space-lg);
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--space-sm);
 }
 
 .form-group label {
@@ -245,8 +245,8 @@
 
 .form-group input,
 .form-group textarea {
-    padding: 12px;
-    border-radius: 8px;
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
     border: 1px solid rgba(255, 255, 255, 0.2);
     background: rgba(255, 255, 255, 0.05);
     color: var(--text-primary);
@@ -257,22 +257,22 @@
 .form-group input:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: var(--accent);
     background: rgba(255, 255, 255, 0.08);
 }
 
 .icon-picker {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
+    gap: var(--space-sm);
 }
 
 .icon-option {
-    padding: 12px;
+    padding: var(--space-md);
     font-size: 1.5rem;
     border: 2px solid rgba(255, 255, 255, 0.2);
     background: rgba(255, 255, 255, 0.05);
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     cursor: pointer;
     transition: all 0.2s;
 }
@@ -284,22 +284,22 @@
 
 .icon-option.selected {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-color: #667eea;
+    border-color: var(--accent);
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
 }
 
 .modal-footer {
     display: flex;
-    gap: 12px;
-    padding: 24px;
+    gap: var(--space-md);
+    padding: var(--space-lg);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .cancel-btn,
 .create-btn {
     flex: 1;
-    padding: 12px 24px;
-    border-radius: 8px;
+    padding: var(--space-md) 24px;
+    border-radius: var(--radius-md);
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
@@ -329,7 +329,7 @@
 
 /* Locked State */
 .custom-lists-locked {
-    padding: 60px 20px;
+    padding: var(--space-3xl) 20px;
     text-align: center;
     max-width: 600px;
     margin: 0 auto;
@@ -338,15 +338,15 @@
 .lock-content {
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
     backdrop-filter: blur(10px);
-    border-radius: 16px;
-    padding: 60px 40px;
+    border-radius: var(--radius-xl);
+    padding: var(--space-3xl) 40px;
     border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .lock-content .lock-icon {
     font-size: 5rem;
     opacity: 0.5;
-    margin-bottom: 24px;
+    margin-bottom: var(--space-lg);
 }
 
 .lock-content h2 {
@@ -364,10 +364,10 @@
 .error-banner {
     background: rgba(239, 68, 68, 0.1);
     border: 1px solid rgba(239, 68, 68, 0.3);
-    color: #ef4444;
-    padding: 12px 16px;
-    border-radius: 8px;
-    margin-bottom: 24px;
+    color: var(--danger);
+    padding: var(--space-md) 16px;
+    border-radius: var(--radius-md);
+    margin-bottom: var(--space-lg);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -382,7 +382,7 @@
 .close-error {
     background: none;
     border: none;
-    color: #ef4444;
+    color: var(--danger);
     cursor: pointer;
     font-size: 1.5rem;
     padding: 0 8px;
@@ -392,11 +392,11 @@
 .modal-error {
     background: rgba(239, 68, 68, 0.1);
     border: 1px solid rgba(239, 68, 68, 0.2);
-    color: #ef4444;
+    color: var(--danger);
     padding: 10px 12px;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     font-size: 0.9rem;
-    margin-bottom: 16px;
+    margin-bottom: var(--space-md);
     text-align: center;
 }
 
@@ -404,7 +404,7 @@
     width: 20px;
     height: 20px;
     border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
+    border-radius: var(--radius-full);
     border-top-color: white;
     animation: spin 1s ease-in-out infinite;
     display: inline-block;
@@ -430,7 +430,7 @@
 
 .custom-lists-loading {
     text-align: center;
-    padding: 60px 20px;
+    padding: var(--space-3xl) 20px;
     color: var(--text-secondary);
     font-size: 1.1rem;
 }
@@ -438,7 +438,7 @@
 /* Mobile Responsive */
 @media (max-width: 768px) {
     .custom-lists-container {
-        padding: 16px;
+        padding: var(--space-md);
     }
 
     .lists-header {

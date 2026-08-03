@@ -350,14 +350,16 @@ export const freeAPI = {
 
     async searchActivities(location: any, radius: number, categories: string[]) {
         const token = getToken();
-        if (!token) throw new Error('Not authenticated');
+        const headers: any = {
+            'Content-Type': 'application/json'
+        };
+        if (token) {
+            headers['Authorization'] = `Bearer ${token}`;
+        }
 
         const response = await fetch(`${API_URL}/free/search`, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
+            headers,
             body: JSON.stringify({ location, radius, categories })
         });
 

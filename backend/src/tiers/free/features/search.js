@@ -1,58 +1,8 @@
-// Node 18+ has global fetch available, no import needed
+// Backend search logic using Overpass API (OpenStreetMap), Wikimedia, and Ticketmaster API
+import dotenv from 'dotenv';
+dotenv.config();
 
-// Fallback images (copied from frontend utils for isolation)
-const FALLBACK_IMAGES = {
-    Outdoor: [
-        'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=400',
-        'https://images.unsplash.com/photo-1551632811-561732d1e306?w=400',
-        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400',
-        'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?w=400',
-    ],
-    Cultural: [
-        'https://images.unsplash.com/photo-1565359471403-3f8e0c9e3d7e?w=400',
-        'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400',
-        'https://images.unsplash.com/photo-1518998053901-5348d3961a04?w=400',
-        'https://images.unsplash.com/photo-1580913428706-c311e67898b3?w=400',
-    ],
-    Sports: [
-        'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400',
-        'https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?w=400',
-        'https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=400',
-        'https://images.unsplash.com/photo-1517649763962-0c623066013b?w=400',
-    ],
-    Music: [
-        'https://images.unsplash.com/photo-1511192336575-5a79af67a629?w=400',
-        'https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400',
-        'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=400',
-        'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=400',
-    ],
-    Food: [
-        'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400',
-        'https://images.unsplash.com/photo-1488459716781-31db52582fe9?w=400',
-        'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400',
-        'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400',
-    ],
-    Family: [
-        'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=400',
-        'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=400',
-        'https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=400',
-        'https://images.unsplash.com/photo-1476703993599-0035a21b17a9?w=400',
-    ],
-};
-
-function getFallbackImage(category) {
-    const images = FALLBACK_IMAGES[category] || FALLBACK_IMAGES.Outdoor;
-    return images[Math.floor(Math.random() * images.length)];
-}
-
-function ensureActivityImage(activity, category) {
-    // In backend we might not have 'activity.image' populated properly from OSM results unless we parse it specially.
-    // OSM tags usually don't have direct image URLs, mostly wikipedia/wikimedia refs.
-    // For now we use fallback logic mostly.
-    return getFallbackImage(category);
-}
-
-// Haversine distance
+// Utility for Haversine distance
 function calculateDistance(lat1, lon1, lat2, lon2) {
     const R = 6371; // Radius of earth in km
     const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -65,187 +15,324 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
     return R * c;
 }
 
-const OVERPASS_API = 'https://overpass-api.de/api/interpreter';
+// In-memory cache for search results
+const SEARCH_CACHE = new Map();
+const CACHE_TTL = 1000 * 60 * 60 * 24; // 24 hours
 
-// Offline fallback data with Helsinki coordinates
-const OFFLINE_ACTIVITIES = [
-    {
-        id: 'fallback-1',
-        title: 'Esplanade Park Picnic',
-        description: 'Enjoy a relaxing picnic in the beautiful Esplanade Park. Greenery in the heart of the city.',
-        date: new Date().toISOString(),
-        location: { lat: 60.1675, lng: 24.9442, address: 'Pohjoisesplanadi, Helsinki' },
-        category: 'Outdoor',
-        image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=400',
-        url: '#',
-        price: 0,
-        keywords: ['park', 'picnic', 'outdoor', 'relax']
-    },
-    {
-        id: 'fallback-2',
-        title: 'Helsinki Cathedral Tour',
-        description: 'Visit the iconic white cathedral. A symbol of Helsinki offering great views.',
-        date: new Date().toISOString(),
-        location: { lat: 60.1704, lng: 24.9522, address: 'Unioninkatu 29, Helsinki' },
-        category: 'Cultural',
-        image: 'https://images.unsplash.com/photo-1565359471403-3f8e0c9e3d7e?w=400',
-        url: '#',
-        price: 0,
-        keywords: ['cathedral', 'culture', 'history', 'landmark']
-    },
-    {
-        id: 'fallback-3',
-        title: 'Market Square Coffee',
-        description: 'Traditional market coffee and cinnamon bun by the sea. Fresh breeze guaranteed.',
-        date: new Date().toISOString(),
-        location: { lat: 60.1666, lng: 24.9536, address: 'Eteläranta, Helsinki' },
-        category: 'Food',
-        image: 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400',
-        url: '#',
-        price: 15,
-        keywords: ['coffee', 'market', 'food', 'sea']
-    },
-    {
-        id: 'fallback-4',
-        title: 'Löyly Sauna Experience',
-        description: 'Modern public sauna and restaurant. Dip in the Baltic Sea if you dare!',
-        date: new Date().toISOString(),
-        location: { lat: 60.1517, lng: 24.9299, address: 'Hernesaarenranta 4, Helsinki' },
-        category: 'Sports',
-        image: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=400',
-        url: '#',
-        price: 25,
-        keywords: ['sauna', 'swim', 'wellness', 'sports']
-    },
-    {
-        id: 'fallback-5',
-        title: 'Oodi Library Visit',
-        description: 'Explore the modern central library. A masterpiece of architecture and community space.',
-        date: new Date().toISOString(),
-        location: { lat: 60.1740, lng: 24.9382, address: 'Töölönlahdenkatu 4, Helsinki' },
-        category: 'Cultural',
-        image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400',
-        url: '#',
-        price: 0,
-        keywords: ['library', 'books', 'architecture', 'culture']
+const getOsmSelectors = (categories) => {
+    if (!categories || categories.length === 0) {
+        // No categories = fetch a broad mix of everything
+        return [
+            'nwr["tourism"~"attraction|museum|gallery|viewpoint"]',
+            'nwr["amenity"~"restaurant|cafe|theatre|arts_centre|bar"]',
+            'nwr["leisure"~"park|nature_reserve"]'
+        ];
     }
-];
+    
+    const selectors = [];
+    let hasOsmCategory = false;
+    
+    categories.forEach(c => {
+        switch (c) {
+            case 'Food':
+                selectors.push('nwr["amenity"~"restaurant|cafe|fast_food"]'); hasOsmCategory = true; break;
+            case 'Cultural':
+                selectors.push('nwr["amenity"~"arts_centre|theatre"]', 'nwr["tourism"~"museum|gallery"]', 'nwr["historic"~"yes"]'); hasOsmCategory = true; break;
+            case 'Outdoor':
+            case 'Outdoors':
+                selectors.push('nwr["leisure"~"park|nature_reserve"]', 'nwr["natural"~"beach"]'); hasOsmCategory = true; break;
+            case 'Family friendly':
+            case 'Family':
+                selectors.push('nwr["tourism"~"zoo|theme_park"]', 'nwr["leisure"~"playground"]'); hasOsmCategory = true; break;
+            case 'Nightlife':
+                selectors.push('nwr["amenity"~"bar|pub|nightclub"]'); hasOsmCategory = true; break;
+            case 'Museums':
+                selectors.push('nwr["tourism"="museum"]'); hasOsmCategory = true; break;
+            case 'Hidden gems':
+                selectors.push('nwr["tourism"="artwork"]', 'nwr["historic"="memorial"]'); hasOsmCategory = true; break;
+            case 'Essentials':
+            case 'Travelers\' Choice':
+                selectors.push('nwr["tourism"~"attraction|viewpoint"]'); hasOsmCategory = true; break;
+            // Sports and Music are primarily Ticketmaster, but we can add OSM fallbacks
+            case 'Sports':
+                selectors.push('nwr["leisure"~"sports_centre|stadium|pitch"]'); hasOsmCategory = true; break;
+            case 'Arts & theater':
+                selectors.push('nwr["amenity"~"arts_centre|theatre"]'); hasOsmCategory = true; break;
+            case 'Music':
+                selectors.push('nwr["amenity"~"nightclub|bar"]'); hasOsmCategory = true; break;
+        }
+    });
+    
+    if (!hasOsmCategory && categories.length > 0) return []; // Only TM categories selected
+    
+    return [...new Set(selectors)];
+};
+
+const getTmClassifications = (categories) => {
+    if (!categories || categories.length === 0) return null; // Fetch any events if no category
+    const classifications = [];
+    categories.forEach(c => {
+        if (c === 'Music') classifications.push('Music');
+        if (c === 'Sports') classifications.push('Sports');
+        if (c === 'Arts & theater' || c === 'Cultural') classifications.push('Arts & Theatre');
+        if (c === 'Family' || c === 'Family friendly') classifications.push('Family');
+    });
+    return classifications.length > 0 ? classifications.join(',') : 'NONE';
+};
+
+const mapTagsToCategory = (tags) => {
+    if (tags.amenity && tags.amenity.match(/restaurant|cafe|fast_food/)) return 'Food';
+    if (tags.tourism === 'museum') return 'Museums';
+    if (tags.amenity && tags.amenity.match(/arts_centre|theatre/)) return 'Arts & theater';
+    if (tags.amenity && tags.amenity.match(/bar|pub|nightclub/)) return 'Nightlife';
+    if (tags.leisure && tags.leisure.match(/park|nature_reserve/)) return 'Outdoors';
+    return 'Essentials';
+};
+
+const getPlaceholderImage = (category, seed) => {
+    const keywords = {
+        'Food': 'restaurant',
+        'Museums': 'museum',
+        'Arts & theater': 'theater',
+        'Nightlife': 'bar',
+        'Outdoors': 'nature',
+        'Music': 'concert',
+        'Sports': 'sports',
+        'Essentials': 'landmark'
+    };
+    const keyword = keywords[category] || 'city';
+    return `https://loremflickr.com/800/600/${keyword}?lock=${seed}`;
+};
+
+const getWikimediaImage = async (wikipediaTag) => {
+    try {
+        const parts = wikipediaTag.split(':');
+        const lang = parts.length > 1 ? parts[0] : 'en';
+        const title = parts.length > 1 ? parts[1] : parts[0];
+        
+        const url = `https://${lang}.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(title)}&prop=pageimages&format=json&pithumbsize=600`;
+        
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 2000); // 2 second timeout for Wikipedia
+        
+        const res = await fetch(url, { signal: controller.signal });
+        clearTimeout(timeout);
+        
+        const data = await res.json();
+        const pages = data.query?.pages;
+        if (pages) {
+            const pageId = Object.keys(pages)[0];
+            if (pageId !== '-1' && pages[pageId].thumbnail) {
+                return pages[pageId].thumbnail.source;
+            }
+        }
+    } catch (e) {
+        console.error('Wikimedia fetch error:', e.message);
+    }
+    return null;
+};
+
+const fetchOverpassActivities = async (location, radius, categories) => {
+    const selectors = getOsmSelectors(categories);
+    if (selectors.length === 0) return []; // No OSM categories selected
+
+    const radiusMeters = Math.min(radius * 1000, 50000); // Max 50km
+    const overpassQuery = `
+        [out:json][timeout:25];
+        (
+          ${selectors.map(s => `${s}(around:${radiusMeters},${location.lat},${location.lng});`).join('\n  ')}
+        );
+        out center 60;
+    `;
+    
+    const overpassUrl = `https://maps.mail.ru/osm/tools/overpass/api/interpreter`;
+    try {
+        const response = await fetch(overpassUrl, {
+            method: 'POST',
+            body: 'data=' + encodeURIComponent(overpassQuery),
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+
+        if (!response.ok) {
+            console.error(`Overpass API error: ${response.status}`);
+            return [];
+        }
+
+        const data = await response.json();
+        console.log(`[search] Overpass raw elements: ${data.elements?.length}`);
+        
+        if (!data.elements || data.elements.length === 0) return [];
+
+        let elements = data.elements.filter(el => el.tags && el.tags.name);
+        console.log(`[search] Overpass named elements: ${elements.length}`);
+        elements = elements.slice(0, 60); // Allow more items for frontend filtering
+
+        return await Promise.all(elements.map(async (element, index) => {
+            const placeLat = element.lat || element.center?.lat || location.lat;
+            const placeLng = element.lon || element.center?.lon || location.lng;
+            const category = mapTagsToCategory(element.tags);
+
+            let mainImage = null;
+            if (element.tags.wikipedia) {
+                mainImage = await getWikimediaImage(element.tags.wikipedia);
+            }
+            
+            if (!mainImage) {
+                mainImage = getPlaceholderImage(category, element.id);
+            }
+
+            const gallery = [
+                mainImage,
+                getPlaceholderImage(category, element.id + 1),
+                getPlaceholderImage(category, element.id + 2)
+            ];
+
+            const addressParts = [element.tags['addr:street'], element.tags['addr:housenumber'], element.tags['addr:city']].filter(Boolean);
+            const address = addressParts.length > 0 ? addressParts.join(' ') : 'Location in area';
+            
+            const features = [
+                element.tags.opening_hours ? `Hours: ${element.tags.opening_hours}` : null,
+                element.tags.phone ? `Phone: ${element.tags.phone}` : null,
+                element.tags.website ? `Website: ${element.tags.website}` : null,
+                element.tags['diet:vegetarian'] === 'yes' ? 'Vegetarian Options' : null,
+                element.tags['diet:vegan'] === 'yes' ? 'Vegan Options' : null,
+                element.tags.wheelchair === 'yes' ? 'Wheelchair Accessible' : null,
+                element.tags.fee === 'no' ? 'Free Entry' : null
+            ].filter(Boolean);
+
+            const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(element.tags.name + ' ' + address)}`;
+
+            return {
+                id: `osm-${element.type}-${element.id}`,
+                title: element.tags.name,
+                description: element.tags.description || `A notable ${category.toLowerCase()} location in ${element.tags['addr:city'] || 'the area'}.`,
+                date: new Date(new Date().getTime() + 86400000).toISOString(),
+                location: { lat: placeLat, lng: placeLng, address },
+                category,
+                image: mainImage,
+                gallery,
+                features,
+                url: element.tags.website || mapsUrl,
+                mapsUrl,
+                distance: calculateDistance(location.lat, location.lng, placeLat, placeLng),
+                keywords: Object.keys(element.tags),
+                rating: (4.0 + (element.id % 10) / 10).toFixed(1), // Mock rating between 4.0 and 4.9
+                reviewCount: 50 + (element.id % 500),
+                awardYear: index === 0 ? 2026 : null
+            };
+        }));
+    } catch (e) {
+        console.error('Overpass fetch error:', e.message);
+        return [];
+    }
+};
+
+const fetchTicketmasterActivities = async (location, radius, categories) => {
+    const classifications = getTmClassifications(categories);
+    if (classifications === 'NONE') return []; // No TM categories selected
+    
+    const apiKey = process.env.TICKETMASTER_API_KEY;
+    if (!apiKey || apiKey === 'dummy_tm_key') return []; // TM key not provided
+
+    let url = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${apiKey}&latlong=${location.lat},${location.lng}&radius=${radius}&unit=km&size=15&sort=distance,asc`;
+    
+    if (classifications) {
+        url += `&classificationName=${encodeURIComponent(classifications)}`;
+    }
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            console.error(`Ticketmaster API error: ${response.status}`);
+            return [];
+        }
+
+        const data = await response.json();
+        const events = data._embedded?.events;
+        if (!events || events.length === 0) return [];
+
+        return events.map((event, index) => {
+            const venue = event._embedded?.venues?.[0];
+            const placeLat = venue?.location?.latitude ? parseFloat(venue.location.latitude) : location.lat;
+            const placeLng = venue?.location?.longitude ? parseFloat(venue.location.longitude) : location.lng;
+            
+            const segment = event.classifications?.[0]?.segment?.name || 'Events';
+            let category = 'Arts & theater';
+            if (segment.toLowerCase().includes('music')) category = 'Music';
+            else if (segment.toLowerCase().includes('sports')) category = 'Sports';
+
+            // Get high res image
+            let mainImage = null;
+            if (event.images && event.images.length > 0) {
+                const sortedImages = event.images.sort((a, b) => b.width - a.width);
+                mainImage = sortedImages[0].url;
+            }
+
+            const gallery = event.images ? event.images.slice(0, 3).map(i => i.url) : [mainImage];
+            
+            let address = 'Venue in area';
+            if (venue) {
+                address = [venue.name, venue.address?.line1, venue.city?.name].filter(Boolean).join(', ');
+            }
+
+            return {
+                id: `tm-${event.id}`,
+                title: event.name,
+                description: event.info || event.pleaseNote || `${category} event at ${venue?.name || 'a local venue'}.`,
+                date: event.dates?.start?.dateTime || event.dates?.start?.localDate || new Date().toISOString(),
+                location: { lat: placeLat, lng: placeLng, address },
+                category,
+                image: mainImage,
+                gallery,
+                url: event.url || '#',
+                distance: calculateDistance(location.lat, location.lng, placeLat, placeLng),
+                keywords: [segment, event.classifications?.[0]?.genre?.name].filter(Boolean),
+                rating: 4.8, // Events are highly rated
+                reviewCount: 300 + index * 50,
+                awardYear: null
+            };
+        });
+    } catch (e) {
+        console.error('Ticketmaster fetch error:', e.message);
+        return [];
+    }
+};
 
 export const searchActivities = async (req, res) => {
-    try {
-        console.log('Free Tier Search Request Body:', JSON.stringify(req.body));
-        const { location, radius = 25, categories } = req.body;
+    const { location, radius = 25, categories = [] } = req.body;
+    const user = req.user; // from optionalAuthMiddleware
 
-        if (!location || !location.lat || !location.lng) {
-            return res.status(400).json({ error: 'Valid location (lat, lng) is required' });
-        }
+    console.log(`[search] Request received:`, { location, radius, categories, user: user?.email });
 
-        // Convert radius km to meters for Overpass
-        const radiusMeters = radius * 1000;
+    if (!location || !location.lat || !location.lng) {
+        return res.status(400).json({ error: 'Location (lat, lng) is required' });
+    }
 
-        const query = `
-      [out:json][timeout:25];
-      (
-        node["leisure"~"park|sports_centre|playground"](around:${radiusMeters},${location.lat},${location.lng});
-        node["amenity"~"theatre|cinema|library|community_centre|restaurant|cafe|fast_food"](around:${radiusMeters},${location.lat},${location.lng});
-        node["tourism"~"museum|gallery|attraction"](around:${radiusMeters},${location.lat},${location.lng});
-      );
-      out body;
-    `;
+    // Check cache
+    const cacheKey = `${location.lat.toFixed(4)}_${location.lng.toFixed(4)}_${radius}_${categories.sort().join(',')}`;
+    const cached = SEARCH_CACHE.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < CACHE_TTL) {
+        console.log(`[search] Serving from cache: ${cacheKey}`);
+        return res.json(cached.data);
+    }
 
-        let activities = [];
+    try {       // Run both fetches concurrently
+        const [overpassResults, tmResults] = await Promise.all([
+            fetchOverpassActivities(location, radius, categories),
+            fetchTicketmasterActivities(location, radius, categories)
+        ]);
 
-        try {
-            const response = await fetch(OVERPASS_API, {
-                method: 'POST',
-                body: query,
-            });
-
-            if (!response.ok) {
-                const text = await response.text();
-                // Rate limited or other error? Log and throw to trigger fallback
-                console.warn(`Overpass API unavailable (${response.status}):`, text);
-                throw new Error(`Overpass API unavailable: ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            if (data.elements && data.elements.length > 0) {
-                activities = data.elements.slice(0, 50).map((poi, index) => {
-                    // ... (mapping logic same as before)
-                    const name = poi.tags?.name || 'Local Activity';
-                    const leisure = poi.tags?.leisure;
-                    const amenity = poi.tags?.amenity;
-                    const tourism = poi.tags?.tourism;
-                    const cuisine = poi.tags?.cuisine;
-
-                    let category = 'Outdoor';
-                    let keywords = [];
-
-                    if (amenity === 'restaurant' || amenity === 'cafe' || amenity === 'fast_food') {
-                        category = 'Food';
-                        keywords = ['food', 'restaurant', 'dining', cuisine || 'local'];
-                    } else if (tourism === 'museum' || tourism === 'gallery' || amenity === 'theatre' || amenity === 'library') {
-                        category = 'Cultural';
-                        keywords = ['culture', 'art', tourism || amenity || ''];
-                    } else if (leisure === 'sports_centre') {
-                        category = 'Sports';
-                        keywords = ['sports', 'fitness', 'exercise'];
-                    } else if (leisure === 'park' || leisure === 'playground') {
-                        category = 'Outdoor';
-                        keywords = ['park', 'outdoor', 'nature'];
-                    } else if (amenity === 'community_centre') {
-                        category = 'Family';
-                        keywords = ['community', 'family', 'events'];
-                    }
-
-                    const futureDate = new Date();
-                    futureDate.setDate(futureDate.getDate() + (index % 7) + 1);
-                    futureDate.setHours(10 + (index % 10), 0, 0, 0);
-
-                    const distance = calculateDistance(location.lat, location.lng, poi.lat, poi.lon);
-
-                    return {
-                        id: `osm-${poi.id}`,
-                        title: name,
-                        description: `Visit this ${tourism || leisure || amenity || 'location'} in your area. ${cuisine ? `Cuisine: ${cuisine}.` : ''} Check local listings for events and activities.`,
-                        date: futureDate.toISOString(),
-                        location: {
-                            lat: poi.lat,
-                            lng: poi.lon,
-                            address: poi.tags?.['addr:street'] || name
-                        },
-                        category,
-                        image: ensureActivityImage(poi, category),
-                        url: `https://www.openstreetmap.org/node/${poi.id}`,
-                        distance: distance,
-                        price: category === 'Food' ? 15 : 0,
-                        keywords
-                    };
-                });
-            }
-        } catch (apiError) {
-            console.log('Falling back to offline activities due to API error:', apiError.message);
-            // Use fallback data
-            activities = OFFLINE_ACTIVITIES.map(a => ({
-                ...a,
-                distance: calculateDistance(location.lat, location.lng, a.location.lat, a.location.lng)
-            }));
-        }
-
-        // Backend filtering
-        // Filter by radius
-        activities = activities.filter(a => a.distance <= radius);
-
-        // Filter by categories
-        if (categories && Array.isArray(categories) && categories.length > 0) {
-            activities = activities.filter(a => categories.includes(a.category));
-        }
-
-        // Sort by distance
+        // Combine and sort by distance
+        console.log(`[search] Overpass returned ${overpassResults.length} results, TM returned ${tmResults.length} results`);
+        const activities = [...overpassResults, ...tmResults];
         activities.sort((a, b) => a.distance - b.distance);
 
-        res.json(activities.slice(0, 30));
+        const finalResults = activities.slice(0, 30);
+        
+        // Save to cache
+        SEARCH_CACHE.set(cacheKey, { timestamp: Date.now(), data: finalResults });
+        
+        res.json(finalResults);
     } catch (error) {
         console.error('Backend search critical error:', error);
         res.status(500).json({ error: 'Failed to search activities' });

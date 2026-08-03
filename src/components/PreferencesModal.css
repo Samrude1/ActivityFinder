@@ -102,9 +102,9 @@ input:checked+.slider:before {
 }
 
 .slider.round {
-    border-radius: 24px;
+    border-radius: var(--radius-2xl);
 }
 
 .slider.round:before {
-    border-radius: 50%;
+    border-radius: var(--radius-full);
 }

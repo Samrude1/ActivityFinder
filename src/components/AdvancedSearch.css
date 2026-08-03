@@ -115,7 +115,7 @@
 
 .price-separator {
     color: var(--text-secondary);
-    margin-top: 20px;
+    margin-top: var(--space-lg);
 }
 
 .modal-actions {

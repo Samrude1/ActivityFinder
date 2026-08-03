@@ -49,7 +49,8 @@
         "paid": "Paid",
         "from": "From",
         "reviews": "reviews",
-        "add_to_list": "Add to List"
+        "add_to_list": "Add to List",
+        "seeMore": "See More"
     },
     "tiers": {
         "free": "Free",

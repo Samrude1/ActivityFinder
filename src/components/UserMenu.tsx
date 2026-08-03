@@ -94,8 +94,8 @@ export default function UserMenu() {
                         )}
                     </>
                 ) : (
-                    <button className="login-btn" onClick={() => setShowAuthModal(true)}>
-                        {t('auth.login_signup', 'Login / Sign Up')}
+                    <button className="login-btn-black-pill" onClick={() => setShowAuthModal(true)}>
+                        Sign in
                     </button>
                 )}
             </div>

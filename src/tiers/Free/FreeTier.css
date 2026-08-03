@@ -17,8 +17,8 @@
 
 .upgrade-modal-content {
     background: var(--bg-card, #ffffff);
-    padding: 2rem;
-    border-radius: 16px;
+    padding: var(--space-xl);
+    border-radius: var(--radius-xl);
     width: 90%;
     max-width: 400px;
     text-align: center;
@@ -29,19 +29,19 @@
 
 .upgrade-icon {
     font-size: 3rem;
-    margin-bottom: 1rem;
+    margin-bottom: var(--space-md);
     background: var(--primary-light, #e3f2fd);
     width: 80px;
     height: 80px;
     line-height: 80px;
-    border-radius: 50%;
+    border-radius: var(--radius-full);
     margin: 0 auto 1.5rem;
 }
 
 .limit-info {
     background: var(--bg-secondary, #f5f5f5);
     padding: 0.75rem;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     margin: 1.5rem 0;
     display: flex;
     justify-content: space-between;
@@ -75,8 +75,8 @@
     background: var(--primary-gradient, linear-gradient(135deg, #1976d2 0%, #1565c0 100%));
     color: white;
     border: none;
-    padding: 1rem;
-    border-radius: 8px;
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
     font-weight: 600;
     cursor: pointer;
     transition: transform 0.2s;
@@ -102,22 +102,22 @@
 
 /* Limit Banners */
 .search-limit-banner {
-    background: #fff3e0;
+    background-color: var(--bg-card)3e0;
     border: 1px solid #ffe0b2;
-    color: #ef6c00;
+    color: var(--secondary);
     padding: 0.5rem 1rem;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: var(--space-md);
     font-size: 0.9rem;
 }
 
 .limit-badge-pill {
     background: var(--bg-secondary);
     padding: 0.25rem 0.75rem;
-    border-radius: 20px;
+    border-radius: var(--radius-2xl);
     font-size: 0.8rem;
     color: var(--text-secondary);
     display: inline-flex;

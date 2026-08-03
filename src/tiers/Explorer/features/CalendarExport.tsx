@@ -73,19 +73,19 @@ export default function CalendarExport({ activities, buttonStyle, className }: C
                 .export-btn {
                     display: flex;
                     align-items: center;
-                    gap: 8px;
-                    padding: 8px 16px;
-                    background-color: #fff;
+                    gap: var(--space-sm);
+                    padding: var(--space-sm) 16px;
+                    background-color: var(--bg-card);
                     border: 1px solid #e2e8f0;
-                    border-radius: 6px;
-                    color: #4a5568;
+                    border-radius: var(--radius-sm);
+                    color: var(--text-secondary);
                     font-size: 0.9rem;
                     cursor: pointer;
                     transition: all 0.2s;
                 }
                 .export-btn:hover:not(:disabled) {
                     background-color: #f7fafc;
-                    border-color: #cbd5e0;
+                    border-color: var(--border-color);
                 }
                 .export-btn:disabled {
                     opacity: 0.7;
@@ -98,16 +98,16 @@ export default function CalendarExport({ activities, buttonStyle, className }: C
                     position: absolute;
                     top: 100%;
                     right: 0;
-                    background: #fff5f5;
+                    background-color: var(--bg-card)5f5;
                     border: 1px solid #feb2b2;
-                    color: #c53030;
-                    padding: 4px 8px;
-                    border-radius: 4px;
+                    color: var(--danger);
+                    padding: var(--space-xs) 8px;
+                    border-radius: var(--radius-xs);
                     font-size: 0.8rem;
                     display: flex;
                     align-items: center;
-                    gap: 4px;
-                    margin-top: 4px;
+                    gap: var(--space-xs);
+                    margin-top: var(--space-xs);
                     z-index: 10;
                     white-space: nowrap;
                 }

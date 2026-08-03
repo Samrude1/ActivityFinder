@@ -1,19 +1,15 @@
-import { useState, useEffect } from 'react';
-import type { Activity, Category, Location } from '../types';
+import { useState, useEffect, useRef } from 'react';
+import type { Activity, Location, Category } from '../types';
+
 import { searchActivities } from '../services/activityService';
 import { getCurrentLocation } from '../services/geolocation';
-import { geocodeAddress } from '../services/geocoding';
 import { getFavoriteIds, addFavorite, removeFavorite, isFavorite } from '../services/storage';
 import { useAuth } from '../contexts/AuthContext';
+import Header from './Header';
 import ActivityCard from './ActivityCard';
 import MapView from './MapView';
 import BottomNavigation from './BottomNavigation';
-import SettingsMenu from './SettingsMenu';
-import UserMenu from './UserMenu';
-import SkeletonCard from './SkeletonCard';
-import AdBanner from './AdBanner';
 import AdvancedFilters, { FilterState } from '../tiers/Explorer/features/AdvancedFilters';
-import ActivitySearch from '../tiers/Free/features/ActivitySearch';
 import UpgradePrompt from '../tiers/Free/features/UpgradePrompt';
 import HomeCustomLists from '../tiers/Explorer/features/HomeCustomLists';
 import { freeAPI } from '../services/api';
@@ -22,12 +18,11 @@ import './HomePage.css';
 type ViewMode = 'list' | 'map';
 
 import { usePageTitle } from '../hooks/usePageTitle';
-import LanguageSwitcher from './LanguageSwitcher';
-import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 
 export default function HomePage() {
     usePageTitle('Home');
-    const { t } = useTranslation();
+    const navigate = useNavigate();
     const { user } = useAuth();
     const [viewMode, setViewMode] = useState<ViewMode>('list');
     const [activities, setActivities] = useState<Activity[]>([]);
@@ -35,9 +30,9 @@ export default function HomePage() {
     const [userLocation, setUserLocation] = useState<Location | null>(null);
     const [selectedCategories, setSelectedCategories] = useState<Category[]>([]);
     const [favorites, setFavorites] = useState<string[]>([]);
-    const [priceFilter, setPriceFilter] = useState<'all' | 'free' | 'paid'>('all');
+    const [priceFilter] = useState<'all' | 'free' | 'paid'>('all');
     const [searchQuery, setSearchQuery] = useState('');
-    const [searching, setSearching] = useState(false);
+    const [searching] = useState(false);
     const [radius, setRadius] = useState(25);
     const [showAdvancedFilters, setShowAdvancedFilters] = useState(false);
     const [advancedFilters, setAdvancedFilters] = useState<FilterState>({
@@ -46,8 +41,14 @@ export default function HomePage() {
         accessibility: []
     });
     const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-    const categories: Category[] = ['Outdoor', 'Cultural', 'Sports', 'Music', 'Food', 'Family'];
+    const handleHorizontalScroll = (direction: 'left' | 'right') => {
+        if (scrollContainerRef.current) {
+            const amount = scrollContainerRef.current.clientWidth + 24; // Scroll by full width + gap
+            scrollContainerRef.current.scrollBy({ left: direction === 'left' ? -amount : amount, behavior: 'smooth' });
+        }
+    };
 
     useEffect(() => {
         getCurrentLocation().then(loc => {
@@ -97,7 +98,7 @@ export default function HomePage() {
                         : { min: 1, max: 1000 },
                 minRating: advancedFilters.minRating,
                 accessibility: advancedFilters.accessibility,
-            }, user?.tier)
+            })
                 .then(setActivities)
                 .finally(() => setLoading(false));
         }
@@ -121,17 +122,7 @@ export default function HomePage() {
         const queryToUse = typeof queryOverride === 'string' ? queryOverride : searchQuery;
         if (!queryToUse.trim()) return;
 
-        setSearching(true);
-        const location = await geocodeAddress(queryToUse.trim());
-
-        if (location) {
-            setUserLocation(location);
-            setSearchQuery(location.address);
-        } else {
-            alert('Location not found! Staying at current location.');
-            setSearchQuery(userLocation?.address || ''); // Reset to last valid address
-        }
-        setSearching(false);
+        navigate(`/search?q=${encodeURIComponent(queryToUse.trim())}`);
     };
 
     const handleSearchKeyPress = (e: React.KeyboardEvent) => {
@@ -140,233 +131,180 @@ export default function HomePage() {
         }
     };
 
-    const featuredActivity = activities[0];
-    const displayActivities = activities.slice(1)
-        .filter(act => {
-            if (priceFilter === 'free') return act.price === 0;
-            if (priceFilter === 'paid') return (act.price || 0) > 0;
-            return true;
-        });
-
     return (
         <div className="home-page">
-            {/* Header */}
-            <header className="home-header">
-                <div className="container">
-                    <div className="header-top">
-                        <div className="greeting">
-                            <h1 className="greeting-text">
-                                Hello, {user?.username || 'Explorer'} 👋
-                            </h1>
-                            <p className="greeting-subtitle">{t('home.hero.subtitle')}</p>
-                        </div>
-                        <div className="header-actions">
-                            <LanguageSwitcher />
-                            <UserMenu />
-                            <SettingsMenu
-                                onViewModeChange={setViewMode}
-                                currentViewMode={viewMode}
-                                favoritesCount={favorites.length}
-                            />
-                        </div>
-                    </div>
+            <Header
+                viewMode={viewMode}
+                onViewModeChange={setViewMode}
+            />
 
-                    {/* Search Bar */}
-                    {user?.tier === 'free' ? (
-                        <ActivitySearch
-                            onSearch={(query) => {
-                                setSearchQuery(query);
-                                handleSearchLocation(query);
-                            }}
-                            searching={searching}
-                            val={searchQuery}
-                        />
-                    ) : (
-                        /* Standard Search Bar */
-                        <div className="search-bar-container">
-                            <div className="search-input-wrapper">
-                                <span className="search-icon">🔍</span>
-                                <input
-                                    type="text"
-                                    placeholder={t('home.search.placeholder')}
-                                    value={searchQuery}
-                                    onChange={(e) => setSearchQuery(e.target.value)}
-                                    onClick={() => setSearchQuery('')}
-                                    onKeyPress={handleSearchKeyPress}
-                                    className="search-input"
-                                />
-                            </div>
-
-                            <button
-                                className="search-btn secondary"
-                                onClick={() => setShowAdvancedFilters(true)}
-                                title="Advanced Filters"
-                            >
-                                ⚡
-                            </button>
-
-
-
-                            <button
-                                className="search-btn"
-                                onClick={() => handleSearchLocation()}
-                                disabled={searching}
-                            >
-                                {searching ? '...' : t('home.search.button')}
-                            </button>
-                        </div>
-                    )}
-
+            {/* Main Content */}
+            <main>
+                <div className="IdADx mvTrV cyIij fluiI SMjpI Iwmxp"></div>
+                <div className="IgMIB j c"></div>
+                <div className="IdADx mvTrV cyIij fluiI SMjpI Iwmxp">
+                    <div className="oTFBM _T"></div>
                 </div>
-            </header>
+                <div className="mKXaY f e dTtOG TFSSL" data-test-target="feed">
+                    <div className="home-content">
+                        <div className="container">
 
-            <main className="home-content">
-                <div className="container">
-                    {/* Category Pills */}
-                    <section className="categories-section">
-                        <div className="category-pills">
-                            {categories.map((category) => (
-                                <button
-                                    key={category}
-                                    onClick={() => {
-                                        setSelectedCategories(prev =>
-                                            prev.includes(category)
-                                                ? prev.filter(c => c !== category)
-                                                : [...prev, category]
-                                        );
-                                    }}
-                                    className={`category-pill ${selectedCategories.includes(category) ? 'active' : ''}`}
-                                >
-                                    {t(`home.categories.${category.toLowerCase()}`)}
-                                </button>
-                            ))}
-                        </div>
-                    </section>
+                            {/* Tripadvisor Hero Section */}
+                            <section className="hero-section">
+                                <h1 className="hero-title">Where to?</h1>
 
-                    {/* Custom Lists (Explorer Feature) */}
-                    {user?.tier === 'explorer' && !loading && viewMode === 'list' && (
-                        <HomeCustomLists />
-                    )}
-
-                    {/* Loading State */}
-                    {loading ? (
-                        <div className="loading-container" style={{ display: 'block' }}>
-                            <div className="activities-grid">
-                                {[...Array(6)].map((_, i) => (
-                                    <SkeletonCard key={i} />
-                                ))}
-                            </div>
-                        </div>
-                    ) : viewMode === 'map' ? (
-                        /* Map View */
-                        <section className="map-section">
-                            <div className="map-controls" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-                                <button
-                                    className="main-button"
-                                    onClick={() => setViewMode('list')}
-                                >
-                                    ← Main
-                                </button>
-                                <div className="radius-selector" style={{ position: 'relative' }}>
-                                    <select
-                                        value={radius}
-                                        onChange={(e) => setRadius(Number(e.target.value))}
-                                        className="radius-select"
-                                        style={{
-                                            padding: '0.5rem 1rem',
-                                            borderRadius: 'var(--radius-full)',
-                                            border: '1px solid var(--border-color)',
-                                            backgroundColor: 'var(--bg-secondary)',
-                                            appearance: 'none',
-                                            paddingRight: '2rem',
-                                            cursor: 'pointer'
-                                        }}
-                                    >
-                                        <option value={10}>10 km</option>
-                                        <option value={25}>25 km</option>
-                                        <option value={50}>50 km</option>
-                                        <option value={100}>100 km</option>
-                                    </select>
-                                    <span style={{ position: 'absolute', right: '0.8rem', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--text-tertiary)', fontSize: '0.8rem' }}>▼</span>
+                                <div className="search-tabs">
+                                    <button className="search-tab active">
+                                        <span className="tab-icon">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                                        </span>
+                                        <span className="tab-text">Search All</span>
+                                    </button>
+                                    <button className="search-tab" onClick={() => navigate('/hotels')}>
+                                        <span className="tab-icon">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 17H2a3 3 0 0 0 3-3V9a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v5a3 3 0 0 0 3 3zm-8-5.5v2m-4-2v2"></path></svg>
+                                        </span>
+                                        <span className="tab-text">Hotels</span>
+                                    </button>
+                                    <button className="search-tab" onClick={() => navigate('/things-to-do')}>
+                                        <span className="tab-icon">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="3"></circle></svg>
+                                        </span>
+                                        <span className="tab-text">Things to Do</span>
+                                    </button>
+                                    <button className="search-tab" onClick={() => navigate('/restaurants')}>
+                                        <span className="tab-icon">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                                        </span>
+                                        <span className="tab-text">Restaurants</span>
+                                    </button>
+                                    <button className="search-tab" onClick={() => navigate('/cruises')}>
+                                        <span className="tab-icon">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+                                        </span>
+                                        <span className="tab-text">Cruises</span>
+                                    </button>
                                 </div>
-                            </div>
-                            <MapView
-                                activities={activities}
-                                userLocation={userLocation}
-                                favorites={favorites}
-                                onToggleFavorite={handleToggleFavorite}
-                                radius={radius}
-                            />
-                        </section>
-                    ) : (
-                        /* List View */
-                        <>
-                            {featuredActivity && (
-                                <section className="featured-section">
-                                    <h2 className="section-title">{t('home.sections.featured')}</h2>
-                                    <ActivityCard
-                                        activity={featuredActivity}
-                                        isFavorite={favorites.includes(featuredActivity.id)}
-                                        onToggleFavorite={handleToggleFavorite}
-                                        featured
-                                    />
-                                </section>
-                            )}
 
-                            {/* All Activities Grid */}
-                            {displayActivities.length > 0 ? (
-                                <section className="all-activities-section">
+                                <div className="tripadvisor-search-pill">
+                                    <span className="search-icon-large">
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                                    </span>
+                                    <input
+                                        type="text"
+                                        className="search-input-large"
+                                        placeholder="Places to go, things to do, hotels..."
+                                        value={searchQuery}
+                                        onChange={(e) => setSearchQuery(e.target.value)}
+                                        onClick={() => setSearchQuery('')}
+                                        onKeyPress={handleSearchKeyPress}
+                                    />
+                                    <button
+                                        className="search-btn-large"
+                                        onClick={() => handleSearchLocation()}
+                                        disabled={searching}
+                                    >
+                                        {searching ? '...' : 'Search'}
+                                    </button>
+                                </div>
+                            </section>
+
+                            {/* Essential Location Section */}
+                            {viewMode === 'list' && (
+                                <section className="essential-location-section">
                                     <div className="section-header">
-                                        <h2 className="section-title">
-                                            {selectedCategories.length > 0
-                                                ? selectedCategories.map(c => t(`home.categories.${c.toLowerCase()}`)).join(', ')
-                                                : t('home.categories.all')}
-                                        </h2>
-                                        <span className="activity-count">{displayActivities.length} found</span>
+                                        <h2 className="section-title">Explore Essential Locations</h2>
+                                        <p className="section-subtitle">Real-time picks near {userLocation?.address || 'you'} based on your interests</p>
                                     </div>
-                                    <AdBanner />
-                                    <div className="activities-grid">
-                                        {displayActivities.map((activity) => (
-                                            <ActivityCard
-                                                key={activity.id}
-                                                activity={activity}
-                                                isFavorite={favorites.includes(activity.id)}
-                                                onToggleFavorite={handleToggleFavorite}
-                                            />
+                                    
+                                    <div className="category-pills-scroll">
+                                        {['Outdoors', 'Food', 'Museums', 'Arts & theater', 'Nightlife', 'Family friendly', 'Hidden gems', 'Essentials'].map(cat => (
+                                            <button
+                                                key={cat}
+                                                className={`category-pill ${selectedCategories.includes(cat as Category) ? 'active' : ''}`}
+                                                onClick={() => setSelectedCategories(prev => prev.includes(cat as Category) ? prev.filter(c => c !== cat) : [...prev, cat as Category])}
+                                            >
+                                                {cat}
+                                            </button>
                                         ))}
                                     </div>
+
+                                    {loading ? (
+                                        <div style={{ padding: '2rem', textAlign: 'center', width: '100%' }}>Loading activities...</div>
+                                    ) : activities.length === 0 ? (
+                                        <div style={{ padding: '2rem', textAlign: 'center', width: '100%' }}>No activities found in this area.</div>
+                                    ) : (
+                                        <div className="essential-grid">
+                                            {activities.map((activity) => (
+                                                <ActivityCard
+                                                    key={activity.id}
+                                                    activity={activity}
+                                                    isFavorite={favorites.includes(activity.id)}
+                                                    onToggleFavorite={handleToggleFavorite}
+                                                />
+                                            ))}
+                                        </div>
+                                    )}
                                 </section>
-                            ) : (
-                                <div className="empty-state">
-                                    <div className="empty-icon">🔍</div>
-                                    <h3>{t('common.no_results')}</h3>
-                                    <p>Try adjusting your filters or location</p>
-                                </div>
                             )}
 
-                            {/* Price selection toggle */}
-                            <div className="price-filter-container">
-                                <button
-                                    onClick={() => setPriceFilter('free')}
-                                    className={`price-filter-btn ${priceFilter === 'free' ? 'active' : ''}`}
-                                >
-                                    {t('tiers.free')}
-                                </button>
-                                <button
-                                    onClick={() => setPriceFilter('paid')}
-                                    className={`price-filter-btn ${priceFilter === 'paid' ? 'active' : ''}`}
-                                >
-                                    {t('card.paid')}
-                                </button>
-                                <button
-                                    onClick={() => setPriceFilter('all')}
-                                    className={`price-filter-btn ${priceFilter === 'all' ? 'active' : ''}`}
-                                >
-                                    {t('home.categories.all')}
-                                </button>
-                            </div>
-                        </>
-                    )}
+                            {/* Iconic Places and Travelers Choice sections removed for a cleaner real-time experience */}
+
+                            {/* Custom Lists (Explorer Feature) */}
+                            {user?.tier === 'explorer' && !loading && viewMode === 'list' && (
+                                <HomeCustomLists />
+                            )}
+
+                            {/* Loading State Removed */}
+                            {viewMode === 'map' ? (
+                                /* Map View */
+                                <section className="map-section">
+                                    <div className="map-controls" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                                        <button
+                                            className="main-button"
+                                            onClick={() => setViewMode('list')}
+                                        >
+                                            ← Main
+                                        </button>
+                                        <div className="radius-selector" style={{ position: 'relative' }}>
+                                            <select
+                                                value={radius}
+                                                onChange={(e) => setRadius(Number(e.target.value))}
+                                                className="radius-select"
+                                                style={{
+                                                    padding: '0.5rem 1rem',
+                                                    borderRadius: 'var(--radius-full)',
+                                                    border: '1px solid var(--border-color)',
+                                                    backgroundColor: 'var(--bg-secondary)',
+                                                    appearance: 'none',
+                                                    paddingRight: '2rem',
+                                                    cursor: 'pointer'
+                                                }}
+                                            >
+                                                <option value={10}>10 km</option>
+                                                <option value={25}>25 km</option>
+                                                <option value={50}>50 km</option>
+                                                <option value={100}>100 km</option>
+                                            </select>
+                                            <span style={{ position: 'absolute', right: '0.8rem', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--text-tertiary)', fontSize: '0.8rem' }}>▼</span>
+                                        </div>
+                                    </div>
+                                    <MapView
+                                        activities={activities}
+                                        userLocation={userLocation}
+                                        favorites={favorites}
+                                        onToggleFavorite={handleToggleFavorite}
+                                        radius={radius}
+                                    />
+                                </section>
+                            ) : (
+                                /* List View */
+                                <>
+                                    {/* Price selection toggle - Hidden or removed based on user request to remove activities */}
+                                </>
+                            )}
+                        </div>
+                    </div>
                 </div>
             </main>
 

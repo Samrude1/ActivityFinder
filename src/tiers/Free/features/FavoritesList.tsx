@@ -93,20 +93,20 @@ export default function FavoritesList() {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
-                    padding: 1rem;
-                    background: #fff;
-                    margin-bottom: 3rem;
+                    padding: var(--space-md);
+                    background-color: var(--bg-card);
+                    margin-bottom: var(--space-2xl);
                     border-bottom: 1px solid #eee;
                 }
                 .favorites-grid {
                     display: grid;
                     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-                    gap: 1rem;
-                    padding: 1rem;
+                    gap: var(--space-md);
+                    padding: var(--space-md);
                 }
                 .favorite-item-card {
-                    background: #fff;
-                    border-radius: 12px;
+                    background-color: var(--bg-card);
+                    border-radius: var(--radius-lg);
                     overflow: hidden;
                     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
                 }
@@ -116,7 +116,7 @@ export default function FavoritesList() {
                     background-position: center;
                 }
                 .fav-content {
-                    padding: 1rem;
+                    padding: var(--space-md);
                 }
             `}</style>
 

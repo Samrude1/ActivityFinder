@@ -1,0 +1,292 @@
+/* Raw Tripadvisor Globals Requested by User */
+@media (min-width: 768px) {
+    .mKXaY {
+        gap: var(--_ZRwsK5rk);
+    }
+}
+
+.mKXaY {
+    gap: var(--_YKtatyPM);
+    overflow: clip;
+}
+
+.TFSSL {
+    margin-bottom: var(--gap-80);
+}
+
+.dTtOG {
+    margin-top: var(--gap-80);
+}
+
+.f {
+    display: flex;
+}
+
+.e {
+    flex-direction: column;
+}
+
+div {
+    display: block;
+    unicode-bidi: isolate;
+}
+
+html body {
+    font-family: var(--ta-sans-serif) !important;
+}
+
+body {
+    font-family: Arial, Tahoma, Bitstream Vera Sans, sans-serif;
+    font-size: medium;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: var(--scheme-on-surface);
+}
+
+:root {
+    --_ZRwsK5rk: var(--gap-100);
+    --_YKtatyPM: var(--gap-80);
+    --_Jr5RXLDz: var(--gap-20);
+    --_ywbSF15z: 272px;
+    --_c8kFmaDK: 174px;
+    --_iG5armqS: 72px;
+    --_mqZpjb6h: 350px;
+    --_8ivMYYGo: 250px;
+    --_36LVmM18: 300px;
+    --_vZgyv6nd: 24px;
+    --_dpMuS8qn: calc(var(--page-margin) * -1);
+    --_FAombXcw: 14px;
+    --_WuPLMLa2: 16px;
+    --_efKceQhV: 12px;
+    --_boa9i4Dc: var(--gap-30);
+    --_5Agizrmf: var(--gap-10);
+    --_b46EY5is: 320px;
+    --_tfL2j4WZ: transform 0.5s, opacity 0.5s;
+    --_LTJGXU6h: var(--gap-60);
+    --_XcP8xrmW: var(--gap-70);
+    --_awRAVAAk: var(--gap-80);
+    --_E3BWYrkJ: 88px;
+    --_Ayv45mFB: 10%;
+    --_CpGr2LgB: 0px;
+    --_dAkFVm1x: "\00d7";
+    --_mj3tsRHP: 1px solid var(--scheme-outline-variant);
+    --_XdPBxLjR: var(--grid-spacing);
+    --_HXg7yZWK: 272px;
+    --_rtjQqU8p: 258px;
+    --_2NGSuyGh: var(--grid-spacing);
+    --_1EVSVhRc: var(--grid-spacing);
+    --_UZVUuw85: var(--gap-10);
+    --_GdLzVsEF: calc(var(--page-margin) * -1);
+    --_Zm8sc1KT: 1 / 1;
+    --_YzxiEciZ: 4 / 3;
+    --_29yhURqb: 16 / 9;
+    --_bQtMADA4: 7 / 3;
+    --_AjuBenqy: var(--_Zm8sc1KT);
+    --_zE9Qchqb: "\00d7";
+    --_d5zSybZN: 9.89949494px;
+    --_dxCQPHJm: 16.97056275px;
+    --_GCcAR3Df: 12px;
+    --_B1n3wdwr: 10103;
+    --_m8RLcXbW: 11000;
+    --_XyucBkPz: 500;
+    --_xZDANQv2: 16px;
+    --_o7r1ES1h: 20px;
+    --_VyppNrQp: 24px;
+    --_MxiuncHU: 32px;
+    --_rywoRo2g: 2px;
+    --_EKz6JFtU: 3px;
+    --_AygGUVde: 3px;
+    --_8vBV2Kvi: 4px;
+    --_F5Pn1jK7: var(--gap-05);
+    --_LGcsk3ta: var(--gap-10);
+    --_NUnZJXBj: var(--gap-20);
+    --_sNSunR4o: var(--gap-30);
+    --_iD5qWa4p: var(--gap-40);
+    --_aXiW5pzT: var(--gap-60);
+    --_gi3V9EjD: var(--radiusSmall, 0.25rem);
+    --_PueiuEQz: var(--radiusMedium, 0.375rem);
+    --_ND7LZeqS: var(--radiusLarge, 0.5rem);
+    --_HGwrdeEU: var(--radiusXl, 0.75rem);
+    --_87yinuJy: var(--radiusFullRounded, 50%);
+    --grid-spacing: 16px;
+    --page-margin: 24px;
+    --max-content-width: 1136px;
+
+    --logo-secondary-container-fixed: #00eb5b;
+    --logo-tertiary-container-fixed: #ffef0e;
+    --map-pin-anchor-container-fixed: #676000;
+    --map-pin-anchor-on-container-fixed: #000;
+    --status-warning: #fff7c2;
+    --status-on-warning: #595420;
+    --logo-primary-symbol-fixed: #000;
+    --logo-primary-container-fixed: #fff;
+    --logo-on-primary-container-fixed: #000;
+    --logo-on-secondary-container-fixed: #000;
+    --category-bar-container: #00852f;
+    --category-bar-on-container: #fff;
+    --logo-on-tertiary-container-fixed: #000;
+    --logo-primary-wordmark: #000;
+    --logo-inverse-primary-wordmark: #fff;
+    --image-label-container-fixed: #000;
+    --image-label-on-container-fixed: #f7f7f7;
+    --map-badge-favorite-container-fixed: #fb5184;
+    --map-badge-on-favorite-container-fixed: #fff;
+    --map-on-surface: #000;
+    --map-badge-rating-container-fixed: #003911;
+    --map-outline: #fff;
+    --map-badge-on-rating-container-fixed: #fff;
+    --map-badge-check-container-fixed: #fff;
+    --map-badge-on-check-container-fixed: #000;
+    --map-badge-outline-fixed: #fff;
+    --map-award-outline-fixed: #fff;
+    --map-pin-anchor-outline-fixed: #000;
+    --map-pin-non-result-favorite-container: #fb5184;
+    --map-pin-non-result-product-container: #768a79;
+    --map-pin-non-result-inverse-outline: #fff;
+    --map-pin-result-minimized-generic-container-fixed: #002107;
+    --map-pin-result-minimized-favorite-container-fixed: #fb5184;
+    --map-pin-result-minimized-on-favorite-container-fixed: #fff;
+    --map-pin-result-minimized-outline-fixed: #fff;
+    --map-pin-result-maximized-default-container-fixed: #002107;
+    --map-pin-result-maximized-on-default-container-fixed: #fff;
+    --map-pin-result-maximized-default-outline-fixed: #fff;
+    --map-pin-result-maximized-active-container-fixed: #fff;
+    --map-pin-result-maximized-on-active-container-fixed: #002107;
+    --map-pin-result-maximized-active-outline-fixed: #002107;
+    --map-pin-result-maximized-landmark-active-container-fixed: #002107;
+    --map-pin-result-maximized-landmark-active-outline-fixed: #002107;
+    --partnerships-michelin-primary-fixed: #bd2333;
+    --partnerships-michelin-on-primary-fixed: #f6f6f6;
+    --partnerships-michelin-secondary-fixed: #3c3c3b;
+    --partnerships-michelin-on-secondary-fixed: #f6f6f6;
+    --partnerships-michelin-tertiary-fixed: #fce500;
+    --partnerships-michelin-on-tertiary-fixed: #3c3c3b;
+
+    --marketing-maroon-flush: #ff96ac;
+    --marketing-on-maroon-flush: #580022;
+    --marketing-cerise-red: #ff6891;
+    --marketing-on-cerise-red: #25000a;
+    --marketing-persian-red: #da333a;
+    --marketing-on-persian-red: #fff;
+    --marketing-ochre: #ffa44e;
+    --marketing-on-ochre: #462300;
+    --marketing-tia-maria: #ff8256;
+    --marketing-on-tia-maria: #370b00;
+    --marketing-christine: #bf5500;
+    --marketing-on-christine: #fff;
+    --marketing-wattle: #fffe9b;
+    --marketing-on-wattle: #585800;
+    --marketing-trip-yellow: #ffef0e;
+    --marketing-on-trip-yellow: #565000;
+    --marketing-sunflower: #e1d313;
+    --marketing-on-sunflower: #423d00;
+    --marketing-atlantis: #dbff91;
+    --marketing-on-atlantis: #3f5900;
+    --marketing-trip-rewards: #b2ff1a;
+    --marketing-sulu: #aad816;
+    --marketing-on-sulu: #2d3c00;
+    --marketing-malachite: #a2ffa4;
+    --marketing-on-malachite: #00591c;
+    --marketing-trip-green: #00eb5b;
+    --marketing-trip-pine: #002b11;
+    --marketing-trip-moss: #00ab42;
+    --marketing-on-trip-moss: #001b05;
+    --marketing-jungle-green: #b4ffec;
+    --marketing-on-jungle-green: #005b4e;
+    --marketing-caribbean-green: #32f5c5;
+    --marketing-on-caribbean-green: #004d3b;
+    --marketing-turquoise: #23e0c3;
+    --marketing-on-turquoise: #003f36;
+    --marketing-charlotte: #adf4ff;
+    --marketing-on-charlotte: #00545c;
+    --marketing-pelorous: #81edff;
+    --marketing-on-pelorous: #004d56;
+    --marketing-scooter: #26d0ef;
+    --marketing-on-scooter: #003640;
+    --marketing-cornflower: #a8d5ff;
+    --marketing-on-cornflower: #004064;
+    --marketing-jordy-blue: #73b2ff;
+    --marketing-on-jordy-blue: #002546;
+    --marketing-science-blue: #0073de;
+    --marketing-on-science-blue: #fff;
+    --marketing-melrose: #b6c2ff;
+    --marketing-on-melrose: #21306d;
+    --marketing-royal-blue: #5069e7;
+
+    --sub-brands-trip-rewards: #b2ff1a;
+    --sub-brands-trip-rewards-outline: #74a043;
+    --sub-brands-on-inverse-trip-rewards: #b2ff1a;
+    --sub-brands-inverse-trip-rewards-outline: #e9f0e1;
+    --trip-ai-fixed-hover: #7346ae;
+    --trip-ai-fixed-pressed: #663e9a;
+    --trip-ai-fixed-disabled: #ccb8e6;
+    --state-layer-outer-focused-fixed: #0000f5;
+    --state-layer-inner-focus-fixed: #fff;
+    --scheme-surface: #fff;
+    --scheme-on-surface: #002b11;
+    --scheme-on-surface-variant: #38443a;
+    --scheme-inverse-surface: #000;
+    --scheme-inverse-on-surface: #f7f7f7;
+    --scheme-surface-dim: #eaeaea;
+    --scheme-surface-bright: #fff;
+    --scheme-surface-container-lowest: #fcfcfc;
+    --scheme-surface-container-low: #f7f7f7;
+    --scheme-surface-container: #eaeaea;
+    --scheme-surface-container-high: #d7d6d6;
+    --scheme-surface-container-highest: #b9b7b7;
+    --scheme-primary: #002b11;
+    --scheme-on-primary: #f7f7f7;
+    --scheme-primary-container: #fff;
+    --scheme-on-primary-container: #002b11;
+    --scheme-inverse-primary: #dfe1df;
+    --scheme-primary-fixed: #fff;
+    --scheme-on-primary-fixed: #002b11;
+    --scheme-primary-fixed-dim: #f7f7f7;
+    --scheme-on-primary-fixed-variant: #455647;
+
+    --fixed-title-10: normal 700 18px / 22px "Trip Sans VF", "Trip Sans", arial, sans-serif;
+    --fixed-label-10: normal 700 12px / 16px "Trip Sans VF", "Trip Sans", arial, sans-serif;
+    --adaptive-display-30-small: normal 900 38px / 42px "Trip Sans VF", "Trip Sans", arial, sans-serif;
+    --adaptive-display-10-small: normal 900 28px / 31px "Trip Sans VF", "Trip Sans", arial, sans-serif;
+    --adaptive-title-40-small: normal 800 24px / 29px "Trip Sans VF", "Trip Sans", arial, sans-serif;
+    --adaptive-display-30-large: normal 900 62px / 68px "Trip Sans VF", "Trip Sans", arial, sans-serif;
+    --adaptive-display-10-large: normal 900 44px / 48px "Trip Sans VF", "Trip Sans", arial, sans-serif;
+    --adaptive-title-40-large: normal 800 28px / 34px "Trip Sans VF", "Trip Sans", arial, sans-serif;
+    --fixed-label-30: normal 700 16px / 21px "Trip Sans VF", "Trip Sans", arial, sans-serif;
+    --fixed-label-20: normal 700 14px / 18px "Trip Sans VF", "Trip Sans", arial, sans-serif;
+    --fixed-body-30: normal 400 16px / 24px "Trip Sans VF", "Trip Sans", arial, sans-serif;
+    --fixed-body-20: normal 400 14px / 18px "Trip Sans VF", "Trip Sans", arial, sans-serif;
+    --fixed-body-10: normal 400 12px / 16px "Trip Sans VF", "Trip Sans", arial, sans-serif;
+    --fixed-title-20: normal 800 20px / 24px "Trip Sans VF", "Trip Sans", arial, sans-serif;
+
+    --gap-05: 4px;
+    --gap-10: 8px;
+    --gap-20: 16px;
+    --gap-30: 24px;
+    --gap-40: 32px;
+    --gap-50: 40px;
+    --gap-60: 48px;
+    --gap-70: 56px;
+    --gap-80: 64px;
+    --gap-100: 80px;
+    --gap-120: 96px;
+    --gap-01: 2px;
+
+    --radius-small: 4px;
+    --radius-medium: 6px;
+    --radius-large: 8px;
+    --radius-xlarge: 12px;
+    --radius-full: 1000px;
+
+    --ta-sans-serif: "Trip Sans VF", "Trip Sans", Arial, sans-serif;
+    --ta-serif: Georgia, "Times New Roman", "Century Schoolbook L", serif;
+    --ta-monospace: "Trip Sans Mono", Courier, monospace, Arial, sans-serif;
+}
+
+@font-face {
+    font-display: swap;
+    font-family: 'Trip Sans VF';
+    font-variation-settings: "wght" 400;
+    font-weight: 400;
+    src: url(https://static.tacdn.com/css2/webfonts/TripSans/TripSans-VF.woff2?v1.002) format("woff2-variations");
+}

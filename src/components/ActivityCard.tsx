@@ -1,8 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import type { Activity } from '../types';
 import './ActivityCard.css';
-import { useAuth } from '../contexts/AuthContext';
-import { hasFeature } from '../config/tierConfig';
 import { useState } from 'react';
 import ListPickerModal from './ListPickerModal';
 import { useTranslation } from 'react-i18next';
@@ -20,9 +18,7 @@ export default function ActivityCard({
     onToggleFavorite,
     featured = false
 }: ActivityCardProps) {
-    const { user } = useAuth();
     const navigate = useNavigate();
-    const hasCustomLists = hasFeature(user?.tier, 'hasCustomLists');
     const [showListPicker, setShowListPicker] = useState(false);
     const { t } = useTranslation();
 
@@ -51,85 +47,46 @@ export default function ActivityCard({
                     className="activity-card-image"
                     loading={featured ? "eager" : "lazy"}
                 />
-                <div className="activity-card-overlay"></div>
 
-                <div className="activity-card-actions">
-                    <button
-                        className="activity-card-favorite"
-                        onClick={handleFavoriteClick}
-                        aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
-                    >
-                        {isFavorite ? '❤️' : '🤍'}
-                    </button>
+                <button
+                    className={`activity-card-favorite-circle ${isFavorite ? 'active' : ''}`}
+                    onClick={handleFavoriteClick}
+                    aria-label={isFavorite ? 'Remove from favorites' : 'Add to favorites'}
+                >
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="3" fill={isFavorite ? "currentColor" : "none"}>
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                </button>
+            </div>
 
-                    {hasCustomLists && (
-                        <button
-                            className="activity-card-list-add"
-                            onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                setShowListPicker(true);
-                            }}
-                            title="Add to Custom List"
-                        >
-                            ➕
-                        </button>
-                    )}
-                </div>
+            <div className="activity-card-content">
+                <div className="activity-card-badge">Likely To Sell Out</div>
+                <h3 className="activity-card-title">{activity.title}</h3>
 
-                <div className="activity-card-content">
-                    <h3 className="activity-card-title">{activity.title}</h3>
-
-                    {activity.rating && (
-                        <div className="activity-card-rating" style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '8px' }}>
-                            <span style={{ color: '#fbbf24' }}>{'⭐'.repeat(5)}</span>
-                            <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>{activity.rating.toFixed(1)}</span>
-                            <span style={{ color: 'var(--text-secondary)', fontSize: '0.9em' }}>({activity.reviewCount})</span>
+                {activity.rating && (
+                    <div className="activity-card-rating">
+                        <span className="rating-value">{Number(activity.rating).toFixed(1)}</span>
+                        <div className="rating-circles">
+                            {[1, 2, 3, 4, 5].map(star => (
+                                <span key={star} className={`rating-circle ${star <= Math.round(Number(activity.rating)) ? 'filled' : ''}`}></span>
+                            ))}
                         </div>
-                    )}
-
-                    {activity.reviewSnippet && (
-                        <p className="activity-card-review" style={{
-                            fontStyle: 'italic',
-                            fontSize: '0.9em',
-                            color: 'var(--text-secondary)',
-                            margin: '0 0 12px 0',
-                            display: '-webkit-box',
-                            WebkitLineClamp: 2,
-                            WebkitBoxOrient: 'vertical',
-                            overflow: 'hidden'
-                        }}>
-                            "{activity.reviewSnippet}"
-                        </p>
-                    )}
-
-                    <div className="activity-card-meta">
-                        {activity.price !== undefined && (
-                            <div className="activity-card-price">
-                                {activity.price === 0 ? (
-                                    <span className="price-free">{t('card.free')}</span>
-                                ) : (
-                                    <span className="price-paid-badge">{t('card.paid')}</span>
-                                )}
-                            </div>
-                        )}
+                        <span className="review-count">({activity.reviewCount})</span>
                     </div>
+                )}
 
-                    {activity.location && (
-                        <div className="activity-card-location">
-                            <span className="location-icon">📍</span>
-                            <span className="location-text">{activity.location.address}</span>
+                <div className="activity-card-bottom">
+                    {activity.price !== undefined && (
+                        <div className="activity-card-price-container">
+                            {activity.price === 0 ? (
+                                <span className="price-text">{t('card.free')}</span>
+                            ) : (
+                                <span className="price-text">from ${activity.price} per adult</span>
+                            )}
                         </div>
                     )}
                 </div>
             </div>
-
-            {featured && (
-                <button className="activity-card-cta">
-                    See more
-                    <span className="cta-arrow">→</span>
-                </button>
-            )}
 
             {showListPicker && (
                 <ListPickerModal

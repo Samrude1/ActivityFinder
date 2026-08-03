@@ -1,6 +1,6 @@
 /* Main Container */
 .activity-detail-page {
-    background-color: #ffffff;
+    background-color: var(--bg-card);
     min-height: 100vh;
     padding-bottom: 4rem;
     color: #000;
@@ -16,7 +16,7 @@
 .global-app-header {
     background: white;
     border-bottom: 1px solid #e0e0e0;
-    padding: 12px 24px;
+    padding: var(--space-md) 24px;
     font-family: 'Inter', sans-serif;
     position: sticky;
     top: 0;
@@ -29,20 +29,20 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 24px;
+    gap: var(--space-lg);
 }
 
 .header-brand {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-sm);
     cursor: pointer;
 }
 
 .brand-logo-circle {
     width: 32px;
     height: 32px;
-    border-radius: 50%;
+    border-radius: var(--radius-full);
     /* border: 2px solid #000; */
     display: flex;
     align-items: center;
@@ -66,13 +66,13 @@
 .header-search-pill {
     flex: 1;
     max-width: 400px;
-    background: #fff;
+    background-color: var(--bg-card);
     border: 1px solid #ccc;
-    border-radius: 24px;
+    border-radius: var(--radius-2xl);
     padding: 10px 16px;
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: var(--space-md);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     /* Subtle shadow like screenshot */
 }
@@ -99,13 +99,13 @@
 .header-right-actions {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: var(--space-lg);
 }
 
 .header-nav-links {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: var(--space-lg);
 }
 
 .nav-link {
@@ -122,7 +122,7 @@
 .header-tools {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: var(--space-md);
     font-weight: 700;
     font-size: 14px;
 }
@@ -130,7 +130,7 @@
 .tool-item {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-sm);
     cursor: pointer;
 }
 
@@ -144,7 +144,7 @@
     font-weight: 700;
     font-size: 14px;
     padding: 10px 24px;
-    border-radius: 24px;
+    border-radius: var(--radius-2xl);
     border: none;
     cursor: pointer;
     transition: background 0.2s;
@@ -162,14 +162,14 @@
 .activity-title {
     font-size: 32px;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: var(--space-sm);
     line-height: tight;
 }
 
 .activity-meta-line {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-sm);
     font-size: 14px;
     color: #333;
 }
@@ -201,10 +201,10 @@
     display: grid;
     grid-template-columns: 2fr 1fr;
     /* Main large image + side images */
-    gap: 4px;
+    gap: var(--space-xs);
     height: 400px;
     /* Fixed height for gallery */
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     overflow: hidden;
     margin-bottom: var(--space-xl);
 }
@@ -223,7 +223,7 @@
 .gallery-side {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: var(--space-xs);
     height: 100%;
 }
 
@@ -239,8 +239,8 @@
     bottom: 16px;
     right: 16px;
     background: white;
-    padding: 8px 16px;
-    border-radius: 20px;
+    padding: var(--space-sm) 16px;
+    border-radius: var(--radius-2xl);
     font-weight: 600;
     font-size: 14px;
     border: 1px solid #000;
@@ -255,20 +255,20 @@
     display: grid;
     grid-template-columns: 2fr 1fr;
     /* 2/3 Content, 1/3 Sidebar */
-    gap: 48px;
+    gap: var(--space-2xl);
 }
 
 /* Main Content Column */
 .main-content-column {
     display: flex;
     flex-direction: column;
-    gap: 32px;
+    gap: var(--space-xl);
 }
 
 /* Tabs */
 .content-tabs {
     display: flex;
-    gap: 32px;
+    gap: var(--space-xl);
     margin-bottom: -1px;
     /* Overlap border */
 }
@@ -292,13 +292,13 @@
 .tab-border {
     height: 1px;
     background-color: #e0e0e0;
-    margin-bottom: 32px;
+    margin-bottom: var(--space-xl);
 }
 
 .detail-section h2 {
     font-size: 24px;
     font-weight: 700;
-    margin-bottom: 16px;
+    margin-bottom: var(--space-md);
     color: #000;
     /* Dark Green Title if desired, using Black for now as per image */
 }
@@ -307,7 +307,7 @@
     line-height: 1.6;
     font-size: 16px;
     color: #333;
-    margin-bottom: 24px;
+    margin-bottom: var(--space-lg);
 }
 
 .read-more-link {
@@ -320,14 +320,14 @@
 .guarantees-list {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    margin-top: 24px;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
 }
 
 .guarantee-row {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
+    gap: var(--space-md);
 }
 
 .guarantee-icon {
@@ -349,13 +349,13 @@
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: 16px;
+    margin-bottom: var(--space-md);
 }
 
 .rating-summary {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-sm);
     font-size: 14px;
 }
 
@@ -367,25 +367,25 @@
 .reviews-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 24px;
+    gap: var(--space-lg);
 }
 
 .review-card {
     border: 1px solid #e0e0e0;
-    border-radius: 12px;
-    padding: 24px;
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
 }
 
 .reviewer-info {
     display: flex;
-    gap: 12px;
-    margin-bottom: 12px;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
 }
 
 .reviewer-avatar-img {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+    border-radius: var(--radius-full);
     background-color: #ddd;
     background-size: cover;
 }
@@ -404,7 +404,7 @@
     font-size: 14px;
     line-height: 1.5;
     color: #333;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-md);
     display: -webkit-box;
     -webkit-line-clamp: 3;
     line-clamp: 3;
@@ -422,20 +422,20 @@
 .divider-line {
     height: 1px;
     background-color: #e0e0e0;
-    margin: 32px 0;
+    margin: var(--space-xl) 0;
 }
 
 /* Bottom Features (Black Icons) */
 .bottom-features {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: var(--space-md);
 }
 
 .feature-row {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: var(--space-md);
     font-size: 16px;
     color: #333;
 }
@@ -448,7 +448,7 @@
 
 /* Accordion List */
 .accordion-list {
-    margin-top: 32px;
+    margin-top: var(--space-xl);
     border-top: 1px solid #e0e0e0;
 }
 
@@ -457,7 +457,7 @@
 }
 
 .accordion-item {
-    padding: 24px 0;
+    padding: var(--space-lg) 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -519,14 +519,14 @@
 
 .booking-card {
     background: white;
-    border-radius: 12px;
-    padding: 24px;
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
     /* Removed shadow to match flat clean look in screenshot if embedded, usually shadow is there but minimal */
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
 .price-header {
-    margin-bottom: 16px;
+    margin-bottom: var(--space-md);
 }
 
 .price-label {
@@ -546,31 +546,31 @@
     font-size: 16px;
     font-weight: 700;
     color: #000;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-md);
 }
 
 .booking-selectors {
     display: flex;
-    gap: 12px;
-    margin-bottom: 24px;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
 }
 
 /* Recommendations Sections */
 .recommendations-section {
-    margin-top: 48px;
-    margin-bottom: 32px;
+    margin-top: var(--space-2xl);
+    margin-bottom: var(--space-xl);
 }
 
 .recommendations-title {
     font-size: 24px;
     font-weight: 700;
-    margin-bottom: 24px;
+    margin-bottom: var(--space-lg);
     color: #000;
 }
 
 .cards-scroll-container {
     display: flex;
-    gap: 24px;
+    gap: var(--space-lg);
     overflow-x: auto;
     padding-bottom: 16px;
     /* Space for scrollbar */
@@ -589,9 +589,9 @@
     width: 100%;
     background-size: cover;
     background-position: center;
-    border-radius: 12px;
+    border-radius: var(--radius-lg);
     position: relative;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-md);
 }
 
 .rec-fav-btn {
@@ -600,7 +600,7 @@
     right: 12px;
     background: white;
     border: none;
-    border-radius: 50%;
+    border-radius: var(--radius-full);
     width: 32px;
     height: 32px;
     display: flex;
@@ -614,7 +614,7 @@
     font-size: 16px;
     font-weight: 700;
     line-height: 1.4;
-    margin-bottom: 8px;
+    margin-bottom: var(--space-sm);
     display: -webkit-box;
     -webkit-line-clamp: 2;
     line-clamp: 2;
@@ -625,15 +625,15 @@
 .rec-rating {
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: var(--space-xs);
     font-size: 12px;
-    margin-bottom: 4px;
+    margin-bottom: var(--space-xs);
 }
 
 .rec-category {
     font-size: 14px;
     color: #555;
-    margin-bottom: 8px;
+    margin-bottom: var(--space-sm);
 }
 
 .rec-price {
@@ -645,14 +645,14 @@
 .selector-btn {
     background: white;
     border: 1px solid #777;
-    border-radius: 24px;
+    border-radius: var(--radius-2xl);
     padding: 10px 16px;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-sm);
     color: #000;
 }
 
@@ -668,15 +668,15 @@
 /* Policies with Green Icons */
 .booking-policies {
     background-color: #f9f9f9;
-    border-radius: 8px;
-    padding: 16px;
-    margin-bottom: 16px;
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    margin-bottom: var(--space-md);
 }
 
 .policy-row {
     display: flex;
-    gap: 12px;
-    margin-bottom: 12px;
+    gap: var(--space-md);
+    margin-bottom: var(--space-md);
     align-items: flex-start;
 }
 
@@ -689,7 +689,7 @@
     /* Light green circle bg */
     width: 24px;
     height: 24px;
-    border-radius: 50%;
+    border-radius: var(--radius-full);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -711,7 +711,7 @@
 }
 
 .availability-info {
-    margin-bottom: 8px;
+    margin-bottom: var(--space-sm);
     font-size: 14px;
     color: #555;
 }
@@ -719,32 +719,32 @@
 /* Option Selection Card (The Bordered Box) */
 .option-selection-card {
     border: 2px solid #000;
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 16px;
+    border-radius: var(--radius-lg);
+    padding: var(--space-md);
+    margin-bottom: var(--space-md);
     background: white;
 }
 
 .option-title {
     font-size: 16px;
     font-weight: 700;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-md);
     line-height: 1.2;
 }
 
 .price-breakdown {
-    margin-bottom: 16px;
+    margin-bottom: var(--space-md);
 }
 
 .price-row {
     font-size: 14px;
     color: #333;
-    margin-bottom: 4px;
+    margin-bottom: var(--space-xs);
 }
 
 .total-row {
     display: flex;
-    gap: 8px;
+    gap: var(--space-sm);
     font-size: 18px;
     font-weight: 800;
     color: #000;
@@ -753,21 +753,21 @@
 
 .price-note {
     font-size: 12px;
-    color: #666;
-    margin-top: 4px;
+    color: var(--text-secondary);
+    margin-top: var(--space-xs);
 }
 
 .time-slots {
     display: flex;
-    gap: 8px;
-    margin-bottom: 12px;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
 }
 
 .time-slot {
     background: white;
     border: 1px solid #ccc;
-    border-radius: 20px;
-    padding: 8px 16px;
+    border-radius: var(--radius-2xl);
+    padding: var(--space-sm) 16px;
     font-size: 14px;
     cursor: pointer;
     font-weight: 500;
@@ -776,7 +776,7 @@
 .time-slot.active {
     border: 2px solid #000;
     font-weight: 700;
-    border-color: #000;
+    border-color: var(--border-color);
 }
 
 .see-more-times {
@@ -788,7 +788,7 @@
 
 /* Book Ahead Note */
 .book-ahead-note {
-    margin-bottom: 24px;
+    margin-bottom: var(--space-lg);
     font-size: 14px;
     line-height: 1.4;
 }
@@ -796,37 +796,37 @@
 .calendar-icon {
     font-size: 16px;
     background: #d1fae5;
-    padding: 4px;
-    border-radius: 4px;
+    padding: var(--space-xs);
+    border-radius: var(--radius-xs);
 }
 
 /* Detailed Reviews Section */
 .detailed-reviews-section {
-    margin-top: 48px;
+    margin-top: var(--space-2xl);
     font-family: 'Inter', sans-serif;
     color: #000;
 }
 
 .contribute-block {
-    margin-bottom: 32px;
+    margin-bottom: var(--space-xl);
 }
 
 .contribute-block h3 {
     font-size: 16px;
     font-weight: 700;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-md);
 }
 
 .contribute-btns {
     display: flex;
-    gap: 12px;
+    gap: var(--space-md);
 }
 
 .btn-outline {
     background: white;
     border: 1px solid #ccc;
-    padding: 8px 16px;
-    border-radius: 20px;
+    padding: var(--space-sm) 16px;
+    border-radius: var(--radius-2xl);
     font-weight: 600;
     font-size: 14px;
     cursor: pointer;
@@ -839,10 +839,10 @@
 
 .reviews-tabs-header {
     display: flex;
-    gap: 24px;
+    gap: var(--space-lg);
     font-size: 16px;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: var(--space-sm);
 }
 
 .reviews-tabs-header span {
@@ -858,19 +858,19 @@
 .reviews-divider {
     height: 1px;
     background: #e0e0e0;
-    margin-bottom: 32px;
+    margin-bottom: var(--space-xl);
 }
 
 .reviews-layout {
     display: flex;
-    gap: 48px;
+    gap: var(--space-2xl);
     align-items: flex-start;
 }
 
 @media (max-width: 800px) {
     .reviews-layout {
         flex-direction: column;
-        gap: 24px;
+        gap: var(--space-lg);
     }
 }
 
@@ -882,10 +882,10 @@
 .big-rating-score {
     font-size: 32px;
     font-weight: 800;
-    margin-bottom: 16px;
+    margin-bottom: var(--space-md);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-sm);
 }
 
 .big-rating-score .stars {
@@ -902,9 +902,9 @@
 .rating-bar-row {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-sm);
     font-size: 14px;
-    margin-bottom: 4px;
+    margin-bottom: var(--space-xs);
     color: #333;
 }
 
@@ -912,7 +912,7 @@
     flex: 1;
     height: 12px;
     background: #f2f2f2;
-    border-radius: 4px;
+    border-radius: var(--radius-xs);
     overflow: hidden;
 }
 
@@ -920,7 +920,7 @@
     height: 100%;
     background: #00aa6c;
     /* Green fill matches screenshot */
-    border-radius: 4px;
+    border-radius: var(--radius-xs);
 }
 
 /* Reviews List Right Col */
@@ -931,8 +931,8 @@
 .search-input-wrapper {
     position: relative;
     border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 16px;
+    border-radius: var(--radius-xs);
+    margin-bottom: var(--space-md);
 }
 
 .search-input-wrapper input {
@@ -954,22 +954,22 @@
 
 .reviews-filters-row {
     display: flex;
-    gap: 8px;
-    margin-bottom: 24px;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
 }
 
 .filter-chip {
     background: white;
     border: 1px solid #ccc;
-    border-radius: 20px;
-    padding: 8px 16px;
+    border-radius: var(--radius-2xl);
+    padding: var(--space-sm) 16px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
 }
 
 .filter-chip:hover {
-    border-color: #000;
+    border-color: var(--border-color);
 }
 
 .dropdown-filter {
@@ -980,8 +980,8 @@
 .filter-chip-select {
     background: white;
     border: 1px solid #ccc;
-    border-radius: 20px;
-    padding: 8px 16px;
+    border-radius: var(--radius-2xl);
+    padding: var(--space-sm) 16px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
@@ -993,19 +993,19 @@
 }
 
 .filter-chip-select:hover {
-    border-color: #000;
+    border-color: var(--border-color);
 }
 
 .header-action-btns {
     display: flex;
-    gap: 12px;
+    gap: var(--space-md);
     margin-left: auto;
 }
 
 .header-action-btns .action-btn {
     background: white;
     border: 1px solid #ccc;
-    border-radius: 20px;
+    border-radius: var(--radius-2xl);
     padding: 6px 14px;
     font-size: 14px;
     font-weight: 600;
@@ -1017,12 +1017,12 @@
 }
 
 .header-action-btns .action-btn:hover {
-    border-color: #000;
+    border-color: var(--border-color);
     background: #f8f8f8;
 }
 
 .header-action-btns .action-btn.active {
-    background: #fff0f0;
+    background-color: var(--bg-card)0f0;
     border-color: #ff4040;
     color: #ff4040;
 }
@@ -1030,19 +1030,19 @@
 .popular-mentions h4 {
     font-size: 14px;
     font-weight: 700;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-md);
 }
 
 .mentions-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 24px;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
 }
 
 .mention-tag {
     border: 1px solid #ccc;
-    border-radius: 16px;
+    border-radius: var(--radius-xl);
     padding: 6px 12px;
     font-size: 13px;
     color: #333;
@@ -1052,7 +1052,7 @@
 .auto-translate-note {
     font-size: 12px;
     color: #555;
-    margin-bottom: 24px;
+    margin-bottom: var(--space-lg);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1062,8 +1062,8 @@
     background: #000;
     color: white;
     border: none;
-    border-radius: 20px;
-    padding: 8px 16px;
+    border-radius: var(--radius-2xl);
+    padding: var(--space-sm) 16px;
     font-weight: 700;
     font-size: 12px;
     cursor: pointer;
@@ -1071,20 +1071,20 @@
 
 /* Full Review Card */
 .full-review-card {
-    margin-top: 24px;
+    margin-top: var(--space-lg);
 }
 
 .reviewer-header {
     display: flex;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 8px;
+    gap: var(--space-md);
+    margin-bottom: var(--space-sm);
 }
 
 .reviewer-avatar-small {
     width: 32px;
     height: 32px;
-    border-radius: 50%;
+    border-radius: var(--radius-full);
     background-size: cover;
     background-color: #eee;
 }
@@ -1108,26 +1108,26 @@
 .review-stars-row {
     color: #00aa6c;
     font-size: 14px;
-    margin-bottom: 4px;
+    margin-bottom: var(--space-xs);
 }
 
 .review-title {
     font-weight: 800;
     font-size: 16px;
-    margin-bottom: 4px;
+    margin-bottom: var(--space-xs);
 }
 
 .review-date-line {
     font-size: 12px;
     color: #555;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-md);
 }
 
 .review-body {
     font-size: 14px;
     line-height: 1.5;
     color: #000;
-    margin-bottom: 12px;
+    margin-bottom: var(--space-md);
 }
 
 .review-footer {
@@ -1137,7 +1137,7 @@
 
 .review-footer .disclaimer {
     display: block;
-    margin-top: 4px;
+    margin-top: var(--space-xs);
     line-height: 1.3;
 }
 
@@ -1148,9 +1148,9 @@
     /* Bright Green */
     color: #003018;
     font-weight: 700;
-    padding: 16px;
+    padding: var(--space-md);
     border: none;
-    border-radius: 24px;
+    border-radius: var(--radius-2xl);
     cursor: pointer;
     font-size: 16px;
     transition: background 0.2s;
@@ -1163,7 +1163,7 @@
 /* Side Action Buttons */
 .action-buttons {
     display: flex;
-    gap: 8px;
+    gap: var(--space-sm);
     justify-content: flex-end;
 }
 
@@ -1175,7 +1175,7 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: var(--space-xs);
 }
 
 .action-btn.active {

@@ -278,7 +278,7 @@ This project is for educational purposes.
 ### 📈 Data Strategy (Future Roadmap)
 We are adopting a **Hybrid Affiliate + Open Data** model to scale activity data sustainably:
 1.  **Discovery Layer (Open Data)**: Continue using OpenStreetMap/OpenTripMap for broad, free, initial discovery of points of interest.
-2.  **Rich Content Layer (Affiliate)**: Integrate affiliate APIs (e.g., Viator, GetYourGuide) to fetch premium content like professional photos, verified reviews, and pricing.
+2.  **Rich Content Layer (Affiliate)**: Use **Travelpayouts** (aggregating Viator, GetYourGuide, etc.) to fetch premium content like professional photos, verified reviews, and pricing.
 3.  **Monetization**: Generate revenue through affiliate commissions on bookings, sustaining the free tier for users.
 4.  **AI Orchestration**: Use AI agents to intelligently match open POI data with rich affiliate products to build comprehensive itineraries without scraping or TOS violations.
 

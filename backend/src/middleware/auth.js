@@ -37,3 +37,32 @@ export const authMiddleware = async (req, res, next) => {
         return res.status(401).json({ error: 'Invalid token' });
     }
 };
+
+export const optionalAuthMiddleware = async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            req.user = { tier: 'guest' };
+            return next();
+        }
+
+        const token = authHeader.substring(7);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await get('SELECT tier FROM users WHERE id = ?', [decoded.userId]);
+
+        if (user) {
+            req.userId = decoded.userId;
+            req.user = {
+                id: decoded.userId,
+                tier: user.tier || decoded.tier || 'free'
+            };
+        } else {
+            req.user = { tier: 'guest' };
+        }
+        next();
+    } catch (error) {
+        req.user = { tier: 'guest' };
+        next();
+    }
+};

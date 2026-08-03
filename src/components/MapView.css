@@ -141,8 +141,8 @@
 
 .popup-favorite-btn.active {
     background-color: #fee2e2;
-    border-color: #ef4444;
-    color: #dc2626;
+    border-color: var(--danger);
+    color: var(--danger);
 }
 
 .popup-link {
@@ -170,7 +170,7 @@
 /* Leaflet overrides */
 .leaflet-popup-content-wrapper {
     border-radius: var(--radius-lg);
-    padding: 12px;
+    padding: var(--space-md);
     box-shadow: var(--shadow-lg);
 }
 
@@ -196,4 +196,4 @@
 }
 /* Fix for popup favorite button text color */
 .popup-favorite-btn { color: #1a1a1a !important; }
-.popup-favorite-btn.active { color: #dc2626 !important; }
+.popup-favorite-btn.active { color: var(--danger) !important; }

@@ -1,8 +1,8 @@
 import { get, run } from '../../../models/db.js';
 
 export const enforceSearchLimit = async (req, res, next) => {
-    // Only enforce for free tier
-    if (req.user.tier !== 'free') return next();
+    // Only enforce for free tier (guests are allowed unlimited mock searches for now)
+    if (!req.user || req.user.tier !== 'free') return next();
 
     try {
         const userId = req.user.id;

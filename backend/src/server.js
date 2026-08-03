@@ -37,8 +37,8 @@ app.use('/api/favorites', favoritesRoutes);
 // Tier Routes
 // Note: We mount explorer routes at /api because the module's router handles the specific subpaths (e.g. /lists, /export)
 // This pattern allows the Explorer module to define its own API structure.
-app.use('/api', authMiddleware, explorerRoutes);
 app.use('/api/free', freeRoutes);
+app.use('/api', authMiddleware, explorerRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

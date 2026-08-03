@@ -1,4 +1,4 @@
-export type Category = 'Outdoor' | 'Cultural' | 'Sports' | 'Music' | 'Food' | 'Family';
+export type Category = 'Outdoor' | 'Cultural' | 'Sports' | 'Music' | 'Food' | 'Family' | 'Water' | 'Essentials' | 'Travelers\' Choice' | 'Family friendly' | 'Hidden gems' | 'Museums' | 'Outdoors' | 'Arts & theater' | 'Nightlife';
 
 export interface Location {
     lat: number;
@@ -23,6 +23,7 @@ export interface Activity {
     reviewSnippet?: string;
     features?: string[];
     gallery?: string[];
+    awardYear?: number;
     duration?: string;
     cancellationPolicy?: string;
 }

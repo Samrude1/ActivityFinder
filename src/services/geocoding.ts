@@ -14,7 +14,7 @@ export async function geocodeAddress(address: string): Promise<Location | null> 
 
     try {
         const response = await fetch(
-            `${NOMINATIM_BASE_URL}/search?q=${encodeURIComponent(address)}&format=json&limit=1`,
+            `${NOMINATIM_BASE_URL}/search?q=${encodeURIComponent(address)}&format=json&limit=5`,
             {
                 headers: {
                     'User-Agent': 'FreeActivityFinder/1.0' // Required by Nominatim
@@ -28,22 +28,37 @@ export async function geocodeAddress(address: string): Promise<Location | null> 
 
         const data = await response.json();
 
-        if (data.length === 0) {
-            return null;
+        if (!data || data.length === 0) {
+            console.log('Geocoding: no results for', address);
+            return null;  // Don't cache null
         }
 
-        const result = data[0];
+        // Find a valid result that is a geographic place, fallback to the first result
+        const validResult = data.find((item: any) => {
+            if (item.class === 'boundary' && item.type === 'administrative') return true;
+            if (item.class === 'place') return true;
+            return false;
+        });
+
+        const finalResult = validResult || data[0];
+
+        if (!finalResult) {
+            return null;  // Don't cache null
+        }
+
+        console.log('Geocoding result:', finalResult.display_name, finalResult.lat, finalResult.lon);
+
         const location = {
-            lat: parseFloat(result.lat),
-            lng: parseFloat(result.lon),
-            address: result.display_name
+            lat: parseFloat(finalResult.lat),
+            lng: parseFloat(finalResult.lon),
+            address: finalResult.display_name
         };
 
         GEOCODE_CACHE[cacheKey] = location;
         return location;
     } catch (error) {
         console.error('Geocoding error:', error);
-        return null;
+        return null;  // Don't cache errors
     }
 }
 

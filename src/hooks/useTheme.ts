@@ -4,9 +4,14 @@ type Theme = 'light' | 'dark';
 
 export function useTheme() {
     const [theme, setTheme] = useState<Theme>(() => {
+        // Force light mode as default — ignore OS preference and saved dark theme
         const saved = localStorage.getItem('theme');
-        if (saved === 'light' || saved === 'dark') return saved;
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        if (saved === 'dark') {
+            // Override any saved dark preference to light
+            localStorage.setItem('theme', 'light');
+            return 'light';
+        }
+        return 'light';
     });
 
     useEffect(() => {

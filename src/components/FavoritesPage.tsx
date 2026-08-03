@@ -4,15 +4,13 @@ import type { Activity } from '../types';
 import { getFavorites, removeFavorite } from '../services/storage';
 import ActivityCard from './ActivityCard';
 import './FavoritesPage.css';
-import { useAuth } from '../contexts/AuthContext';
-import FavoritesList from '../tiers/Free/features/FavoritesList';
+import './FavoritesPage.css';
 import CalendarExport from '../tiers/Explorer/features/CalendarExport';
 import BackButton from './BackButton';
 import { useTranslation } from 'react-i18next';
 
 export default function FavoritesPage() {
     const navigate = useNavigate();
-    const { user } = useAuth();
     const { t } = useTranslation();
     const [favorites, setFavorites] = useState<Activity[]>([]);
     const [loading, setLoading] = useState(true);
@@ -68,35 +66,30 @@ export default function FavoritesPage() {
                     )}
                 </div>
             </div>
-            {user?.tier === 'free' ? (
-                <div className="favorites-container">
-                    <FavoritesList />
-                </div>
-            ) : (
-                <div className="favorites-container">
-                    {favorites.length === 0 ? (
-                        <div className="empty-favorites">
-                            <div className="empty-icon">💔</div>
-                            <h2>{t('favorites.empty_title', 'No Favorites Yet')}</h2>
-                            <p>{t('favorites.empty_desc', 'Start exploring and save your favorite activities!')}</p>
-                            <button onClick={() => navigate('/')} className="btn-primary">
-                                {t('favorites.discover', 'Discover Activities')}
-                            </button>
-                        </div>
-                    ) : (
-                        <div className="favorites-grid">
-                            {favorites.map((activity) => (
-                                <ActivityCard
-                                    key={activity.id}
-                                    activity={activity}
-                                    isFavorite={true}
-                                    onToggleFavorite={handleToggleFavorite}
-                                />
-                            ))}
-                        </div>
-                    )}
-                </div>
-            )}
+            
+            <div className="favorites-container">
+                {favorites.length === 0 ? (
+                    <div className="empty-favorites">
+                        <div className="empty-icon">💔</div>
+                        <h2>{t('favorites.empty_title', 'No Favorites Yet')}</h2>
+                        <p>{t('favorites.empty_desc', 'Start exploring and save your favorite activities!')}</p>
+                        <button onClick={() => navigate('/')} className="btn-primary">
+                            {t('favorites.discover', 'Discover Activities')}
+                        </button>
+                    </div>
+                ) : (
+                    <div className="favorites-grid">
+                        {favorites.map((activity) => (
+                            <ActivityCard
+                                key={activity.id}
+                                activity={activity}
+                                isFavorite={true}
+                                onToggleFavorite={handleToggleFavorite}
+                            />
+                        ))}
+                    </div>
+                )}
+            </div>
         </div>
     );
 }

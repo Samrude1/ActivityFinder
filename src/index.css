@@ -1,5 +1,6 @@
 /* ActivityFinder V3 - Professional Travel Design System */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
+@import './tripadvisor-vars.css';
 
 
 :root {
@@ -8,16 +9,16 @@
   --bg-secondary: #F7F8FA;
   --bg-card: #FFFFFF;
   --bg-hover: #F0F2F5;
-  --text-primary: #1D2939;
+  --text-primary: #000000;
   --text-secondary: #475467;
   --text-tertiary: #98A2B3;
   --border-color: #E4E7EC;
 
-  /* Primary Accent - Refined Forest Green (Trust & Adventure) */
-  --accent: #1A7F64;
-  --accent-hover: #156B54;
-  --accent-light: #E8F5F0;
-  --accent-dark: #0D5A47;
+  /* Primary Accent - Tripadvisor Green */
+  --accent: #00aa6c;
+  --accent-hover: #008f5a;
+  --accent-light: #e6f7f0;
+  --accent-dark: #007a4e;
 
   /* Secondary Accent - Warm Orange (Energy & Excitement) */
   --secondary: #E86A33;
@@ -38,11 +39,11 @@
 
   /* Gradients */
   --gradient-overlay: linear-gradient(180deg, rgba(0, 0, 0, 0) 30%, rgba(0, 0, 0, 0.75) 100%);
-  --gradient-hero: linear-gradient(135deg, #1A7F64 0%, #0D5A47 100%);
-  --gradient-card: linear-gradient(135deg, #1A7F64 0%, #2A9D8F 100%);
+  --gradient-hero: linear-gradient(135deg, #00aa6c 0%, #007a4e 100%);
+  --gradient-card: linear-gradient(135deg, #00aa6c 0%, #2A9D8F 100%);
 
   /* Category Colors - Refined */
-  --cat-outdoor: #1A7F64;
+  --cat-outdoor: #00aa6c;
   --cat-cultural: #7C3AED;
   --cat-sports: #DC2626;
   --cat-music: #DB2777;
@@ -189,7 +190,7 @@ button {
   letter-spacing: 0;
   padding: 0.625rem 1.25rem;
   border: none;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-full);
   background-color: var(--accent);
   color: white;
   cursor: pointer;
@@ -299,7 +300,7 @@ input::placeholder {
 
 /* Container */
 .container {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
   padding: 0 var(--space-lg);
 }
