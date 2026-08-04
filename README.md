@@ -19,6 +19,7 @@ A premium travel-inspired web application to discover free and paid local activi
 - ❤️ **Favorites System** - Save activities with full data persistence
 - 📱 **Mobile-First Design** - Bottom navigation, responsive layouts
 - 🌙 **Dark Mode** - Toggle between light and dark themes
+- 🪄 **AI Concierge** - Smart travel assistant & itinerary planner powered by OpenRouter (gpt-4o-mini)
 - 👤 **User Accounts** - Full authentication system with JWT tokens
 - 💎 **Subscription Tiers** - Free and Explorer plans with progressive features
 

@@ -12,6 +12,7 @@ import BottomNavigation from './BottomNavigation';
 import AdvancedFilters, { FilterState } from '../tiers/Explorer/features/AdvancedFilters';
 import UpgradePrompt from '../tiers/Free/features/UpgradePrompt';
 import HomeCustomLists from '../tiers/Explorer/features/HomeCustomLists';
+import { AiConciergeModal } from './AiConciergeModal';
 import { freeAPI } from '../services/api';
 import { SearchAllIcon, HotelsIcon, ThingsToDoIcon, RestaurantsIcon, CruisesIcon, SearchIcon } from './icons';
 import './HomePage.css';
@@ -42,6 +43,7 @@ export default function HomePage() {
         accessibility: []
     });
     const [showUpgradePrompt, setShowUpgradePrompt] = useState(false);
+    const [showAiConcierge, setShowAiConcierge] = useState(false);
 
 
 
@@ -132,6 +134,10 @@ export default function HomePage() {
                                             <SearchAllIcon />
                                         </span>
                                         <span className="tab-text">Search All</span>
+                                    </button>
+                                    <button className="search-tab ai-highlight-tab" onClick={() => setShowAiConcierge(true)} style={{ background: 'linear-gradient(135deg, #6366f1, #a855f7)', color: '#fff', border: 'none' }}>
+                                        <span className="tab-icon">🪄</span>
+                                        <span className="tab-text" style={{ fontWeight: 700 }}>AI Concierge</span>
                                     </button>
                                     <button className="search-tab" onClick={() => navigate('/hotels')}>
                                         <span className="tab-icon">
@@ -305,6 +311,16 @@ export default function HomePage() {
                     onClose={() => setShowUpgradePrompt(false)}
                 />
             )}
+
+            <AiConciergeModal
+                isOpen={showAiConcierge}
+                onClose={() => setShowAiConcierge(false)}
+                currentLocation={userLocation || { name: 'Current Location', lat: 60.1699, lng: 24.9384 }}
+                availableActivities={activities}
+                onSelectActivity={(act) => navigate(`/activity/${act.id}`)}
+                onToggleFavorite={(act) => handleToggleFavorite(act.id, act)}
+                isFavorite={(id) => favorites.includes(id)}
+            />
         </div>
     );
 }

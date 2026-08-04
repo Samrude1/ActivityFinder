@@ -59,7 +59,7 @@ Capture:
 
 **Current state** — exactly where things stand right now. What works, what is partial, what is known to be broken.
 
-**What comes next** — the very next thing that needs to happen. Specific enough that the next session can start immediately without figuring out where to begin.
+**What comes next** — the very next thing that needs to happen. Specific enough that the next session can start immediately without figuring out where to begin.Do not start making changes to the codebase.
 
 **Open questions** — anything unresolved that the next session needs to address.
 
@@ -127,7 +127,7 @@ Last updated: [date and time]
 
 ## Next session starts with
 
-[The very first thing to do in the next session — specific and actionable]
+[The very first thing to do in the next session — specific and actionable.Do not make any changes to the codebase. Just state what needs to be done]
 
 ## Open questions
 

@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth.js';
 import favoritesRoutes from './routes/favorites.js';
+import aiRoutes from './routes/ai.js';
 import explorerRoutes from './tiers/explorer/routes.js';
 import freeRoutes from './tiers/free/routes.js';
 import { authMiddleware } from './middleware/auth.js';
@@ -33,6 +34,7 @@ app.use('/api', apiLimiter);
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/favorites', favoritesRoutes);
+app.use('/api/ai', aiRoutes);
 
 // Tier Routes
 // Note: We mount explorer routes at /api because the module's router handles the specific subpaths (e.g. /lists, /export)

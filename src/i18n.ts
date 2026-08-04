@@ -22,8 +22,8 @@ i18n
             escapeValue: false, // not needed for react as it escapes by default
         },
 
-        // supportedLngs: ['en', 'es', 'zh', 'hi', 'ar', 'pt', 'fr', 'ru', 'ja', 'de', 'fi', 'ko'],
-        // nonExplicitSupportedLngs: true,
+        supportedLngs: ['en', 'es', 'zh', 'hi', 'ar', 'pt', 'fr', 'ru', 'ja', 'de', 'fi', 'ko'],
+        nonExplicitSupportedLngs: true,
     });
 
 export default i18n;
